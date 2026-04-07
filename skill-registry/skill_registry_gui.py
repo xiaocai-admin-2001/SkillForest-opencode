@@ -782,9 +782,26 @@ def _date_rank(value: str) -> int:
     return 0
 
 
+def mousewheel_units(delta: int) -> int:
+    if delta == 0:
+        return 0
+    step = max(1, abs(delta) // 120) if abs(delta) >= 120 else 1
+    return -step if delta > 0 else step
+
+
+def _skill_id_rank(value: str) -> int:
+    if value.startswith("skill-"):
+        suffix = value.split("-", 1)[1]
+        if suffix.isdigit():
+            return int(suffix)
+    return 0
+
+
 def _row_sort_key(row: dict) -> tuple:
     return (
         0 if row.get("Status") == "active" else 1,
+        -_date_rank(row.get("Installed", "")),
+        -_skill_id_rank(row.get("ID", "")),
         -_date_rank(row.get("LastUpdated", "")),
         get_skill_display_name(row.get("Skill", "")).lower(),
     )
@@ -1307,6 +1324,9 @@ class SkillRegistryApp:
         )
         self.cards_frame.bind("<Configure>", self._on_cards_frame_configured)
         self.cards_canvas.bind("<Configure>", self._on_cards_canvas_configured)
+        self._bind_mousewheel(self.cards_canvas)
+        self._bind_mousewheel(cards_shell)
+        self._bind_mousewheel(self.cards_frame)
 
         load_more_wrap = tk.Frame(center, bg=self.surface_color)
         load_more_wrap.pack(fill=tk.X, pady=(12, 0))
@@ -1520,6 +1540,28 @@ class SkillRegistryApp:
         if columns != self.card_columns:
             self.card_columns = columns
             self._render_cards()
+
+    def _bind_mousewheel(self, widget: tk.Misc) -> None:
+        widget.bind("<MouseWheel>", self._on_cards_mousewheel, add="+")
+        widget.bind("<Button-4>", self._on_cards_mousewheel_linux, add="+")
+        widget.bind("<Button-5>", self._on_cards_mousewheel_linux, add="+")
+
+    def _bind_mousewheel_tree(self, widget: tk.Misc) -> None:
+        self._bind_mousewheel(widget)
+        for child in widget.winfo_children():
+            self._bind_mousewheel_tree(child)
+
+    def _on_cards_mousewheel(self, event) -> str | None:
+        units = mousewheel_units(getattr(event, "delta", 0))
+        if units:
+            self.cards_canvas.yview_scroll(units, "units")
+            return "break"
+        return None
+
+    def _on_cards_mousewheel_linux(self, event) -> str:
+        units = -1 if getattr(event, "num", None) == 4 else 1
+        self.cards_canvas.yview_scroll(units, "units")
+        return "break"
 
     def _card_column_count(self, width: int) -> int:
         if width >= 1180:
@@ -1807,6 +1849,7 @@ class SkillRegistryApp:
 
         for widget in (card, header, title_wrap, icon, meta):
             self._bind_select_click(widget, row["ID"])
+        self._bind_mousewheel_tree(card)
         self.card_widgets[row["ID"]] = {
             "frame": card,
             "icon": icon,
