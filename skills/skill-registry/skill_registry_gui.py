@@ -774,14 +774,14 @@ class SkillRegistryApp:
         self.metric_group_var = tk.StringVar(value="0")
         self.metric_recent_var = tk.StringVar(value="-")
 
-        self.bg_color = "#f4f7fb"
+        self.bg_color = "#f7f6fb"
         self.surface_color = "#ffffff"
-        self.header_color = "#16324f"
-        self.header_accent = "#2f80ed"
-        self.text_color = "#1f2937"
-        self.muted_color = "#6b7280"
-        self.border_color = "#dbe5f0"
-        self.soft_blue = "#eaf2ff"
+        self.header_color = "#eef3ff"
+        self.header_accent = "#7c8cf8"
+        self.text_color = "#25324a"
+        self.muted_color = "#7b8598"
+        self.border_color = "#e4e8f3"
+        self.soft_blue = "#eef2ff"
 
         self._build_ui()
         self.refresh_data(sync_first=True)
@@ -811,13 +811,13 @@ class SkillRegistryApp:
         style.configure(
             "HeaderTitle.TLabel",
             background=self.header_color,
-            foreground="#ffffff",
+            foreground="#26344d",
             font=("Microsoft YaHei UI", 22, "bold"),
         )
         style.configure(
             "HeaderSub.TLabel",
             background=self.header_color,
-            foreground="#d7e6ff",
+            foreground="#62708d",
             font=("Microsoft YaHei UI", 10),
         )
         style.configure(
@@ -868,7 +868,7 @@ class SkillRegistryApp:
             background=self.header_accent,
             borderwidth=0,
         )
-        style.map("Accent.TButton", background=[("active", "#1f6fd1")])
+        style.map("Accent.TButton", background=[("active", "#6978e8")])
         style.configure(
             "Status.TLabel",
             background=self.surface_color,
@@ -887,13 +887,13 @@ class SkillRegistryApp:
         style.configure(
             "Treeview.Heading",
             font=("Microsoft YaHei UI", 9, "bold"),
-            background="#edf3fa",
+            background="#f3f0ff",
             foreground=self.text_color,
             relief="flat",
         )
         style.map(
             "Treeview",
-            background=[("selected", "#d7e8ff")],
+            background=[("selected", "#e7ebff")],
             foreground=[("selected", self.text_color)],
         )
         style.configure("TEntry", padding=6)
@@ -913,7 +913,14 @@ class SkillRegistryApp:
     def _build_ui(self) -> None:
         self._configure_styles()
 
-        header = tk.Frame(self.root, bg=self.header_color, padx=22, pady=18)
+        header = tk.Frame(
+            self.root,
+            bg=self.header_color,
+            padx=22,
+            pady=20,
+            highlightbackground="#d9e2ff",
+            highlightthickness=1,
+        )
         header.pack(fill=tk.X)
 
         ttk.Label(header, text="SkillForest", style="HeaderTitle.TLabel").pack(
@@ -945,7 +952,7 @@ class SkillRegistryApp:
 
         toolbar_wrap = ttk.Frame(self.root, style="App.TFrame", padding=(16, 6, 16, 8))
         toolbar_wrap.pack(fill=tk.X)
-        toolbar = ttk.Frame(toolbar_wrap, style="Toolbar.TFrame", padding=12)
+        toolbar = ttk.Frame(toolbar_wrap, style="Toolbar.TFrame", padding=14)
         toolbar.pack(fill=tk.X)
 
         ttk.Button(
@@ -1164,6 +1171,7 @@ class SkillRegistryApp:
         self, parent: ttk.Frame, title: str, variable: tk.StringVar
     ) -> ttk.Frame:
         frame = ttk.Frame(parent, style="Surface.TFrame", padding=(14, 12))
+        frame.configure(style="Surface.TFrame")
         ttk.Label(frame, text=title, style="MetricTitle.TLabel").pack(anchor=tk.W)
         ttk.Label(frame, textvariable=variable, style="MetricValue.TLabel").pack(
             anchor=tk.W, pady=(6, 0)
