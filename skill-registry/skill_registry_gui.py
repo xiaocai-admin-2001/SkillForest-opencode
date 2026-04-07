@@ -209,6 +209,56 @@ SKILL_CATEGORY_MAP = {
     "cek-write-tests": ("测试与质量", "测试驱动"),
 }
 
+CATEGORY_ICON_MAP = {
+    "通用能力": "◎",
+    "技能开发": "◆",
+    "技能管理": "▣",
+    "Git 协作": "⑂",
+    "多代理协作": "◉",
+    "评审与反思": "✦",
+    "规划实施": "▦",
+    "分析与根因": "✧",
+    "测试与质量": "✓",
+    "文档与表达": "✎",
+    "MCP 与技术栈": "⌘",
+    "工程工作流": "▤",
+    "安全与测试": "🛡",
+    "DevOps 与部署": "⚙",
+    "未分类": "•",
+}
+
+SUBCATEGORY_ICON_MAP = {
+    "文案与表达": "✎",
+    "技能发现": "⌕",
+    "设计与优化": "✦",
+    "注册表与界面": "▣",
+    "Issue 与 PR": "⑂",
+    "需求与方案": "▦",
+    "MCP 构建": "⌘",
+    "提交与分支": "⑃",
+    "Worktree 管理": "⑄",
+    "规则与 Hook": "⚓",
+    "方案评审": "✧",
+    "执行模式": "▶",
+    "根因分析": "◎",
+    "测试修复": "✓",
+    "假设管理": "◌",
+    "评审模式": "◉",
+    "推理方法": "∞",
+    "MCP 配置": "⌘",
+    "技术规范": "⚖",
+    "文档维护": "✎",
+    "Trail of Bits 测试": "🧪",
+    "Trail of Bits 安全": "🛡",
+    "Superpowers": "✦",
+    "AgentSys": "▤",
+    "AgentSys 性能": "⚡",
+    "模板生成": "⚙",
+    "配置校验": "✓",
+    "专项工具": "🧰",
+    "其他": "•",
+}
+
 
 @dataclass
 class SkillRow:
@@ -509,6 +559,16 @@ def get_skill_display_name(skill_name: str) -> str:
         readable = skill_name.split("-", 1)[1].replace("-", " ")
         return f"{readable}（{skill_name}）"
     return skill_name
+
+
+def decorate_category_name(category: str) -> str:
+    icon = CATEGORY_ICON_MAP.get(category, "•")
+    return f"{icon} {category}"
+
+
+def decorate_subcategory_name(subcategory: str) -> str:
+    icon = SUBCATEGORY_ICON_MAP.get(subcategory, "•")
+    return f"{icon} {subcategory}"
 
 
 def to_chinese_status(status: str) -> str:
@@ -816,6 +876,18 @@ class SkillRegistryApp:
             foreground=[("selected", self.text_color)],
         )
         style.configure("TEntry", padding=6)
+        style.configure(
+            "SearchCard.TLabelframe",
+            background=self.surface_color,
+            borderwidth=1,
+            relief="solid",
+        )
+        style.configure(
+            "SearchCard.TLabelframe.Label",
+            background=self.surface_color,
+            foreground=self.text_color,
+            font=("Microsoft YaHei UI", 10, "bold"),
+        )
 
     def _build_ui(self) -> None:
         self._configure_styles()
@@ -1044,7 +1116,7 @@ class SkillRegistryApp:
                     "",
                     tk.END,
                     iid=top_id,
-                    text=top_category,
+                    text=decorate_category_name(top_category),
                     open=True,
                     values=("", "", "", ""),
                 )
@@ -1057,7 +1129,7 @@ class SkillRegistryApp:
                     top_nodes[top_category],
                     tk.END,
                     iid=sub_id,
-                    text=sub_category,
+                    text=decorate_subcategory_name(sub_category),
                     open=True,
                     values=("", "", "", ""),
                 )
@@ -1309,27 +1381,41 @@ class SkillRegistryApp:
     def show_search_results_window(self, query: str) -> None:
         window = tk.Toplevel(self.root)
         window.title(f"搜索结果 - {query}")
-        window.geometry("900x520")
+        window.geometry("980x620")
+        window.configure(bg=self.bg_color)
 
+        header = tk.Frame(window, bg=self.header_color, padx=18, pady=14)
+        header.pack(fill=tk.X)
+        ttk.Label(header, text=f"Skill 搜索：{query}", style="HeaderTitle.TLabel").pack(
+            anchor=tk.W
+        )
         ttk.Label(
-            window,
-            text=f"关键词“{query}”的搜索结果，选择一个后可一键安装到本地 OpenCode skills。",
-            padding=10,
-        ).pack(fill=tk.X)
+            header,
+            text="从远程结果中选择一个 skill，一键安装到本地 OpenCode 技能库。",
+            style="HeaderSub.TLabel",
+        ).pack(anchor=tk.W, pady=(6, 0))
+
+        body = ttk.Frame(window, style="App.TFrame", padding=(14, 14, 14, 10))
+        body.pack(fill=tk.BOTH, expand=True)
+
+        card = ttk.LabelFrame(
+            body, text="搜索结果", style="SearchCard.TLabelframe", padding=12
+        )
+        card.pack(fill=tk.BOTH, expand=True)
 
         columns = ("repo", "skill", "installs")
-        tree = ttk.Treeview(window, columns=columns, show="headings", height=18)
+        tree = ttk.Treeview(card, columns=columns, show="headings", height=18)
         tree.heading("repo", text="仓库")
-        tree.heading("skill", text="Skill")
+        tree.heading("skill", text="技能")
         tree.heading("installs", text="安装量")
         tree.column("repo", width=420, anchor=tk.W)
         tree.column("skill", width=220, anchor=tk.W)
         tree.column("installs", width=100, anchor=tk.CENTER)
 
-        scroll = ttk.Scrollbar(window, orient=tk.VERTICAL, command=tree.yview)
+        scroll = ttk.Scrollbar(card, orient=tk.VERTICAL, command=tree.yview)
         tree.configure(yscrollcommand=scroll.set)
-        tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(10, 0), pady=(0, 10))
-        scroll.pack(side=tk.RIGHT, fill=tk.Y, padx=(0, 10), pady=(0, 10))
+        tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 0), pady=(0, 10))
+        scroll.pack(side=tk.RIGHT, fill=tk.Y, padx=(10, 0), pady=(0, 10))
 
         for idx, item in enumerate(self.search_results):
             tree.insert(
@@ -1339,7 +1425,7 @@ class SkillRegistryApp:
                 values=(item["repo"], item["skill"], item["installs"]),
             )
 
-        actions = ttk.Frame(window, padding=(10, 0, 10, 10))
+        actions = ttk.Frame(body, style="App.TFrame", padding=(0, 8, 0, 0))
         actions.pack(fill=tk.X)
 
         def install_selected() -> None:
@@ -1358,12 +1444,12 @@ class SkillRegistryApp:
             )
             window.destroy()
 
-        ttk.Button(actions, text="安装到本地", command=install_selected).pack(
-            side=tk.LEFT
-        )
-        ttk.Button(actions, text="关闭", command=window.destroy).pack(
-            side=tk.LEFT, padx=8
-        )
+        ttk.Button(
+            actions, text="安装到本地", command=install_selected, style="Accent.TButton"
+        ).pack(side=tk.LEFT)
+        ttk.Button(
+            actions, text="关闭", command=window.destroy, style="Toolbar.TButton"
+        ).pack(side=tk.LEFT, padx=8)
 
     def install_remote_skill(self, item: dict) -> None:
         repo_name = item["repo"].split("@", 1)[0]
