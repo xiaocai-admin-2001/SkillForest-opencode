@@ -227,6 +227,24 @@ CATEGORY_ICON_MAP = {
     "未分类": "•",
 }
 
+CATEGORY_TAG_MAP = {
+    "通用能力": "cat_general",
+    "技能开发": "cat_skilldev",
+    "技能管理": "cat_registry",
+    "Git 协作": "cat_git",
+    "多代理协作": "cat_multi",
+    "评审与反思": "cat_review",
+    "规划实施": "cat_plan",
+    "分析与根因": "cat_analysis",
+    "测试与质量": "cat_quality",
+    "文档与表达": "cat_docs",
+    "MCP 与技术栈": "cat_mcp",
+    "工程工作流": "cat_flow",
+    "安全与测试": "cat_security",
+    "DevOps 与部署": "cat_devops",
+    "未分类": "cat_other",
+}
+
 SUBCATEGORY_ICON_MAP = {
     "文案与表达": "✎",
     "技能发现": "⌕",
@@ -773,15 +791,20 @@ class SkillRegistryApp:
         self.metric_active_var = tk.StringVar(value="0")
         self.metric_group_var = tk.StringVar(value="0")
         self.metric_recent_var = tk.StringVar(value="-")
+        self.metric_focus_var = tk.StringVar(value="今天适合先整理技能树")
 
         self.bg_color = "#f7f6fb"
         self.surface_color = "#ffffff"
         self.header_color = "#eef3ff"
         self.header_accent = "#7c8cf8"
+        self.header_alt = "#fff3e8"
         self.text_color = "#25324a"
         self.muted_color = "#7b8598"
         self.border_color = "#e4e8f3"
         self.soft_blue = "#eef2ff"
+        self.soft_peach = "#fff6ee"
+        self.soft_green = "#eefaf3"
+        self.shadow_color = "#edf1f7"
 
         self._build_ui()
         self.refresh_data(sync_first=True)
@@ -796,6 +819,18 @@ class SkillRegistryApp:
         style.configure("App.TFrame", background=self.bg_color)
         style.configure("Surface.TFrame", background=self.surface_color)
         style.configure("Toolbar.TFrame", background=self.surface_color)
+        style.configure(
+            "Panel.TFrame",
+            background=self.surface_color,
+            relief="solid",
+            borderwidth=1,
+        )
+        style.configure(
+            "SoftPanel.TFrame",
+            background=self.soft_blue,
+            relief="solid",
+            borderwidth=1,
+        )
         style.configure(
             "Card.TLabelframe",
             background=self.surface_color,
@@ -819,6 +854,12 @@ class SkillRegistryApp:
             background=self.header_color,
             foreground="#62708d",
             font=("Microsoft YaHei UI", 10),
+        )
+        style.configure(
+            "HeaderBadge.TLabel",
+            background=self.header_alt,
+            foreground="#8f5a22",
+            font=("Microsoft YaHei UI", 9, "bold"),
         )
         style.configure(
             "SectionTitle.TLabel",
@@ -857,9 +898,19 @@ class SkillRegistryApp:
             font=("Microsoft YaHei UI", 9),
         )
         style.configure(
+            "PanelMuted.TLabel",
+            background=self.soft_blue,
+            foreground=self.muted_color,
+            font=("Microsoft YaHei UI", 9),
+        )
+        style.configure(
             "Toolbar.TButton", padding=(10, 7), font=("Microsoft YaHei UI", 9)
         )
-        style.map("Toolbar.TButton", background=[("active", self.soft_blue)])
+        style.map(
+            "Toolbar.TButton",
+            background=[("active", self.soft_blue)],
+            relief=[("pressed", "flat"), ("active", "flat")],
+        )
         style.configure(
             "Accent.TButton",
             padding=(12, 8),
@@ -869,6 +920,15 @@ class SkillRegistryApp:
             borderwidth=0,
         )
         style.map("Accent.TButton", background=[("active", "#6978e8")])
+        style.configure(
+            "Ghost.TButton",
+            padding=(11, 8),
+            font=("Microsoft YaHei UI", 9),
+            foreground=self.text_color,
+            background=self.soft_blue,
+            borderwidth=0,
+        )
+        style.map("Ghost.TButton", background=[("active", "#e2e8ff")])
         style.configure(
             "Status.TLabel",
             background=self.surface_color,
@@ -909,28 +969,97 @@ class SkillRegistryApp:
             foreground=self.text_color,
             font=("Microsoft YaHei UI", 10, "bold"),
         )
+        style.configure(
+            "Divider.TFrame",
+            background=self.border_color,
+        )
 
     def _build_ui(self) -> None:
         self._configure_styles()
 
         header = tk.Frame(
             self.root,
-            bg=self.header_color,
-            padx=22,
-            pady=20,
-            highlightbackground="#d9e2ff",
-            highlightthickness=1,
+            bg=self.bg_color,
+            padx=16,
+            pady=14,
         )
         header.pack(fill=tk.X)
 
-        ttk.Label(header, text="SkillForest", style="HeaderTitle.TLabel").pack(
+        hero = tk.Frame(
+            header,
+            bg=self.header_color,
+            padx=24,
+            pady=22,
+            highlightbackground="#dde5f5",
+            highlightthickness=1,
+        )
+        hero.pack(fill=tk.X)
+
+        hero_left = tk.Frame(hero, bg=self.header_color)
+        hero_left.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        hero_right = tk.Frame(hero, bg=self.header_color)
+        hero_right.pack(side=tk.RIGHT, fill=tk.Y, padx=(18, 0))
+
+        ttk.Label(hero_left, text="SkillForest", style="HeaderTitle.TLabel").pack(
             anchor=tk.W
         )
         ttk.Label(
-            header,
+            hero_left,
             text="把本地 OpenCode skills 整理成可搜索、可登记、可分类、可分享的技能森林。",
             style="HeaderSub.TLabel",
-        ).pack(anchor=tk.W, pady=(6, 0))
+        ).pack(anchor=tk.W, pady=(6, 10))
+
+        badge_row = tk.Frame(hero_left, bg=self.header_color)
+        badge_row.pack(anchor=tk.W, pady=(0, 8))
+        for text in ["技能树视图", "远程搜索", "注册表同步", "可视化管理"]:
+            label = tk.Label(
+                badge_row,
+                text=text,
+                bg="#ffffff",
+                fg="#5f6f8d",
+                padx=10,
+                pady=4,
+                font=("Microsoft YaHei UI", 9),
+            )
+            label.pack(side=tk.LEFT, padx=(0, 8))
+
+        ttk.Label(
+            hero_left,
+            text="适合管理多来源 skills、做技能树梳理、维护用途说明和本地注册表。",
+            style="HeaderSub.TLabel",
+        ).pack(anchor=tk.W)
+
+        focus_card = tk.Frame(
+            hero_right,
+            bg=self.soft_peach,
+            padx=16,
+            pady=14,
+            highlightbackground="#f3dcc5",
+            highlightthickness=1,
+        )
+        focus_card.pack(fill=tk.Y)
+        tk.Label(
+            focus_card,
+            text="今日建议",
+            bg=self.soft_peach,
+            fg="#9b6a3b",
+            font=("Microsoft YaHei UI", 9, "bold"),
+        ).pack(anchor=tk.W)
+        tk.Label(
+            focus_card,
+            textvariable=self.metric_focus_var,
+            bg=self.soft_peach,
+            fg=self.text_color,
+            justify=tk.LEFT,
+            wraplength=220,
+            font=("Microsoft YaHei UI", 10),
+        ).pack(anchor=tk.W, pady=(8, 10))
+        ttk.Button(
+            focus_card,
+            text="打开用途说明",
+            command=self.open_usage_guide,
+            style="Ghost.TButton",
+        ).pack(anchor=tk.W)
 
         dashboard = ttk.Frame(self.root, style="App.TFrame", padding=(16, 14, 16, 6))
         dashboard.pack(fill=tk.X)
@@ -1043,6 +1172,37 @@ class SkillRegistryApp:
         self.tree.column("LastUpdated", width=100, anchor=tk.CENTER)
         self.tree.column("Purpose", width=480, anchor=tk.W)
         self.tree.bind("<<TreeviewSelect>>", self.on_select)
+        self.tree.tag_configure(
+            "cat_general", background="#f2f6ff", foreground="#506080"
+        )
+        self.tree.tag_configure(
+            "cat_skilldev", background="#f7f3ff", foreground="#6b5f8c"
+        )
+        self.tree.tag_configure(
+            "cat_registry", background="#eefaf6", foreground="#4c7d6a"
+        )
+        self.tree.tag_configure("cat_git", background="#eef5ff", foreground="#476a94")
+        self.tree.tag_configure("cat_multi", background="#fff4f4", foreground="#986161")
+        self.tree.tag_configure(
+            "cat_review", background="#fff7ee", foreground="#9a6f42"
+        )
+        self.tree.tag_configure("cat_plan", background="#f4f8ef", foreground="#677b4b")
+        self.tree.tag_configure(
+            "cat_analysis", background="#f7f5ff", foreground="#625a94"
+        )
+        self.tree.tag_configure(
+            "cat_quality", background="#eefaf3", foreground="#44795c"
+        )
+        self.tree.tag_configure("cat_docs", background="#fff8fb", foreground="#935a79")
+        self.tree.tag_configure("cat_mcp", background="#f2fbff", foreground="#4b758b")
+        self.tree.tag_configure("cat_flow", background="#f4f6fb", foreground="#5e6880")
+        self.tree.tag_configure(
+            "cat_security", background="#fff3f3", foreground="#8f4f4f"
+        )
+        self.tree.tag_configure(
+            "cat_devops", background="#f3f8ff", foreground="#4f6987"
+        )
+        self.tree.tag_configure("cat_other", background="#fafafa", foreground="#7b7b7b")
 
         tree_scroll = ttk.Scrollbar(left, orient=tk.VERTICAL, command=self.tree.yview)
         self.tree.configure(yscrollcommand=tree_scroll.set)
@@ -1197,6 +1357,7 @@ class SkillRegistryApp:
 
             if top_category not in top_nodes:
                 top_id = f"cat::{top_category}"
+                category_tag = CATEGORY_TAG_MAP.get(top_category, "cat_other")
                 self.tree.insert(
                     "",
                     tk.END,
@@ -1204,6 +1365,7 @@ class SkillRegistryApp:
                     text=decorate_category_name(top_category),
                     open=True,
                     values=("", "", "", ""),
+                    tags=(category_tag,),
                 )
                 top_nodes[top_category] = top_id
 
@@ -1217,6 +1379,7 @@ class SkillRegistryApp:
                     text=decorate_subcategory_name(sub_category),
                     open=True,
                     values=("", "", "", ""),
+                    tags=(CATEGORY_TAG_MAP.get(top_category, "cat_other"),),
                 )
                 sub_nodes[sub_key] = sub_id
 
@@ -1251,6 +1414,16 @@ class SkillRegistryApp:
         self.metric_active_var.set(str(active))
         self.metric_group_var.set(str(groups))
         self.metric_recent_var.set(latest)
+        if active >= 120:
+            self.metric_focus_var.set(
+                "技能库已经很丰富，建议优先清理、分层和保留核心技能。"
+            )
+        elif active >= 40:
+            self.metric_focus_var.set(
+                "当前更适合按场景筛选核心技能，减少日常决策负担。"
+            )
+        else:
+            self.metric_focus_var.set("当前技能规模适中，建议先补齐常用场景再扩展。")
 
     def sync_and_refresh(self) -> None:
         self.refresh_data(sync_first=True)
