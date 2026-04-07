@@ -1,10 +1,19 @@
-# skill-registry 打包说明
+# SkillForest Registry 打包说明
 
-这是一个给 OpenCode 用的 skill 管理工具，作用是：
+这是 SkillForest 里的核心技能管理工具，主要给 OpenCode 使用，作用是：
 
 - 维护 skills 注册表 CSV
 - 提供可视化界面查看和管理 skills
 - 支持远程搜索并一键安装 skill
+
+## 它在 SkillForest 里的位置
+
+你可以把这个目录理解成 SkillForest 的“管理器内核”，负责：
+
+- 维护本地 skill 总表
+- 提供图形界面
+- 管理技能树视图
+- 打开技能用途说明和分类索引
 
 ## 建议安装位置
 
