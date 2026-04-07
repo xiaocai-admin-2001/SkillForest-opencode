@@ -696,8 +696,9 @@ def sync_registry() -> list[dict]:
 class SkillRegistryApp:
     def __init__(self, root: tk.Tk):
         self.root = root
-        self.root.title("OpenCode Skills 管理器")
-        self.root.geometry("1280x720")
+        self.root.title("SkillForest 技能管理器")
+        self.root.geometry("1420x860")
+        self.root.minsize(1220, 760)
         self.rows: list[dict] = []
         self.search_query_var = tk.StringVar(value="")
         self.search_results: list[dict] = []
@@ -705,56 +706,229 @@ class SkillRegistryApp:
         self.status_var = tk.StringVar(value="准备就绪")
         self.detail_vars = {field: tk.StringVar(value="") for field in CSV_FIELDS}
         self.detail_text: tk.Text | None = None
+        self.metric_total_var = tk.StringVar(value="0")
+        self.metric_active_var = tk.StringVar(value="0")
+        self.metric_group_var = tk.StringVar(value="0")
+        self.metric_recent_var = tk.StringVar(value="-")
+
+        self.bg_color = "#f4f7fb"
+        self.surface_color = "#ffffff"
+        self.header_color = "#16324f"
+        self.header_accent = "#2f80ed"
+        self.text_color = "#1f2937"
+        self.muted_color = "#6b7280"
+        self.border_color = "#dbe5f0"
+        self.soft_blue = "#eaf2ff"
 
         self._build_ui()
         self.refresh_data(sync_first=True)
 
+    def _configure_styles(self) -> None:
+        style = ttk.Style(self.root)
+        if "clam" in style.theme_names():
+            style.theme_use("clam")
+
+        self.root.configure(bg=self.bg_color)
+
+        style.configure("App.TFrame", background=self.bg_color)
+        style.configure("Surface.TFrame", background=self.surface_color)
+        style.configure("Toolbar.TFrame", background=self.surface_color)
+        style.configure(
+            "Card.TLabelframe",
+            background=self.surface_color,
+            borderwidth=1,
+            relief="solid",
+        )
+        style.configure(
+            "Card.TLabelframe.Label",
+            background=self.surface_color,
+            foreground=self.text_color,
+            font=("Microsoft YaHei UI", 11, "bold"),
+        )
+        style.configure(
+            "HeaderTitle.TLabel",
+            background=self.header_color,
+            foreground="#ffffff",
+            font=("Microsoft YaHei UI", 22, "bold"),
+        )
+        style.configure(
+            "HeaderSub.TLabel",
+            background=self.header_color,
+            foreground="#d7e6ff",
+            font=("Microsoft YaHei UI", 10),
+        )
+        style.configure(
+            "SectionTitle.TLabel",
+            background=self.surface_color,
+            foreground=self.text_color,
+            font=("Microsoft YaHei UI", 11, "bold"),
+        )
+        style.configure(
+            "MetricTitle.TLabel",
+            background=self.surface_color,
+            foreground=self.muted_color,
+            font=("Microsoft YaHei UI", 9),
+        )
+        style.configure(
+            "MetricValue.TLabel",
+            background=self.surface_color,
+            foreground=self.text_color,
+            font=("Segoe UI Semibold", 18, "bold"),
+        )
+        style.configure(
+            "Toolbar.TButton", padding=(10, 7), font=("Microsoft YaHei UI", 9)
+        )
+        style.map("Toolbar.TButton", background=[("active", self.soft_blue)])
+        style.configure(
+            "Accent.TButton",
+            padding=(12, 8),
+            font=("Microsoft YaHei UI", 9, "bold"),
+            foreground="#ffffff",
+            background=self.header_accent,
+            borderwidth=0,
+        )
+        style.map("Accent.TButton", background=[("active", "#1f6fd1")])
+        style.configure(
+            "Status.TLabel",
+            background=self.surface_color,
+            foreground=self.muted_color,
+            font=("Microsoft YaHei UI", 9),
+        )
+        style.configure(
+            "Treeview",
+            rowheight=28,
+            font=("Microsoft YaHei UI", 9),
+            fieldbackground=self.surface_color,
+            background=self.surface_color,
+            foreground=self.text_color,
+            bordercolor=self.border_color,
+        )
+        style.configure(
+            "Treeview.Heading",
+            font=("Microsoft YaHei UI", 9, "bold"),
+            background="#edf3fa",
+            foreground=self.text_color,
+            relief="flat",
+        )
+        style.map(
+            "Treeview",
+            background=[("selected", "#d7e8ff")],
+            foreground=[("selected", self.text_color)],
+        )
+        style.configure("TEntry", padding=6)
+
     def _build_ui(self) -> None:
-        toolbar = ttk.Frame(self.root, padding=10)
+        self._configure_styles()
+
+        header = tk.Frame(self.root, bg=self.header_color, padx=22, pady=18)
+        header.pack(fill=tk.X)
+
+        ttk.Label(header, text="SkillForest", style="HeaderTitle.TLabel").pack(
+            anchor=tk.W
+        )
+        ttk.Label(
+            header,
+            text="把本地 OpenCode skills 整理成可搜索、可登记、可分类、可分享的技能森林。",
+            style="HeaderSub.TLabel",
+        ).pack(anchor=tk.W, pady=(6, 0))
+
+        dashboard = ttk.Frame(self.root, style="App.TFrame", padding=(16, 14, 16, 6))
+        dashboard.pack(fill=tk.X)
+
+        metrics = ttk.Frame(dashboard, style="App.TFrame")
+        metrics.pack(fill=tk.X)
+        self._build_metric_card(metrics, "当前技能总数", self.metric_total_var).pack(
+            side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 8)
+        )
+        self._build_metric_card(metrics, "启用技能数", self.metric_active_var).pack(
+            side=tk.LEFT, fill=tk.X, expand=True, padx=8
+        )
+        self._build_metric_card(metrics, "技能分组数", self.metric_group_var).pack(
+            side=tk.LEFT, fill=tk.X, expand=True, padx=8
+        )
+        self._build_metric_card(metrics, "最近更新时间", self.metric_recent_var).pack(
+            side=tk.LEFT, fill=tk.X, expand=True, padx=(8, 0)
+        )
+
+        toolbar_wrap = ttk.Frame(self.root, style="App.TFrame", padding=(16, 6, 16, 8))
+        toolbar_wrap.pack(fill=tk.X)
+        toolbar = ttk.Frame(toolbar_wrap, style="Toolbar.TFrame", padding=12)
         toolbar.pack(fill=tk.X)
 
-        ttk.Button(toolbar, text="刷新列表", command=self.refresh_data).pack(
-            side=tk.LEFT, padx=4
+        ttk.Button(
+            toolbar, text="刷新列表", command=self.refresh_data, style="Toolbar.TButton"
+        ).pack(side=tk.LEFT, padx=4)
+        ttk.Button(
+            toolbar,
+            text="新增 skill",
+            command=self.add_skill_dialog,
+            style="Accent.TButton",
+        ).pack(side=tk.LEFT, padx=4)
+        ttk.Label(toolbar, text="搜索 skill：", style="SectionTitle.TLabel").pack(
+            side=tk.LEFT, padx=(18, 4)
         )
-        ttk.Button(toolbar, text="新增 skill", command=self.add_skill_dialog).pack(
-            side=tk.LEFT, padx=4
-        )
-        ttk.Label(toolbar, text="搜索 skill：").pack(side=tk.LEFT, padx=(16, 4))
         ttk.Entry(toolbar, textvariable=self.search_query_var, width=28).pack(
             side=tk.LEFT, padx=4
         )
-        ttk.Button(toolbar, text="远程搜索", command=self.search_remote_skills).pack(
-            side=tk.LEFT, padx=4
-        )
-        ttk.Button(toolbar, text="编辑说明", command=self.edit_selected_skill).pack(
-            side=tk.LEFT, padx=4
-        )
-        ttk.Button(toolbar, text="同步注册表", command=self.sync_and_refresh).pack(
-            side=tk.LEFT, padx=4
-        )
-        ttk.Button(toolbar, text="打开技能目录", command=self.open_skill_dir).pack(
-            side=tk.LEFT, padx=4
-        )
-        ttk.Button(toolbar, text="打开注册表", command=self.open_registry_file).pack(
-            side=tk.LEFT, padx=4
-        )
-        ttk.Button(toolbar, text="打开说明", command=self.open_readme).pack(
-            side=tk.LEFT, padx=4
-        )
-        ttk.Button(toolbar, text="用途说明", command=self.open_usage_guide).pack(
-            side=tk.LEFT, padx=4
-        )
-        ttk.Button(toolbar, text="删除技能", command=self.delete_selected_skill).pack(
-            side=tk.LEFT, padx=12
-        )
+        ttk.Button(
+            toolbar,
+            text="远程搜索",
+            command=self.search_remote_skills,
+            style="Toolbar.TButton",
+        ).pack(side=tk.LEFT, padx=4)
+        ttk.Button(
+            toolbar,
+            text="编辑说明",
+            command=self.edit_selected_skill,
+            style="Toolbar.TButton",
+        ).pack(side=tk.LEFT, padx=4)
+        ttk.Button(
+            toolbar,
+            text="同步注册表",
+            command=self.sync_and_refresh,
+            style="Toolbar.TButton",
+        ).pack(side=tk.LEFT, padx=4)
+        ttk.Button(
+            toolbar,
+            text="打开技能目录",
+            command=self.open_skill_dir,
+            style="Toolbar.TButton",
+        ).pack(side=tk.LEFT, padx=4)
+        ttk.Button(
+            toolbar,
+            text="打开注册表",
+            command=self.open_registry_file,
+            style="Toolbar.TButton",
+        ).pack(side=tk.LEFT, padx=4)
+        ttk.Button(
+            toolbar, text="打开说明", command=self.open_readme, style="Toolbar.TButton"
+        ).pack(side=tk.LEFT, padx=4)
+        ttk.Button(
+            toolbar,
+            text="用途说明",
+            command=self.open_usage_guide,
+            style="Toolbar.TButton",
+        ).pack(side=tk.LEFT, padx=4)
+        ttk.Button(
+            toolbar,
+            text="删除技能",
+            command=self.delete_selected_skill,
+            style="Toolbar.TButton",
+        ).pack(side=tk.LEFT, padx=12)
 
-        main = ttk.PanedWindow(self.root, orient=tk.HORIZONTAL)
-        main.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
+        main_wrap = ttk.Frame(self.root, style="App.TFrame", padding=(16, 0, 16, 12))
+        main_wrap.pack(fill=tk.BOTH, expand=True)
+        main = ttk.PanedWindow(main_wrap, orient=tk.HORIZONTAL)
+        main.pack(fill=tk.BOTH, expand=True)
 
-        left = ttk.Frame(main, padding=6)
-        right = ttk.Frame(main, padding=6)
+        left = ttk.Frame(main, style="Surface.TFrame", padding=10)
+        right = ttk.Frame(main, style="Surface.TFrame", padding=10)
         main.add(left, weight=3)
         main.add(right, weight=2)
+
+        ttk.Label(left, text="技能树浏览", style="SectionTitle.TLabel").pack(
+            anchor=tk.W, pady=(0, 8)
+        )
 
         columns = ("Status", "Installed", "LastUpdated", "Purpose")
         self.tree = ttk.Treeview(left, columns=columns, show="tree headings", height=24)
@@ -775,7 +949,9 @@ class SkillRegistryApp:
         self.tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         tree_scroll.pack(side=tk.RIGHT, fill=tk.Y)
 
-        info_frame = ttk.LabelFrame(right, text="技能详情", padding=10)
+        info_frame = ttk.LabelFrame(
+            right, text="技能详情", style="Card.TLabelframe", padding=12
+        )
         info_frame.pack(fill=tk.BOTH, expand=True)
 
         row_index = 0
@@ -825,16 +1001,33 @@ class SkillRegistryApp:
         info_frame.columnconfigure(1, weight=1)
         info_frame.rowconfigure(row_index - 1, weight=1)
 
+        status_wrap = ttk.Frame(self.root, style="App.TFrame", padding=(16, 0, 16, 14))
+        status_wrap.pack(fill=tk.X)
         status_bar = ttk.Label(
-            self.root, textvariable=self.status_var, anchor=tk.W, padding=(10, 4)
+            status_wrap,
+            textvariable=self.status_var,
+            anchor=tk.W,
+            style="Status.TLabel",
         )
         status_bar.pack(fill=tk.X)
+
+    def _build_metric_card(
+        self, parent: ttk.Frame, title: str, variable: tk.StringVar
+    ) -> ttk.Frame:
+        frame = ttk.Frame(parent, style="Surface.TFrame", padding=(14, 12))
+        ttk.Label(frame, text=title, style="MetricTitle.TLabel").pack(anchor=tk.W)
+        ttk.Label(frame, textvariable=variable, style="MetricValue.TLabel").pack(
+            anchor=tk.W, pady=(6, 0)
+        )
+        return frame
 
     def refresh_data(self, sync_first: bool = False) -> None:
         if sync_first:
             self.rows = sync_registry()
         else:
             self.rows = load_registry()
+
+        self._refresh_metrics()
 
         for item in self.tree.get_children():
             self.tree.delete(item)
@@ -885,6 +1078,22 @@ class SkillRegistryApp:
 
         self.clear_details()
         self.status_var.set(f"已加载 {len(self.rows)} 个 skill")
+
+    def _refresh_metrics(self) -> None:
+        total = len(self.rows)
+        active = sum(1 for row in self.rows if row.get("Status") == "active")
+        groups = len({get_skill_category(row["Skill"])[0] for row in self.rows})
+        latest = "-"
+        dates = [
+            row.get("LastUpdated", "") for row in self.rows if row.get("LastUpdated")
+        ]
+        if dates:
+            latest = max(dates)
+
+        self.metric_total_var.set(str(total))
+        self.metric_active_var.set(str(active))
+        self.metric_group_var.set(str(groups))
+        self.metric_recent_var.set(latest)
 
     def sync_and_refresh(self) -> None:
         self.refresh_data(sync_first=True)
@@ -1297,9 +1506,6 @@ class SkillRegistryApp:
 def main() -> None:
     ensure_registry_exists()
     root = tk.Tk()
-    style = ttk.Style(root)
-    if "vista" in style.theme_names():
-        style.theme_use("vista")
     app = SkillRegistryApp(root)
     root.mainloop()
 
