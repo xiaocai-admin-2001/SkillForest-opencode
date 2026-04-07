@@ -771,40 +771,143 @@ def sync_registry() -> list[dict]:
     return rows
 
 
+def _date_rank(value: str) -> int:
+    digits = (value or "").replace("-", "")
+    if digits.isdigit():
+        return int(digits)
+    return 0
+
+
+def summarize_registry_rows(rows: list[dict]) -> dict:
+    latest = "-"
+    dates = [row.get("LastUpdated", "") for row in rows if row.get("LastUpdated")]
+    if dates:
+        latest = max(dates)
+    return {
+        "total": len(rows),
+        "active": sum(1 for row in rows if row.get("Status") == "active"),
+        "removed": sum(1 for row in rows if row.get("Status") == "removed"),
+        "categories": len({get_skill_category(row["Skill"])[0] for row in rows}),
+        "latest": latest,
+    }
+
+
+def build_filter_options(rows: list[dict]) -> list[dict]:
+    options = [
+        {"key": "all", "label": "全部技能", "count": len(rows)},
+        {
+            "key": "active",
+            "label": "已启用",
+            "count": sum(1 for row in rows if row.get("Status") == "active"),
+        },
+        {
+            "key": "removed",
+            "label": "已停用",
+            "count": sum(1 for row in rows if row.get("Status") == "removed"),
+        },
+    ]
+
+    category_counts: dict[str, int] = {}
+    for row in rows:
+        top_category, _ = get_skill_category(row["Skill"])
+        category_counts[top_category] = category_counts.get(top_category, 0) + 1
+
+    for category in sorted(category_counts):
+        options.append(
+            {
+                "key": f"category:{category}",
+                "label": category,
+                "count": category_counts[category],
+            }
+        )
+    return options
+
+
+def filter_skill_rows(rows: list[dict], selected_filter: str, query: str) -> list[dict]:
+    tokens = [token.lower() for token in query.strip().split() if token.strip()]
+    filtered = []
+    for row in rows:
+        top_category, sub_category = get_skill_category(row["Skill"])
+        if selected_filter == "active" and row.get("Status") != "active":
+            continue
+        if selected_filter == "removed" and row.get("Status") != "removed":
+            continue
+        if selected_filter.startswith("category:"):
+            expected = selected_filter.split(":", 1)[1]
+            if top_category != expected:
+                continue
+
+        search_text = " ".join(
+            [
+                row.get("Skill", ""),
+                get_skill_display_name(row.get("Skill", "")),
+                row.get("Purpose", ""),
+                row.get("Notes", ""),
+                top_category,
+                sub_category,
+                to_chinese_status(row.get("Status", "")),
+            ]
+        ).lower()
+        if tokens and not all(token in search_text for token in tokens):
+            continue
+        filtered.append(row)
+
+    return sorted(
+        filtered,
+        key=lambda row: (
+            0 if row.get("Status") == "active" else 1,
+            -_date_rank(row.get("LastUpdated", "")),
+            get_skill_display_name(row.get("Skill", "")).lower(),
+        ),
+    )
+
+
 class SkillRegistryApp:
     def __init__(self, root: tk.Tk):
         self.root = root
-        self.root.title("SkillForest 技能管理器")
-        self.root.geometry("1420x860")
-        self.root.minsize(1220, 760)
+        self.root.title("技能管理器")
+        self.root.geometry("1500x920")
+        self.root.minsize(1260, 780)
         self.rows: list[dict] = []
         self.search_query_var = tk.StringVar(value="")
         self.search_results: list[dict] = []
+        self.selected_filter = "all"
+        self.selected_skill_id = ""
+        self.filter_buttons: dict[str, tk.Button] = {}
+        self.filter_sections: dict[str, tk.Frame] = {}
+        self.card_widgets: dict[str, tk.Frame] = {}
+        self.cards_window = None
+        self.card_columns = 0
 
         self.status_var = tk.StringVar(value="准备就绪")
         self.detail_vars = {field: tk.StringVar(value="") for field in CSV_FIELDS}
         self.detail_text: tk.Text | None = None
         self.empty_tip_var = tk.StringVar(
-            value="请从左侧技能树选择一个 skill，查看详情与用途。"
+            value="从中间卡片中选择一个技能，右侧会显示详情。"
         )
         self.metric_total_var = tk.StringVar(value="0")
         self.metric_active_var = tk.StringVar(value="0")
-        self.metric_group_var = tk.StringVar(value="0")
+        self.metric_removed_var = tk.StringVar(value="0")
         self.metric_recent_var = tk.StringVar(value="-")
-        self.metric_focus_var = tk.StringVar(value="今天适合先整理技能树")
+        self.results_var = tk.StringVar(value="0 个技能")
 
-        self.bg_color = "#f7f6fb"
-        self.surface_color = "#ffffff"
-        self.header_color = "#eef3ff"
-        self.header_accent = "#7c8cf8"
-        self.header_alt = "#fff3e8"
-        self.text_color = "#25324a"
-        self.muted_color = "#7b8598"
-        self.border_color = "#e4e8f3"
-        self.soft_blue = "#eef2ff"
-        self.soft_peach = "#fff6ee"
-        self.soft_green = "#eefaf3"
-        self.shadow_color = "#edf1f7"
+        self.bg_color = "#F5F7FA"
+        self.surface_color = "#FFFFFF"
+        self.panel_color = "#EEF2F6"
+        self.header_color = "#EEF2F6"
+        self.header_accent = "#2F80ED"
+        self.header_alt = "#EAF3FF"
+        self.text_color = "#1F2A37"
+        self.muted_color = "#5B6875"
+        self.border_color = "#D9E1EA"
+        self.soft_blue = "#EAF3FF"
+        self.soft_peach = "#FFF4E8"
+        self.soft_green = "#EAF8F0"
+        self.shadow_color = "#E7EDF5"
+        self.danger_soft = "#FDECEC"
+        self.button_text_on_accent = "#FFFFFF"
+
+        self.search_query_var.trace_add("write", self._on_filter_text_changed)
 
         self._build_ui()
         self.refresh_data(sync_first=True)
@@ -818,7 +921,7 @@ class SkillRegistryApp:
 
         style.configure("App.TFrame", background=self.bg_color)
         style.configure("Surface.TFrame", background=self.surface_color)
-        style.configure("Toolbar.TFrame", background=self.surface_color)
+        style.configure("Toolbar.TFrame", background=self.panel_color)
         style.configure("TopShell.TFrame", background=self.surface_color)
         style.configure(
             "Panel.TFrame",
@@ -846,20 +949,20 @@ class SkillRegistryApp:
         )
         style.configure(
             "HeaderTitle.TLabel",
-            background=self.header_color,
-            foreground="#26344d",
-            font=("Microsoft YaHei UI", 22, "bold"),
+            background=self.surface_color,
+            foreground=self.text_color,
+            font=("Microsoft YaHei UI", 20, "bold"),
         )
         style.configure(
             "HeaderSub.TLabel",
-            background=self.header_color,
-            foreground="#62708d",
+            background=self.surface_color,
+            foreground=self.muted_color,
             font=("Microsoft YaHei UI", 10),
         )
         style.configure(
             "HeaderBadge.TLabel",
-            background=self.header_alt,
-            foreground="#8f5a22",
+            background=self.soft_blue,
+            foreground="#2A5D9F",
             font=("Microsoft YaHei UI", 9, "bold"),
         )
         style.configure(
@@ -889,7 +992,7 @@ class SkillRegistryApp:
         style.configure(
             "HeroValue.TLabel",
             background=self.surface_color,
-            foreground=self.header_color,
+            foreground=self.text_color,
             font=("Segoe UI Semibold", 16, "bold"),
         )
         style.configure(
@@ -916,23 +1019,23 @@ class SkillRegistryApp:
             "Accent.TButton",
             padding=(12, 8),
             font=("Microsoft YaHei UI", 9, "bold"),
-            foreground="#ffffff",
+            foreground=self.button_text_on_accent,
             background=self.header_accent,
             borderwidth=0,
         )
-        style.map("Accent.TButton", background=[("active", "#6978e8")])
+        style.map("Accent.TButton", background=[("active", "#1F6FD1")])
         style.configure(
             "Ghost.TButton",
             padding=(11, 8),
             font=("Microsoft YaHei UI", 9),
             foreground=self.text_color,
-            background="#f4f6fd",
+            background="#F8FAFC",
             borderwidth=0,
         )
-        style.map("Ghost.TButton", background=[("active", "#e2e8ff")])
+        style.map("Ghost.TButton", background=[("active", self.soft_blue)])
         style.configure(
             "Status.TLabel",
-            background=self.surface_color,
+            background=self.bg_color,
             foreground=self.muted_color,
             font=("Microsoft YaHei UI", 9),
         )
@@ -948,13 +1051,13 @@ class SkillRegistryApp:
         style.configure(
             "Treeview.Heading",
             font=("Microsoft YaHei UI", 9, "bold"),
-            background="#f3f0ff",
+            background=self.panel_color,
             foreground=self.text_color,
             relief="flat",
         )
         style.map(
             "Treeview",
-            background=[("selected", "#e7ebff")],
+            background=[("selected", self.soft_blue)],
             foreground=[("selected", self.text_color)],
         )
         style.configure("TEntry", padding=6)
@@ -978,348 +1081,280 @@ class SkillRegistryApp:
     def _build_ui(self) -> None:
         self._configure_styles()
 
-        header = tk.Frame(self.root, bg=self.bg_color, padx=16, pady=14)
-        header.pack(fill=tk.X)
+        top = tk.Frame(self.root, bg=self.bg_color, padx=16, pady=16)
+        top.pack(fill=tk.X)
 
-        top_shell = tk.Frame(
-            header,
+        header = tk.Frame(
+            top,
             bg=self.surface_color,
             padx=18,
-            pady=18,
-            highlightbackground="#dde5f5",
+            pady=16,
+            highlightbackground=self.border_color,
             highlightthickness=1,
         )
-        top_shell.pack(fill=tk.X)
+        header.pack(fill=tk.X)
 
-        hero = tk.Frame(top_shell, bg=self.surface_color)
-        hero.pack(fill=tk.X)
+        title_row = tk.Frame(header, bg=self.surface_color)
+        title_row.pack(fill=tk.X)
 
-        hero_left = tk.Frame(hero, bg=self.surface_color)
-        hero_left.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        hero_right = tk.Frame(hero, bg=self.surface_color)
-        hero_right.pack(side=tk.RIGHT, fill=tk.Y, padx=(18, 0))
-
-        ttk.Label(hero_left, text="SkillForest", style="HeaderTitle.TLabel").pack(
+        title_wrap = tk.Frame(title_row, bg=self.surface_color)
+        title_wrap.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        ttk.Label(title_wrap, text="技能管理器", style="HeaderTitle.TLabel").pack(
             anchor=tk.W
         )
         ttk.Label(
-            hero_left,
-            text="把本地 OpenCode skills 整理成可搜索、可登记、可分类、可分享的技能森林。",
+            title_wrap,
+            text="简单、清晰地查看本地 skills，快速搜索、分类、启停和进入详情。",
             style="HeaderSub.TLabel",
-        ).pack(anchor=tk.W, pady=(6, 10))
+        ).pack(anchor=tk.W, pady=(4, 0))
 
-        badge_row = tk.Frame(hero_left, bg=self.surface_color)
-        badge_row.pack(anchor=tk.W, pady=(0, 8))
-        for text in ["技能树视图", "远程搜索", "注册表同步", "可视化管理"]:
-            label = tk.Label(
-                badge_row,
-                text=text,
-                bg="#f5f7ff",
-                fg="#5f6f8d",
-                padx=10,
-                pady=4,
-                font=("Microsoft YaHei UI", 9),
-                highlightbackground="#e2e8f6",
-                highlightthickness=1,
-            )
-            label.pack(side=tk.LEFT, padx=(0, 8))
-
-        ttk.Label(
-            hero_left,
-            text="适合管理多来源 skills、做技能树梳理、维护用途说明和本地注册表。",
-            style="HeaderSub.TLabel",
-        ).pack(anchor=tk.W)
-
-        focus_card = tk.Frame(
-            hero_right,
-            bg=self.soft_peach,
-            padx=16,
-            pady=14,
-            highlightbackground="#f3dcc5",
-            highlightthickness=1,
-        )
-        focus_card.pack(fill=tk.Y)
-        tk.Label(
-            focus_card,
-            text="今日建议",
-            bg=self.soft_peach,
-            fg="#9b6a3b",
-            font=("Microsoft YaHei UI", 9, "bold"),
-        ).pack(anchor=tk.W)
-        tk.Label(
-            focus_card,
-            textvariable=self.metric_focus_var,
-            bg=self.soft_peach,
-            fg=self.text_color,
-            justify=tk.LEFT,
-            wraplength=220,
-            font=("Microsoft YaHei UI", 10),
-        ).pack(anchor=tk.W, pady=(8, 10))
+        action_wrap = tk.Frame(title_row, bg=self.surface_color)
+        action_wrap.pack(side=tk.RIGHT, anchor=tk.NE)
         ttk.Button(
-            focus_card,
-            text="打开用途说明",
-            command=self.open_usage_guide,
-            style="Ghost.TButton",
-        ).pack(anchor=tk.W)
-
-        divider = tk.Frame(top_shell, bg="#eef1f8", height=1)
-        divider.pack(fill=tk.X, pady=(16, 14))
-
-        dashboard = ttk.Frame(top_shell, style="TopShell.TFrame")
-        dashboard.pack(fill=tk.X)
-
-        metrics = ttk.Frame(dashboard, style="App.TFrame")
-        metrics.pack(fill=tk.X)
-        self._build_metric_card(metrics, "当前技能总数", self.metric_total_var).pack(
-            side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 8)
-        )
-        self._build_metric_card(metrics, "启用技能数", self.metric_active_var).pack(
-            side=tk.LEFT, fill=tk.X, expand=True, padx=8
-        )
-        self._build_metric_card(metrics, "技能分组数", self.metric_group_var).pack(
-            side=tk.LEFT, fill=tk.X, expand=True, padx=8
-        )
-        self._build_metric_card(metrics, "最近更新时间", self.metric_recent_var).pack(
-            side=tk.LEFT, fill=tk.X, expand=True, padx=(8, 0)
-        )
-
-        toolbar_wrap = ttk.Frame(top_shell, style="TopShell.TFrame")
-        toolbar_wrap.pack(fill=tk.X, pady=(14, 0))
-        toolbar = ttk.Frame(toolbar_wrap, style="Toolbar.TFrame", padding=6)
-        toolbar.pack(fill=tk.X)
-
+            action_wrap, text="刷新", command=self.refresh_data, style="Toolbar.TButton"
+        ).pack(side=tk.LEFT, padx=(0, 8))
         ttk.Button(
-            toolbar, text="刷新列表", command=self.refresh_data, style="Toolbar.TButton"
-        ).pack(side=tk.LEFT, padx=4)
-        ttk.Button(
-            toolbar,
-            text="新增 skill",
+            action_wrap,
+            text="新增技能",
             command=self.add_skill_dialog,
             style="Accent.TButton",
-        ).pack(side=tk.LEFT, padx=4)
-        ttk.Label(toolbar, text="搜索 skill：", style="SectionTitle.TLabel").pack(
-            side=tk.LEFT, padx=(18, 4)
+        ).pack(side=tk.LEFT)
+
+        toolbar = tk.Frame(header, bg=self.panel_color, padx=12, pady=12)
+        toolbar.pack(fill=tk.X, pady=(14, 0))
+
+        search_wrap = tk.Frame(toolbar, bg=self.panel_color)
+        search_wrap.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        search_entry = ttk.Entry(
+            search_wrap, textvariable=self.search_query_var, width=40
         )
-        ttk.Entry(toolbar, textvariable=self.search_query_var, width=28).pack(
-            side=tk.LEFT, padx=4
-        )
+        search_entry.pack(side=tk.LEFT, padx=(0, 8))
         ttk.Button(
-            toolbar,
+            search_wrap,
             text="远程搜索",
             command=self.search_remote_skills,
             style="Toolbar.TButton",
-        ).pack(side=tk.LEFT, padx=4)
+        ).pack(side=tk.LEFT, padx=(0, 8))
         ttk.Button(
-            toolbar,
-            text="编辑说明",
-            command=self.edit_selected_skill,
-            style="Toolbar.TButton",
-        ).pack(side=tk.LEFT, padx=4)
-        ttk.Button(
-            toolbar,
+            search_wrap,
             text="同步注册表",
             command=self.sync_and_refresh,
             style="Toolbar.TButton",
-        ).pack(side=tk.LEFT, padx=4)
-        ttk.Button(
-            toolbar,
-            text="打开技能目录",
-            command=self.open_skill_dir,
-            style="Toolbar.TButton",
-        ).pack(side=tk.LEFT, padx=4)
-        ttk.Button(
-            toolbar,
-            text="打开注册表",
-            command=self.open_registry_file,
-            style="Toolbar.TButton",
-        ).pack(side=tk.LEFT, padx=4)
-        ttk.Button(
-            toolbar, text="打开说明", command=self.open_readme, style="Toolbar.TButton"
-        ).pack(side=tk.LEFT, padx=4)
-        ttk.Button(
-            toolbar,
-            text="用途说明",
-            command=self.open_usage_guide,
-            style="Toolbar.TButton",
-        ).pack(side=tk.LEFT, padx=4)
-        ttk.Button(
-            toolbar,
-            text="删除技能",
-            command=self.delete_selected_skill,
-            style="Toolbar.TButton",
-        ).pack(side=tk.LEFT, padx=12)
+        ).pack(side=tk.LEFT)
 
-        main_wrap = ttk.Frame(self.root, style="App.TFrame", padding=(16, 0, 16, 12))
-        main_wrap.pack(fill=tk.BOTH, expand=True)
-        main = ttk.PanedWindow(main_wrap, orient=tk.HORIZONTAL)
-        main.pack(fill=tk.BOTH, expand=True)
+        quick_wrap = tk.Frame(toolbar, bg=self.panel_color)
+        quick_wrap.pack(side=tk.RIGHT)
+        for text, command in [
+            ("打开注册表", self.open_registry_file),
+            ("说明文档", self.open_readme),
+            ("用途说明", self.open_usage_guide),
+        ]:
+            ttk.Button(
+                quick_wrap, text=text, command=command, style="Toolbar.TButton"
+            ).pack(side=tk.LEFT, padx=(8, 0))
 
-        left = ttk.Frame(main, style="Surface.TFrame", padding=10)
-        right = ttk.Frame(main, style="Surface.TFrame", padding=10)
-        main.add(left, weight=3)
-        main.add(right, weight=2)
-
-        ttk.Label(left, text="技能树浏览", style="SectionTitle.TLabel").pack(
-            anchor=tk.W, pady=(0, 8)
+        metrics = ttk.Frame(top, style="App.TFrame")
+        metrics.pack(fill=tk.X, pady=(14, 0))
+        self._build_metric_card(metrics, "技能总数", self.metric_total_var).pack(
+            side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 8)
+        )
+        self._build_metric_card(metrics, "已启用", self.metric_active_var).pack(
+            side=tk.LEFT, fill=tk.X, expand=True, padx=8
+        )
+        self._build_metric_card(metrics, "已停用", self.metric_removed_var).pack(
+            side=tk.LEFT, fill=tk.X, expand=True, padx=8
+        )
+        self._build_metric_card(metrics, "最近更新", self.metric_recent_var).pack(
+            side=tk.LEFT, fill=tk.X, expand=True, padx=(8, 0)
         )
 
-        columns = ("Status", "Installed", "LastUpdated", "Purpose")
-        self.tree = ttk.Treeview(left, columns=columns, show="tree headings", height=24)
-        self.tree.heading("#0", text="技能树")
-        self.tree.heading("Status", text="状态")
-        self.tree.heading("Installed", text="首次安装")
-        self.tree.heading("LastUpdated", text="最近更新")
-        self.tree.heading("Purpose", text="用途")
-        self.tree.column("#0", width=260, anchor=tk.W)
-        self.tree.column("Status", width=80, anchor=tk.CENTER)
-        self.tree.column("Installed", width=100, anchor=tk.CENTER)
-        self.tree.column("LastUpdated", width=100, anchor=tk.CENTER)
-        self.tree.column("Purpose", width=480, anchor=tk.W)
-        self.tree.bind("<<TreeviewSelect>>", self.on_select)
-        self.tree.tag_configure(
-            "cat_general", background="#f2f6ff", foreground="#506080"
-        )
-        self.tree.tag_configure(
-            "cat_skilldev", background="#f7f3ff", foreground="#6b5f8c"
-        )
-        self.tree.tag_configure(
-            "cat_registry", background="#eefaf6", foreground="#4c7d6a"
-        )
-        self.tree.tag_configure("cat_git", background="#eef5ff", foreground="#476a94")
-        self.tree.tag_configure("cat_multi", background="#fff4f4", foreground="#986161")
-        self.tree.tag_configure(
-            "cat_review", background="#fff7ee", foreground="#9a6f42"
-        )
-        self.tree.tag_configure("cat_plan", background="#f4f8ef", foreground="#677b4b")
-        self.tree.tag_configure(
-            "cat_analysis", background="#f7f5ff", foreground="#625a94"
-        )
-        self.tree.tag_configure(
-            "cat_quality", background="#eefaf3", foreground="#44795c"
-        )
-        self.tree.tag_configure("cat_docs", background="#fff8fb", foreground="#935a79")
-        self.tree.tag_configure("cat_mcp", background="#f2fbff", foreground="#4b758b")
-        self.tree.tag_configure("cat_flow", background="#f4f6fb", foreground="#5e6880")
-        self.tree.tag_configure(
-            "cat_security", background="#fff3f3", foreground="#8f4f4f"
-        )
-        self.tree.tag_configure(
-            "cat_devops", background="#f3f8ff", foreground="#4f6987"
-        )
-        self.tree.tag_configure("cat_other", background="#fafafa", foreground="#7b7b7b")
+        body = ttk.Frame(self.root, style="App.TFrame", padding=(16, 0, 16, 12))
+        body.pack(fill=tk.BOTH, expand=True)
+        layout = ttk.PanedWindow(body, orient=tk.HORIZONTAL)
+        layout.pack(fill=tk.BOTH, expand=True)
 
-        tree_scroll = ttk.Scrollbar(left, orient=tk.VERTICAL, command=self.tree.yview)
-        self.tree.configure(yscrollcommand=tree_scroll.set)
-        self.tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        tree_scroll.pack(side=tk.RIGHT, fill=tk.Y)
-
-        info_frame = ttk.LabelFrame(
-            right, text="技能详情", style="Card.TLabelframe", padding=12
+        sidebar = tk.Frame(
+            layout,
+            bg=self.surface_color,
+            padx=14,
+            pady=14,
+            highlightbackground=self.border_color,
+            highlightthickness=1,
         )
-        info_frame.pack(fill=tk.BOTH, expand=True)
+        center = tk.Frame(
+            layout,
+            bg=self.surface_color,
+            padx=14,
+            pady=14,
+            highlightbackground=self.border_color,
+            highlightthickness=1,
+        )
+        detail = tk.Frame(
+            layout,
+            bg=self.surface_color,
+            padx=14,
+            pady=14,
+            highlightbackground=self.border_color,
+            highlightthickness=1,
+        )
+        layout.add(sidebar, weight=1)
+        layout.add(center, weight=3)
+        layout.add(detail, weight=2)
 
-        hero = ttk.Frame(info_frame, style="Surface.TFrame")
-        hero.pack(fill=tk.X)
-        ttk.Label(hero, text="当前选中技能", style="SmallTitle.TLabel").pack(
+        ttk.Label(sidebar, text="分类导航", style="SectionTitle.TLabel").pack(
+            anchor=tk.W
+        )
+        tk.Label(
+            sidebar,
+            text="按状态或分类筛选，尽量减少找技能的时间。",
+            bg=self.surface_color,
+            fg=self.muted_color,
+            font=("Microsoft YaHei UI", 9),
+            justify=tk.LEFT,
+            wraplength=210,
+        ).pack(anchor=tk.W, pady=(6, 12))
+
+        self.filter_nav = tk.Frame(sidebar, bg=self.surface_color)
+        self.filter_nav.pack(fill=tk.BOTH, expand=True)
+
+        center_top = tk.Frame(center, bg=self.surface_color)
+        center_top.pack(fill=tk.X)
+        ttk.Label(center_top, text="技能卡片", style="SectionTitle.TLabel").pack(
+            side=tk.LEFT
+        )
+        tk.Label(
+            center_top,
+            textvariable=self.results_var,
+            bg=self.surface_color,
+            fg=self.muted_color,
+            font=("Microsoft YaHei UI", 9),
+        ).pack(side=tk.RIGHT)
+
+        center_hint = tk.Label(
+            center,
+            text="卡片里只保留最关键的信息：名称、用途、状态、更新时间和快捷操作。",
+            bg=self.surface_color,
+            fg=self.muted_color,
+            font=("Microsoft YaHei UI", 9),
+        )
+        center_hint.pack(anchor=tk.W, pady=(6, 12))
+
+        cards_shell = tk.Frame(center, bg=self.bg_color)
+        cards_shell.pack(fill=tk.BOTH, expand=True)
+
+        self.cards_canvas = tk.Canvas(
+            cards_shell,
+            bg=self.bg_color,
+            highlightthickness=0,
+            bd=0,
+        )
+        cards_scroll = ttk.Scrollbar(
+            cards_shell, orient=tk.VERTICAL, command=self.cards_canvas.yview
+        )
+        self.cards_canvas.configure(yscrollcommand=cards_scroll.set)
+        self.cards_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        cards_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self.cards_frame = tk.Frame(self.cards_canvas, bg=self.bg_color)
+        self.cards_window = self.cards_canvas.create_window(
+            (0, 0), window=self.cards_frame, anchor="nw"
+        )
+        self.cards_frame.bind("<Configure>", self._on_cards_frame_configured)
+        self.cards_canvas.bind("<Configure>", self._on_cards_canvas_configured)
+
+        ttk.Label(detail, text="技能详情", style="SectionTitle.TLabel").pack(
             anchor=tk.W
         )
         ttk.Label(
-            hero,
-            textvariable=self.detail_vars["Skill"],
-            style="HeroValue.TLabel",
-            wraplength=430,
-            justify=tk.LEFT,
-        ).pack(anchor=tk.W, pady=(4, 8))
-        ttk.Label(
-            hero,
+            detail, textvariable=self.detail_vars["Skill"], style="HeroValue.TLabel"
+        ).pack(anchor=tk.W, pady=(8, 4))
+        tk.Label(
+            detail,
             textvariable=self.empty_tip_var,
-            style="Muted.TLabel",
-            wraplength=430,
+            bg=self.surface_color,
+            fg=self.muted_color,
             justify=tk.LEFT,
+            wraplength=320,
+            font=("Microsoft YaHei UI", 9),
         ).pack(anchor=tk.W)
 
-        basic_card = ttk.LabelFrame(
-            info_frame, text="基础信息", style="Card.TLabelframe", padding=10
-        )
-        basic_card.pack(fill=tk.X, pady=(12, 8))
-        path_card = ttk.LabelFrame(
-            info_frame, text="路径与来源", style="Card.TLabelframe", padding=10
-        )
-        path_card.pack(fill=tk.X, pady=8)
-        desc_card = ttk.LabelFrame(
-            info_frame, text="用途与备注", style="Card.TLabelframe", padding=10
-        )
-        desc_card.pack(fill=tk.BOTH, expand=True, pady=(8, 0))
+        detail_actions = tk.Frame(detail, bg=self.surface_color)
+        detail_actions.pack(fill=tk.X, pady=(14, 12))
+        ttk.Button(
+            detail_actions,
+            text="打开技能目录",
+            command=self.open_skill_dir,
+            style="Accent.TButton",
+        ).pack(side=tk.LEFT)
+        ttk.Button(
+            detail_actions,
+            text="编辑说明",
+            command=self.edit_selected_skill,
+            style="Toolbar.TButton",
+        ).pack(side=tk.LEFT, padx=(8, 0))
+        ttk.Button(
+            detail_actions,
+            text="删除技能",
+            command=self.delete_selected_skill,
+            style="Toolbar.TButton",
+        ).pack(side=tk.LEFT, padx=(8, 0))
 
-        field_label_map = {
-            "ID": "编号",
-            "Skill": "技能名",
-            "Status": "状态",
-            "Agent": "归属",
-            "Source": "来源",
-            "LocalPath": "本地路径",
-            "Installed": "首次安装",
-            "LastUpdated": "最近更新",
-            "Purpose": "用途",
-        }
+        detail_grid = tk.Frame(detail, bg=self.surface_color)
+        detail_grid.pack(fill=tk.X, pady=(0, 12))
 
-        for row_index, field in enumerate(
-            ["ID", "Status", "Agent", "Installed", "LastUpdated"]
-        ):
-            ttk.Label(
-                basic_card, text=field_label_map[field], style="SmallTitle.TLabel"
-            ).grid(row=row_index, column=0, sticky=tk.NW, pady=4)
-            ttk.Label(
-                basic_card,
-                textvariable=self.detail_vars[field],
-                wraplength=320,
+        detail_fields = [
+            ("状态", "Status"),
+            ("归属", "Agent"),
+            ("首次安装", "Installed"),
+            ("最近更新", "LastUpdated"),
+            ("来源", "Source"),
+            ("本地路径", "LocalPath"),
+            ("用途", "Purpose"),
+        ]
+        for row_index, (label_text, key) in enumerate(detail_fields):
+            tk.Label(
+                detail_grid,
+                text=label_text,
+                bg=self.surface_color,
+                fg=self.muted_color,
+                font=("Microsoft YaHei UI", 9, "bold"),
+                anchor="w",
+            ).grid(row=row_index, column=0, sticky="nw", pady=4)
+            tk.Label(
+                detail_grid,
+                textvariable=self.detail_vars[key],
+                bg=self.surface_color,
+                fg=self.text_color,
+                font=("Microsoft YaHei UI", 9),
+                anchor="w",
                 justify=tk.LEFT,
-            ).grid(row=row_index, column=1, sticky=tk.NW, pady=4, padx=(10, 0))
+                wraplength=250,
+            ).grid(row=row_index, column=1, sticky="nw", padx=(10, 0), pady=4)
 
-        for row_index, field in enumerate(["Source", "LocalPath"]):
-            ttk.Label(
-                path_card, text=field_label_map[field], style="SmallTitle.TLabel"
-            ).grid(row=row_index, column=0, sticky=tk.NW, pady=4)
-            ttk.Label(
-                path_card,
-                textvariable=self.detail_vars[field],
-                wraplength=340,
-                justify=tk.LEFT,
-            ).grid(row=row_index, column=1, sticky=tk.NW, pady=4, padx=(10, 0))
+        detail_grid.columnconfigure(1, weight=1)
 
-        ttk.Label(desc_card, text="用途", style="SmallTitle.TLabel").grid(
-            row=0, column=0, sticky=tk.NW, pady=4
-        )
-        ttk.Label(
-            desc_card,
-            textvariable=self.detail_vars["Purpose"],
-            wraplength=340,
-            justify=tk.LEFT,
-        ).grid(row=0, column=1, sticky=tk.NW, pady=4, padx=(10, 0))
-        ttk.Label(desc_card, text="备注", style="SmallTitle.TLabel").grid(
-            row=1, column=0, sticky=tk.NW, pady=(10, 4)
-        )
+        tk.Label(
+            detail,
+            text="备注",
+            bg=self.surface_color,
+            fg=self.muted_color,
+            font=("Microsoft YaHei UI", 9, "bold"),
+        ).pack(anchor=tk.W)
         self.detail_text = tk.Text(
-            desc_card,
+            detail,
             height=9,
-            width=44,
             wrap=tk.WORD,
             relief=tk.FLAT,
-            bg="#f8fbff",
+            bg="#F8FAFC",
             fg=self.text_color,
             font=("Microsoft YaHei UI", 9),
             padx=10,
-            pady=8,
+            pady=10,
+            highlightbackground=self.border_color,
+            highlightthickness=1,
         )
-        self.detail_text.grid(
-            row=1, column=1, sticky=tk.NSEW, pady=(10, 4), padx=(10, 0)
-        )
+        self.detail_text.pack(fill=tk.BOTH, expand=True, pady=(8, 0))
         self.detail_text.configure(state=tk.DISABLED)
-
-        basic_card.columnconfigure(1, weight=1)
-        path_card.columnconfigure(1, weight=1)
-        desc_card.columnconfigure(1, weight=1)
-        desc_card.rowconfigure(1, weight=1)
 
         status_wrap = ttk.Frame(self.root, style="App.TFrame", padding=(16, 0, 16, 14))
         status_wrap.pack(fill=tk.X)
@@ -1343,6 +1378,118 @@ class SkillRegistryApp:
         )
         return frame
 
+    def _build_filter_button(self, parent: tk.Frame, text: str, key: str) -> None:
+        button = tk.Button(
+            parent,
+            text=text,
+            anchor="w",
+            relief=tk.FLAT,
+            bd=0,
+            padx=12,
+            pady=8,
+            font=("Microsoft YaHei UI", 9),
+            command=lambda value=key: self.set_filter(value),
+            cursor="hand2",
+        )
+        button.pack(fill=tk.X, pady=3)
+        self.filter_buttons[key] = button
+        self._style_filter_button(button, key == self.selected_filter)
+
+    def _style_filter_button(self, button: tk.Button, selected: bool) -> None:
+        if selected:
+            button.configure(
+                bg=self.soft_blue,
+                fg=self.header_accent,
+                activebackground=self.soft_blue,
+                activeforeground=self.header_accent,
+            )
+        else:
+            button.configure(
+                bg=self.surface_color,
+                fg=self.text_color,
+                activebackground="#F1F5F9",
+                activeforeground=self.text_color,
+            )
+
+    def _render_filters(self) -> None:
+        for child in self.filter_nav.winfo_children():
+            child.destroy()
+        self.filter_buttons.clear()
+
+        filters = build_filter_options(self.rows)
+        primary = tk.Frame(self.filter_nav, bg=self.surface_color)
+        primary.pack(fill=tk.X, pady=(0, 14))
+        tk.Label(
+            primary,
+            text="常用视图",
+            bg=self.surface_color,
+            fg=self.muted_color,
+            font=("Microsoft YaHei UI", 9, "bold"),
+        ).pack(anchor=tk.W, pady=(0, 8))
+
+        for item in filters[:3]:
+            self._build_filter_button(
+                primary, f"{item['label']}  ({item['count']})", item["key"]
+            )
+
+        category_frame = tk.Frame(self.filter_nav, bg=self.surface_color)
+        category_frame.pack(fill=tk.X)
+        tk.Label(
+            category_frame,
+            text="按分类查看",
+            bg=self.surface_color,
+            fg=self.muted_color,
+            font=("Microsoft YaHei UI", 9, "bold"),
+        ).pack(anchor=tk.W, pady=(0, 8))
+        for item in filters[3:]:
+            self._build_filter_button(
+                category_frame, f"{item['label']}  ({item['count']})", item["key"]
+            )
+
+    def _on_cards_frame_configured(self, _event=None) -> None:
+        self.cards_canvas.configure(scrollregion=self.cards_canvas.bbox("all"))
+
+    def _on_cards_canvas_configured(self, event) -> None:
+        if self.cards_window is not None:
+            self.cards_canvas.itemconfigure(self.cards_window, width=event.width)
+        columns = self._card_column_count(event.width)
+        if columns != self.card_columns:
+            self.card_columns = columns
+            self._render_cards()
+
+    def _card_column_count(self, width: int) -> int:
+        if width >= 1180:
+            return 3
+        if width >= 760:
+            return 2
+        return 1
+
+    def _filtered_rows(self) -> list[dict]:
+        return filter_skill_rows(
+            self.rows, self.selected_filter, self.search_query_var.get()
+        )
+
+    def _on_filter_text_changed(self, *_args) -> None:
+        self._refresh_visible_rows()
+
+    def set_filter(self, key: str) -> None:
+        self.selected_filter = key
+        for button_key, button in self.filter_buttons.items():
+            self._style_filter_button(button, button_key == key)
+        self._refresh_visible_rows()
+
+    def _refresh_visible_rows(self) -> None:
+        filtered = self._filtered_rows()
+        self.results_var.set(f"{len(filtered)} 个技能")
+
+        if filtered:
+            if not any(row["ID"] == self.selected_skill_id for row in filtered):
+                self.selected_skill_id = filtered[0]["ID"]
+        else:
+            self.selected_skill_id = ""
+        self._render_cards(filtered)
+        self._sync_detail_panel()
+
     def refresh_data(self, sync_first: bool = False) -> None:
         if sync_first:
             self.rows = sync_registry()
@@ -1350,85 +1497,22 @@ class SkillRegistryApp:
             self.rows = load_registry()
 
         self._refresh_metrics()
-
-        for item in self.tree.get_children():
-            self.tree.delete(item)
-
-        top_nodes: dict[str, str] = {}
-        sub_nodes: dict[tuple[str, str], str] = {}
-
-        for row in self.rows:
-            top_category, sub_category = get_skill_category(row["Skill"])
-
-            if top_category not in top_nodes:
-                top_id = f"cat::{top_category}"
-                category_tag = CATEGORY_TAG_MAP.get(top_category, "cat_other")
-                self.tree.insert(
-                    "",
-                    tk.END,
-                    iid=top_id,
-                    text=decorate_category_name(top_category),
-                    open=True,
-                    values=("", "", "", ""),
-                    tags=(category_tag,),
-                )
-                top_nodes[top_category] = top_id
-
-            sub_key = (top_category, sub_category)
-            if sub_key not in sub_nodes:
-                sub_id = f"sub::{top_category}::{sub_category}"
-                self.tree.insert(
-                    top_nodes[top_category],
-                    tk.END,
-                    iid=sub_id,
-                    text=decorate_subcategory_name(sub_category),
-                    open=True,
-                    values=("", "", "", ""),
-                    tags=(CATEGORY_TAG_MAP.get(top_category, "cat_other"),),
-                )
-                sub_nodes[sub_key] = sub_id
-
-            self.tree.insert(
-                sub_nodes[sub_key],
-                tk.END,
-                iid=row["ID"],
-                text=get_skill_display_name(row["Skill"]),
-                values=(
-                    to_chinese_status(row["Status"]),
-                    row["Installed"],
-                    row["LastUpdated"],
-                    row["Purpose"],
-                ),
-            )
-
-        self.clear_details()
+        self._render_filters()
+        if self.selected_filter not in self.filter_buttons:
+            self.selected_filter = "all"
+        for button_key, button in self.filter_buttons.items():
+            self._style_filter_button(button, button_key == self.selected_filter)
+        if not any(row["ID"] == self.selected_skill_id for row in self.rows):
+            self.selected_skill_id = ""
+        self._refresh_visible_rows()
         self.status_var.set(f"已加载 {len(self.rows)} 个 skill")
 
     def _refresh_metrics(self) -> None:
-        total = len(self.rows)
-        active = sum(1 for row in self.rows if row.get("Status") == "active")
-        groups = len({get_skill_category(row["Skill"])[0] for row in self.rows})
-        latest = "-"
-        dates = [
-            row.get("LastUpdated", "") for row in self.rows if row.get("LastUpdated")
-        ]
-        if dates:
-            latest = max(dates)
-
-        self.metric_total_var.set(str(total))
-        self.metric_active_var.set(str(active))
-        self.metric_group_var.set(str(groups))
-        self.metric_recent_var.set(latest)
-        if active >= 120:
-            self.metric_focus_var.set(
-                "技能库已经很丰富，建议优先清理、分层和保留核心技能。"
-            )
-        elif active >= 40:
-            self.metric_focus_var.set(
-                "当前更适合按场景筛选核心技能，减少日常决策负担。"
-            )
-        else:
-            self.metric_focus_var.set("当前技能规模适中，建议先补齐常用场景再扩展。")
+        summary = summarize_registry_rows(self.rows)
+        self.metric_total_var.set(str(summary["total"]))
+        self.metric_active_var.set(str(summary["active"]))
+        self.metric_removed_var.set(str(summary["removed"]))
+        self.metric_recent_var.set(summary["latest"])
 
     def sync_and_refresh(self) -> None:
         self.refresh_data(sync_first=True)
@@ -1436,8 +1520,9 @@ class SkillRegistryApp:
 
     def clear_details(self) -> None:
         for var in self.detail_vars.values():
-            var.set("")
-        self.empty_tip_var.set("请从左侧技能树选择一个 skill，查看详情与用途。")
+            var.set("-")
+        self.detail_vars["Skill"].set("未选择技能")
+        self.empty_tip_var.set("从中间卡片中选择一个技能，右侧会显示详情。")
         if self.detail_text is None:
             return
         self.detail_text.configure(state=tk.NORMAL)
@@ -1445,18 +1530,12 @@ class SkillRegistryApp:
         self.detail_text.configure(state=tk.DISABLED)
 
     def selected_row(self) -> dict | None:
-        selected = self.tree.selection()
-        if not selected:
-            return None
-        selected_id = selected[0]
-        if not selected_id.startswith("skill-"):
-            return None
         for row in self.rows:
-            if row["ID"] == selected_id:
+            if row["ID"] == self.selected_skill_id:
                 return row
         return None
 
-    def on_select(self, _event=None) -> None:
+    def _sync_detail_panel(self) -> None:
         row = self.selected_row()
         if not row:
             self.clear_details()
@@ -1473,7 +1552,11 @@ class SkillRegistryApp:
             elif field == "Agent":
                 value = to_chinese_agent(value)
             self.detail_vars[field].set(value)
-        self.empty_tip_var.set("你可以继续编辑来源、用途、备注，或直接打开技能目录。")
+        self.detail_vars["Skill"].set(get_skill_display_name(row["Skill"]))
+        top_category, sub_category = get_skill_category(row["Skill"])
+        self.empty_tip_var.set(
+            f"{top_category} / {sub_category} · 可直接打开目录或编辑说明。"
+        )
 
         if self.detail_text is None:
             return
@@ -1481,6 +1564,181 @@ class SkillRegistryApp:
         self.detail_text.delete("1.0", tk.END)
         self.detail_text.insert("1.0", row.get("Notes", ""))
         self.detail_text.configure(state=tk.DISABLED)
+
+    def _render_cards(self, filtered_rows: list[dict] | None = None) -> None:
+        if filtered_rows is None:
+            filtered_rows = self._filtered_rows()
+
+        for child in self.cards_frame.winfo_children():
+            child.destroy()
+        self.card_widgets.clear()
+
+        if not filtered_rows:
+            empty = tk.Frame(
+                self.cards_frame,
+                bg=self.surface_color,
+                padx=28,
+                pady=28,
+                highlightbackground=self.border_color,
+                highlightthickness=1,
+            )
+            empty.grid(row=0, column=0, sticky="ew", padx=4, pady=4)
+            tk.Label(
+                empty,
+                text="没有找到匹配的技能",
+                bg=self.surface_color,
+                fg=self.text_color,
+                font=("Microsoft YaHei UI", 13, "bold"),
+            ).pack(anchor=tk.W)
+            tk.Label(
+                empty,
+                text="可以换一个搜索词，或从左侧切回“全部技能”。",
+                bg=self.surface_color,
+                fg=self.muted_color,
+                font=("Microsoft YaHei UI", 9),
+            ).pack(anchor=tk.W, pady=(8, 0))
+            self.cards_frame.columnconfigure(0, weight=1)
+            return
+
+        columns = self.card_columns or self._card_column_count(
+            self.cards_canvas.winfo_width()
+        )
+        for col in range(columns):
+            self.cards_frame.columnconfigure(col, weight=1)
+
+        for index, row in enumerate(filtered_rows):
+            card = self._create_skill_card(self.cards_frame, row)
+            card.grid(
+                row=index // columns,
+                column=index % columns,
+                sticky="nsew",
+                padx=6,
+                pady=6,
+            )
+            self.card_widgets[row["ID"]] = card
+
+    def _create_skill_card(self, parent: tk.Frame, row: dict) -> tk.Frame:
+        selected = row["ID"] == self.selected_skill_id
+        top_category, sub_category = get_skill_category(row["Skill"])
+        status_text = to_chinese_status(row.get("Status", ""))
+        card = tk.Frame(
+            parent,
+            bg=self.surface_color,
+            padx=14,
+            pady=14,
+            highlightbackground=self.header_accent if selected else self.border_color,
+            highlightthickness=2 if selected else 1,
+        )
+
+        header = tk.Frame(card, bg=self.surface_color)
+        header.pack(fill=tk.X)
+        icon = tk.Label(
+            header,
+            text=CATEGORY_ICON_MAP.get(top_category, "•"),
+            bg=self.soft_blue if selected else self.panel_color,
+            fg=self.header_accent,
+            width=3,
+            pady=6,
+            font=("Segoe UI Symbol", 11, "bold"),
+        )
+        icon.pack(side=tk.LEFT)
+
+        title_wrap = tk.Frame(header, bg=self.surface_color)
+        title_wrap.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(10, 8))
+        tk.Label(
+            title_wrap,
+            text=get_skill_display_name(row["Skill"]),
+            bg=self.surface_color,
+            fg=self.text_color,
+            anchor="w",
+            justify=tk.LEFT,
+            wraplength=280,
+            font=("Microsoft YaHei UI", 10, "bold"),
+        ).pack(anchor=tk.W)
+        tk.Label(
+            title_wrap,
+            text=f"{top_category} / {sub_category}",
+            bg=self.surface_color,
+            fg=self.muted_color,
+            anchor="w",
+            font=("Microsoft YaHei UI", 8),
+        ).pack(anchor=tk.W, pady=(4, 0))
+
+        status_bg, status_fg = self._status_colors(row.get("Status", ""))
+        tk.Label(
+            header,
+            text=status_text,
+            bg=status_bg,
+            fg=status_fg,
+            padx=10,
+            pady=4,
+            font=("Microsoft YaHei UI", 8, "bold"),
+        ).pack(side=tk.RIGHT)
+
+        tk.Label(
+            card,
+            text=row.get("Purpose", "未填写用途说明"),
+            bg=self.surface_color,
+            fg=self.text_color,
+            justify=tk.LEFT,
+            wraplength=320,
+            font=("Microsoft YaHei UI", 9),
+        ).pack(anchor=tk.W, pady=(12, 10))
+
+        meta = tk.Frame(card, bg=self.surface_color)
+        meta.pack(fill=tk.X)
+        for text in [
+            f"更新 {row.get('LastUpdated') or '-'}",
+            f"来源 {row.get('Source') or '-'}",
+        ]:
+            tk.Label(
+                meta,
+                text=text,
+                bg=self.panel_color,
+                fg=self.muted_color,
+                padx=8,
+                pady=4,
+                font=("Microsoft YaHei UI", 8),
+            ).pack(side=tk.LEFT, padx=(0, 8))
+
+        actions = tk.Frame(card, bg=self.surface_color)
+        actions.pack(fill=tk.X, pady=(12, 0))
+        ttk.Button(
+            actions,
+            text="详情",
+            command=lambda row_id=row["ID"]: self.select_skill(row_id),
+            style="Accent.TButton" if selected else "Ghost.TButton",
+        ).pack(side=tk.LEFT)
+        ttk.Button(
+            actions,
+            text="打开",
+            command=lambda row_id=row["ID"]: self.open_skill_dir_for(row_id),
+            style="Toolbar.TButton",
+        ).pack(side=tk.LEFT, padx=(8, 0))
+
+        for widget in (card, header, title_wrap, icon, meta):
+            self._bind_select_click(widget, row["ID"])
+        return card
+
+    def _bind_select_click(self, widget: tk.Widget, row_id: str) -> None:
+        widget.bind("<Button-1>", lambda _event, value=row_id: self.select_skill(value))
+
+    def _status_colors(self, status: str) -> tuple[str, str]:
+        if status == "active":
+            return (self.soft_green, "#1F7A48")
+        if status == "removed":
+            return (self.danger_soft, "#B54747")
+        return (self.panel_color, self.muted_color)
+
+    def select_skill(self, row_id: str) -> None:
+        self.selected_skill_id = row_id
+        self._render_cards()
+        self._sync_detail_panel()
+
+    def open_skill_dir_for(self, row_id: str) -> None:
+        self.selected_skill_id = row_id
+        self._sync_detail_panel()
+        self.open_skill_dir()
 
     def open_path(self, path: Path) -> None:
         if not path.exists():
@@ -1649,7 +1907,7 @@ class SkillRegistryApp:
         window.geometry("980x620")
         window.configure(bg=self.bg_color)
 
-        header = tk.Frame(window, bg=self.header_color, padx=18, pady=14)
+        header = tk.Frame(window, bg=self.surface_color, padx=18, pady=14)
         header.pack(fill=tk.X)
         ttk.Label(header, text=f"Skill 搜索：{query}", style="HeaderTitle.TLabel").pack(
             anchor=tk.W
