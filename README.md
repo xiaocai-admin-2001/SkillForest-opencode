@@ -28,6 +28,8 @@ SkillForest 是一个面向 OpenCode 的本地技能库管理仓库，提供：
 | `docs/SKILLS_USAGE_GUIDE.md` | 每个主要 skill 的适用场景与使用方法 |
 | `docs/CEK_SKILLS_INDEX.md` | CEK 系列 skills 的分类索引 |
 | `docs/SKILLS_REGISTRY.template.csv` | 注册表模板 |
+| `docs/RELEASE.md` | 如何打包并发布 SkillForest |
+| `tools/package_skillforest_release.py` | 一键生成发布目录和 zip 包 |
 
 ## 推荐阅读顺序
 
