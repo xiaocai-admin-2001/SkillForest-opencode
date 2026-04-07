@@ -1,7 +1,9 @@
 import csv
+import json
 import os
 import re
 import shutil
+import sqlite3
 import subprocess
 from dataclasses import dataclass
 from datetime import datetime
@@ -16,6 +18,7 @@ BASE_DIR = USER_HOME / ".claude" / "skills"
 REGISTRY_PATH = BASE_DIR / "SKILLS_REGISTRY.csv"
 README_PATH = BASE_DIR / "SKILLS_REGISTRY_README.md"
 USAGE_GUIDE_PATH = BASE_DIR / "SKILLS_USAGE_GUIDE.md"
+OPENCODE_DB_PATH = USER_HOME / ".local" / "share" / "opencode" / "opencode.db"
 TRASH_DIR = BASE_DIR / ".trash"
 AGENTS_SKILLS_DIR = USER_HOME / ".agents" / "skills"
 NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
@@ -35,6 +38,11 @@ CSV_FIELDS = [
 
 CARD_BATCH_SIZE = 48
 SEARCH_DEBOUNCE_MS = 220
+SORT_MODE_OPTIONS = {
+    "installed": "添加时间排序",
+    "score": "按评分排序",
+    "usage": "按使用次数排序",
+}
 
 EXCLUDED_NAMES = {
     ".trash",
@@ -789,6 +797,80 @@ def mousewheel_units(delta: int) -> int:
     return -step if delta > 0 else step
 
 
+def score_from_usage_count(usage_count: int) -> int:
+    if usage_count <= 0:
+        return 0
+    return min(100, 20 + usage_count * 5)
+
+
+def format_usage_timestamp(timestamp_ms: int) -> str:
+    if timestamp_ms <= 0:
+        return "未使用"
+    return datetime.fromtimestamp(timestamp_ms / 1000).strftime("%Y-%m-%d %H:%M")
+
+
+def extract_skill_usage_event(part_data: dict, time_created: int) -> dict | None:
+    if part_data.get("type") != "tool":
+        return None
+    if part_data.get("tool") != "skill":
+        return None
+    state = part_data.get("state") or {}
+    payload = state.get("input") or {}
+    skill_name = payload.get("name")
+    if not isinstance(skill_name, str) or not skill_name.strip():
+        return None
+    return {
+        "skill": skill_name.strip(),
+        "time_created": int(time_created or 0),
+    }
+
+
+def summarize_skill_usage(events: list[dict]) -> dict[str, dict]:
+    summary: dict[str, dict] = {}
+    for event in events:
+        skill_name = event["skill"]
+        timestamp_ms = int(event.get("time_created", 0))
+        item = summary.setdefault(
+            skill_name,
+            {
+                "usage_count": 0,
+                "score": 0,
+                "last_used_ts": 0,
+                "last_used": "未使用",
+            },
+        )
+        item["usage_count"] += 1
+        if timestamp_ms > item["last_used_ts"]:
+            item["last_used_ts"] = timestamp_ms
+            item["last_used"] = format_usage_timestamp(timestamp_ms)
+        item["score"] = score_from_usage_count(item["usage_count"])
+    return summary
+
+
+def load_skill_usage_summary(db_path: Path = OPENCODE_DB_PATH) -> dict[str, dict]:
+    if not db_path.exists():
+        return {}
+    con = sqlite3.connect(str(db_path))
+    try:
+        cur = con.cursor()
+        cur.execute(
+            "SELECT time_created, data FROM part WHERE data LIKE ? ORDER BY time_created DESC",
+            ('%"tool":"skill"%',),
+        )
+        events = []
+        for time_created, data in cur.fetchall():
+            try:
+                part_data = json.loads(data)
+            except Exception:
+                continue
+            event = extract_skill_usage_event(part_data, int(time_created or 0))
+            if event is not None:
+                events.append(event)
+        return summarize_skill_usage(events)
+    finally:
+        con.close()
+
+
 def _skill_id_rank(value: str) -> int:
     if value.startswith("skill-"):
         suffix = value.split("-", 1)[1]
@@ -807,12 +889,45 @@ def _row_sort_key(row: dict) -> tuple:
     )
 
 
-def index_registry_rows(rows: list[dict]) -> list[dict]:
+def _indexed_sort_key(item: dict, sort_mode: str) -> tuple:
+    row = item["row"]
+    base = _row_sort_key(row)
+    if sort_mode == "score":
+        return (
+            0 if row.get("Status") == "active" else 1,
+            -int(item.get("score", 0)),
+            -int(item.get("usage_count", 0)),
+            -_date_rank(row.get("Installed", "")),
+            -_skill_id_rank(row.get("ID", "")),
+            get_skill_display_name(row.get("Skill", "")).lower(),
+        )
+    if sort_mode == "usage":
+        return (
+            0 if row.get("Status") == "active" else 1,
+            -int(item.get("usage_count", 0)),
+            -int(item.get("score", 0)),
+            -_date_rank(row.get("Installed", "")),
+            -_skill_id_rank(row.get("ID", "")),
+            get_skill_display_name(row.get("Skill", "")).lower(),
+        )
+    return base
+
+
+def index_registry_rows(
+    rows: list[dict],
+    usage_summary: dict[str, dict] | None = None,
+    sort_mode: str = "installed",
+) -> list[dict]:
+    usage_summary = usage_summary or {}
     indexed = []
     for row in rows:
         display_name = get_skill_display_name(row.get("Skill", ""))
         top_category, sub_category = get_skill_category(row["Skill"])
         status_label = to_chinese_status(row.get("Status", ""))
+        usage = usage_summary.get(row.get("Skill", ""), {})
+        usage_count = int(usage.get("usage_count", 0))
+        score = int(usage.get("score", 0))
+        last_used = usage.get("last_used", "未使用")
         search_blob = " ".join(
             [
                 row.get("Skill", ""),
@@ -822,6 +937,8 @@ def index_registry_rows(rows: list[dict]) -> list[dict]:
                 top_category,
                 sub_category,
                 status_label,
+                str(usage_count),
+                str(score),
             ]
         ).lower()
         indexed.append(
@@ -831,11 +948,14 @@ def index_registry_rows(rows: list[dict]) -> list[dict]:
                 "top_category": top_category,
                 "sub_category": sub_category,
                 "status_label": status_label,
+                "usage_count": usage_count,
+                "score": score,
+                "last_used": last_used,
                 "search_blob": search_blob,
                 "sort_key": _row_sort_key(row),
             }
         )
-    return sorted(indexed, key=lambda item: item["sort_key"])
+    return sorted(indexed, key=lambda item: _indexed_sort_key(item, sort_mode))
 
 
 def filter_indexed_rows(
@@ -929,9 +1049,11 @@ class SkillRegistryApp:
         self.root.minsize(1260, 780)
         self.rows: list[dict] = []
         self.indexed_rows: list[dict] = []
+        self.usage_summary: dict[str, dict] = {}
         self.search_query_var = tk.StringVar(value="")
         self.search_results: list[dict] = []
         self.selected_filter = "all"
+        self.sort_mode_var = tk.StringVar(value="installed")
         self.selected_skill_id = ""
         self.visible_limit = CARD_BATCH_SIZE
         self.filtered_indexed_rows: list[dict] = []
@@ -953,6 +1075,9 @@ class SkillRegistryApp:
         self.metric_recent_var = tk.StringVar(value="-")
         self.results_var = tk.StringVar(value="0 个技能")
         self.load_more_var = tk.StringVar(value="")
+        self.detail_usage_var = tk.StringVar(value="0 次")
+        self.detail_score_var = tk.StringVar(value="0")
+        self.detail_last_used_var = tk.StringVar(value="未使用")
 
         self.bg_color = "#F5F7FA"
         self.surface_color = "#FFFFFF"
@@ -1285,6 +1410,24 @@ class SkillRegistryApp:
         ttk.Label(center_top, text="技能卡片", style="SectionTitle.TLabel").pack(
             side=tk.LEFT
         )
+        sort_wrap = tk.Frame(center_top, bg=self.surface_color)
+        sort_wrap.pack(side=tk.RIGHT)
+        tk.Label(
+            sort_wrap,
+            text="排序",
+            bg=self.surface_color,
+            fg=self.muted_color,
+            font=("Microsoft YaHei UI", 9),
+        ).pack(side=tk.LEFT, padx=(0, 6))
+        self.sort_menu = ttk.Combobox(
+            sort_wrap,
+            state="readonly",
+            width=14,
+            values=[SORT_MODE_OPTIONS[key] for key in ("installed", "score", "usage")],
+        )
+        self.sort_menu.current(0)
+        self.sort_menu.bind("<<ComboboxSelected>>", self._on_sort_mode_changed)
+        self.sort_menu.pack(side=tk.LEFT, padx=(0, 10))
         tk.Label(
             center_top,
             textvariable=self.results_var,
@@ -1391,6 +1534,9 @@ class SkillRegistryApp:
             ("归属", "Agent"),
             ("首次安装", "Installed"),
             ("最近更新", "LastUpdated"),
+            ("使用次数", "__usage_count__"),
+            ("技能评分", "__score__"),
+            ("最近使用", "__last_used__"),
             ("来源", "Source"),
             ("本地路径", "LocalPath"),
             ("用途", "Purpose"),
@@ -1404,9 +1550,17 @@ class SkillRegistryApp:
                 font=("Microsoft YaHei UI", 9, "bold"),
                 anchor="w",
             ).grid(row=row_index, column=0, sticky="nw", pady=4)
+            if key == "__usage_count__":
+                value_source = self.detail_usage_var
+            elif key == "__score__":
+                value_source = self.detail_score_var
+            elif key == "__last_used__":
+                value_source = self.detail_last_used_var
+            else:
+                value_source = self.detail_vars[key]
             tk.Label(
                 detail_grid,
-                textvariable=self.detail_vars[key],
+                textvariable=value_source,
                 bg=self.surface_color,
                 fg=self.text_color,
                 font=("Microsoft YaHei UI", 9),
@@ -1573,6 +1727,13 @@ class SkillRegistryApp:
     def _filtered_rows(self) -> list[dict]:
         return [item["row"] for item in self.filtered_indexed_rows]
 
+    def _reindex_rows(self) -> None:
+        self.indexed_rows = index_registry_rows(
+            self.rows,
+            self.usage_summary,
+            sort_mode=self.sort_mode_var.get(),
+        )
+
     def _on_filter_text_changed(self, *_args) -> None:
         if self.pending_search_job is not None:
             self.root.after_cancel(self.pending_search_job)
@@ -1582,6 +1743,12 @@ class SkillRegistryApp:
 
     def _apply_debounced_search(self) -> None:
         self.pending_search_job = None
+        self._refresh_visible_rows(reset_limit=True)
+
+    def _on_sort_mode_changed(self, _event=None) -> None:
+        labels = {value: key for key, value in SORT_MODE_OPTIONS.items()}
+        self.sort_mode_var.set(labels.get(self.sort_menu.get(), "installed"))
+        self._reindex_rows()
         self._refresh_visible_rows(reset_limit=True)
 
     def set_filter(self, key: str) -> None:
@@ -1614,7 +1781,8 @@ class SkillRegistryApp:
             self.rows = sync_registry()
         else:
             self.rows = load_registry()
-        self.indexed_rows = index_registry_rows(self.rows)
+        self.usage_summary = load_skill_usage_summary()
+        self._reindex_rows()
 
         self._refresh_metrics()
         self._render_filters()
@@ -1643,6 +1811,9 @@ class SkillRegistryApp:
             var.set("-")
         self.detail_vars["Skill"].set("未选择技能")
         self.empty_tip_var.set("从中间卡片中选择一个技能，右侧会显示详情。")
+        self.detail_usage_var.set("0 次")
+        self.detail_score_var.set("0")
+        self.detail_last_used_var.set("未使用")
         if self.detail_text is None:
             return
         self.detail_text.configure(state=tk.NORMAL)
@@ -1674,6 +1845,10 @@ class SkillRegistryApp:
             self.detail_vars[field].set(value)
         self.detail_vars["Skill"].set(get_skill_display_name(row["Skill"]))
         top_category, sub_category = get_skill_category(row["Skill"])
+        usage = self.usage_summary.get(row["Skill"], {})
+        self.detail_usage_var.set(f"{int(usage.get('usage_count', 0))} 次")
+        self.detail_score_var.set(str(int(usage.get("score", 0))))
+        self.detail_last_used_var.set(str(usage.get("last_used", "未使用")))
         self.empty_tip_var.set(
             f"{top_category} / {sub_category} · 可直接打开目录或编辑说明。"
         )
@@ -1826,6 +2001,23 @@ class SkillRegistryApp:
                 text=text,
                 bg=self.panel_color,
                 fg=self.muted_color,
+                padx=8,
+                pady=4,
+                font=("Microsoft YaHei UI", 8),
+            ).pack(side=tk.LEFT, padx=(0, 8))
+
+        usage_row = tk.Frame(card, bg=self.surface_color)
+        usage_row.pack(fill=tk.X, pady=(10, 0))
+        for text, bg, fg in [
+            (f"已用 {item['usage_count']} 次", self.panel_color, self.muted_color),
+            (f"评分 {item['score']}", self.soft_blue, self.header_accent),
+            (f"最近使用 {item['last_used']}", self.soft_green, "#1F7A48"),
+        ]:
+            tk.Label(
+                usage_row,
+                text=text,
+                bg=bg,
+                fg=fg,
                 padx=8,
                 pady=4,
                 font=("Microsoft YaHei UI", 8),

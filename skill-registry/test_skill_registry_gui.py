@@ -1,4 +1,5 @@
 import unittest
+from datetime import datetime
 
 import skill_registry_gui as gui
 
@@ -56,13 +57,76 @@ SAMPLE_ROWS = [
 
 
 class RegistryViewModelTests(unittest.TestCase):
+    def test_extract_skill_usage_event_parses_skill_tool_record(self):
+        part_data = {
+            "type": "tool",
+            "tool": "skill",
+            "state": {"status": "completed", "input": {"name": "create-colleague"}},
+        }
+
+        event = gui.extract_skill_usage_event(part_data, 1775549140000)
+
+        self.assertEqual(event["skill"], "create-colleague")
+        self.assertEqual(event["time_created"], 1775549140000)
+
+    def test_summarize_skill_usage_counts_and_scores(self):
+        events = [
+            {"skill": "create-colleague", "time_created": 3000},
+            {"skill": "create-colleague", "time_created": 2000},
+            {"skill": "cek-brainstorm", "time_created": 1000},
+        ]
+
+        summary = gui.summarize_skill_usage(events)
+
+        self.assertEqual(summary["create-colleague"]["usage_count"], 2)
+        self.assertEqual(summary["create-colleague"]["score"], 30)
+        self.assertEqual(summary["create-colleague"]["last_used_ts"], 3000)
+        self.assertEqual(summary["cek-brainstorm"]["score"], 25)
+
     def test_index_registry_rows_builds_cached_search_blob(self):
-        indexed = gui.index_registry_rows(SAMPLE_ROWS)
+        usage_summary = {
+            "create-colleague": {
+                "usage_count": 2,
+                "score": 30,
+                "last_used_ts": 1775549140000,
+            }
+        }
+        indexed = gui.index_registry_rows(SAMPLE_ROWS, usage_summary)
 
         self.assertEqual(indexed[0]["row"]["Skill"], "create-colleague")
         self.assertIn("新安装", indexed[0]["search_blob"])
         self.assertEqual(indexed[0]["status_label"], "启用")
         self.assertEqual(indexed[0]["top_category"], "未分类")
+        self.assertEqual(indexed[0]["usage_count"], 2)
+        self.assertEqual(indexed[0]["score"], 30)
+
+    def test_index_registry_rows_supports_score_sort(self):
+        usage_summary = {
+            "skill-registry": {"usage_count": 1, "score": 25, "last_used_ts": 1000},
+            "cek-brainstorm": {"usage_count": 5, "score": 45, "last_used_ts": 2000},
+            "create-colleague": {"usage_count": 2, "score": 30, "last_used_ts": 3000},
+        }
+
+        indexed = gui.index_registry_rows(SAMPLE_ROWS, usage_summary, sort_mode="score")
+
+        self.assertEqual(
+            [item["row"]["Skill"] for item in indexed],
+            ["cek-brainstorm", "create-colleague", "skill-registry", "tob-semgrep"],
+        )
+
+    def test_index_registry_rows_supports_usage_sort(self):
+        usage_summary = {
+            "skill-registry": {"usage_count": 1, "score": 25, "last_used_ts": 1000},
+            "cek-brainstorm": {"usage_count": 5, "score": 45, "last_used_ts": 2000},
+            "create-colleague": {"usage_count": 2, "score": 30, "last_used_ts": 3000},
+        }
+
+        indexed = gui.index_registry_rows(SAMPLE_ROWS, usage_summary, sort_mode="usage")
+
+        self.assertEqual(
+            [item["row"]["Skill"] for item in indexed],
+            ["cek-brainstorm", "create-colleague", "skill-registry", "tob-semgrep"],
+        )
 
     def test_summarize_registry_rows(self):
         summary = gui.summarize_registry_rows(SAMPLE_ROWS)
@@ -109,7 +173,7 @@ class RegistryViewModelTests(unittest.TestCase):
         self.assertEqual(gui.mousewheel_units(0), 0)
 
     def test_limit_visible_rows_reports_remaining_count(self):
-        indexed = gui.index_registry_rows(SAMPLE_ROWS)
+        indexed = gui.index_registry_rows(SAMPLE_ROWS, {})
         visible, remaining = gui.limit_visible_rows(indexed, limit=2)
 
         self.assertEqual(
