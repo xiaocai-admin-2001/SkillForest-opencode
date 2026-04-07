@@ -38,6 +38,8 @@ CSV_FIELDS = [
 
 CARD_BATCH_SIZE = 48
 SEARCH_DEBOUNCE_MS = 220
+USAGE_REFRESH_MS = 5000
+MAX_DASHBOARD_ITEMS = 3
 SORT_MODE_OPTIONS = {
     "installed": "添加时间排序",
     "score": "按评分排序",
@@ -162,6 +164,17 @@ KNOWN_DISPLAY_NAME_MAP = {
     "cek-worktrees": "Worktree 工作流",
     "cek-write-concisely": "简洁写作",
     "cek-write-tests": "补充测试",
+}
+
+RUNTIME_SKILL_NAME_MAP = {
+    "systematic-debugging": "sp-systematic-debugging",
+    "verification-before-completion": "sp-verification-before-completion",
+    "test-driven-development": "sp-test-driven-development",
+    "brainstorming": "sp-brainstorming",
+    "dispatching-parallel-agents": "sp-dispatching-parallel-agents",
+    "writing-plans": "sp-writing-plans",
+    "kaizen:why": "cek-five-whys",
+    "git:commit": "cek-commit",
 }
 
 SKILL_CATEGORY_MAP = {
@@ -803,6 +816,10 @@ def score_from_usage_count(usage_count: int) -> int:
     return min(100, 20 + usage_count * 5)
 
 
+def canonical_skill_name(skill_name: str) -> str:
+    return RUNTIME_SKILL_NAME_MAP.get(skill_name.strip(), skill_name.strip())
+
+
 def format_usage_timestamp(timestamp_ms: int) -> str:
     if timestamp_ms <= 0:
         return "未使用"
@@ -820,7 +837,7 @@ def extract_skill_usage_event(part_data: dict, time_created: int) -> dict | None
     if not isinstance(skill_name, str) or not skill_name.strip():
         return None
     return {
-        "skill": skill_name.strip(),
+        "skill": canonical_skill_name(skill_name),
         "time_created": int(time_created or 0),
     }
 
@@ -828,7 +845,7 @@ def extract_skill_usage_event(part_data: dict, time_created: int) -> dict | None
 def summarize_skill_usage(events: list[dict]) -> dict[str, dict]:
     summary: dict[str, dict] = {}
     for event in events:
-        skill_name = event["skill"]
+        skill_name = canonical_skill_name(event["skill"])
         timestamp_ms = int(event.get("time_created", 0))
         item = summary.setdefault(
             skill_name,
@@ -845,6 +862,23 @@ def summarize_skill_usage(events: list[dict]) -> dict[str, dict]:
             item["last_used"] = format_usage_timestamp(timestamp_ms)
         item["score"] = score_from_usage_count(item["usage_count"])
     return summary
+
+
+def build_usage_overview(events: list[dict], limit: int = 5) -> dict:
+    ordered = sorted(events, key=lambda item: -int(item.get("time_created", 0)))
+    recent = []
+    for event in ordered[:limit]:
+        recent.append(
+            {
+                "skill": event["skill"],
+                "time_created": int(event.get("time_created", 0)),
+                "time_text": format_usage_timestamp(int(event.get("time_created", 0))),
+            }
+        )
+    return {
+        "total_invocations": len(events),
+        "recent_events": recent,
+    }
 
 
 def load_skill_usage_summary(db_path: Path = OPENCODE_DB_PATH) -> dict[str, dict]:
@@ -869,6 +903,137 @@ def load_skill_usage_summary(db_path: Path = OPENCODE_DB_PATH) -> dict[str, dict
         return summarize_skill_usage(events)
     finally:
         con.close()
+
+
+def load_skill_usage_events(db_path: Path = OPENCODE_DB_PATH) -> list[dict]:
+    if not db_path.exists():
+        return []
+    con = sqlite3.connect(str(db_path))
+    try:
+        cur = con.cursor()
+        cur.execute(
+            "SELECT time_created, data FROM part WHERE data LIKE ? ORDER BY time_created DESC",
+            ('%"tool":"skill"%',),
+        )
+        events = []
+        for time_created, data in cur.fetchall():
+            try:
+                part_data = json.loads(data)
+            except Exception:
+                continue
+            event = extract_skill_usage_event(part_data, int(time_created or 0))
+            if event is not None:
+                events.append(event)
+        return events
+    finally:
+        con.close()
+
+
+def usage_summary_changed(previous: dict[str, dict], current: dict[str, dict]) -> bool:
+    return json.dumps(previous, sort_keys=True, ensure_ascii=False) != json.dumps(
+        current, sort_keys=True, ensure_ascii=False
+    )
+
+
+def build_operations_dashboard(
+    rows: list[dict], usage_summary: dict[str, dict], now_ts: int | None = None
+) -> dict:
+    now_ts = int(now_ts or datetime.now().timestamp() * 1000)
+    active_rows = [row for row in rows if row.get("Status") == "active"]
+
+    def usage_for(row: dict) -> dict:
+        return usage_summary.get(
+            row.get("Skill", ""),
+            {"usage_count": 0, "score": 0, "last_used_ts": 0, "last_used": "未使用"},
+        )
+
+    high_usage = []
+    recent_active = []
+    sleeping = []
+    top_used = []
+    average_scores = []
+    seven_days_ms = 7 * 24 * 60 * 60 * 1000
+    thirty_days_ms = 30 * 24 * 60 * 60 * 1000
+
+    for row in active_rows:
+        usage = usage_for(row)
+        usage_count = int(usage.get("usage_count", 0))
+        score = int(usage.get("score", 0))
+        last_used_ts = int(usage.get("last_used_ts", 0))
+        decorated = {**row, **usage}
+        average_scores.append(score)
+        top_used.append(decorated)
+        if usage_count >= 5:
+            high_usage.append(decorated)
+        if last_used_ts and now_ts - last_used_ts <= seven_days_ms:
+            recent_active.append(decorated)
+        if usage_count == 0 or (
+            last_used_ts and now_ts - last_used_ts > thirty_days_ms
+        ):
+            sleeping.append(decorated)
+        if usage_count == 0 and not last_used_ts:
+            sleeping.append(decorated)
+
+    def dedupe(items: list[dict]) -> list[dict]:
+        seen = set()
+        result = []
+        for item in items:
+            skill = item["Skill"]
+            if skill in seen:
+                continue
+            seen.add(skill)
+            result.append(item)
+        return result
+
+    sleeping = dedupe(sleeping)
+    top_used.sort(
+        key=lambda item: (
+            -int(item.get("usage_count", 0)),
+            -int(item.get("score", 0)),
+            -_date_rank(item.get("Installed", "")),
+        )
+    )
+    recent_active.sort(key=lambda item: -int(item.get("last_used_ts", 0)))
+    sleeping.sort(
+        key=lambda item: (
+            int(item.get("usage_count", 0)),
+            int(item.get("score", 0)),
+            -_date_rank(item.get("Installed", "")),
+        )
+    )
+
+    average_score = (
+        round(sum(average_scores) / len(average_scores)) if average_scores else 0
+    )
+    if sleeping:
+        insight_text = f"有 {len(sleeping)} 个技能处于沉睡状态，建议优先清理 0 分技能。"
+    elif top_used:
+        insight_text = f"当前主力技能是 {get_skill_display_name(top_used[0]['Skill'])}，可考虑加入常用入口。"
+    else:
+        insight_text = "还没有足够的调用数据，先多使用几次 skill 再看运营面板。"
+
+    return {
+        "summary": {
+            "high_usage_count": len(high_usage),
+            "active_7d_count": len(recent_active),
+            "sleeping_count": len(sleeping),
+            "average_score": average_score,
+        },
+        "top_used": top_used[:5],
+        "recent_active": recent_active[:5],
+        "cleanup_candidates": sleeping[:5],
+        "insight_text": insight_text,
+    }
+
+
+def dashboard_preview_items(
+    items: list[dict], limit: int = MAX_DASHBOARD_ITEMS
+) -> list[dict]:
+    return items[:limit]
+
+
+def operations_panel_toggle_label(collapsed: bool) -> str:
+    return "展开运营面板" if collapsed else "收起运营面板"
 
 
 def _skill_id_rank(value: str) -> int:
@@ -1050,6 +1215,9 @@ class SkillRegistryApp:
         self.rows: list[dict] = []
         self.indexed_rows: list[dict] = []
         self.usage_summary: dict[str, dict] = {}
+        self.usage_events: list[dict] = []
+        self.usage_overview: dict[str, Any] = {}
+        self.operations_dashboard: dict[str, Any] = {}
         self.search_query_var = tk.StringVar(value="")
         self.search_results: list[dict] = []
         self.selected_filter = "all"
@@ -1058,6 +1226,7 @@ class SkillRegistryApp:
         self.visible_limit = CARD_BATCH_SIZE
         self.filtered_indexed_rows: list[dict] = []
         self.pending_search_job: str | None = None
+        self.pending_usage_refresh_job: str | None = None
         self.filter_buttons: dict[str, tk.Button] = {}
         self.card_widgets: dict[str, dict[str, Any]] = {}
         self.cards_window = None
@@ -1078,6 +1247,18 @@ class SkillRegistryApp:
         self.detail_usage_var = tk.StringVar(value="0 次")
         self.detail_score_var = tk.StringVar(value="0")
         self.detail_last_used_var = tk.StringVar(value="未使用")
+        self.high_usage_var = tk.StringVar(value="0")
+        self.active_7d_var = tk.StringVar(value="0")
+        self.sleeping_var = tk.StringVar(value="0")
+        self.average_score_var = tk.StringVar(value="0")
+        self.insight_var = tk.StringVar(value="")
+        self.total_invocations_var = tk.StringVar(value="0")
+        self.ops_collapsed = False
+        self.dashboard_lists: dict[str, tk.Frame] = {}
+        self.recent_usage_list: tk.Frame | None = None
+        self.ops_toggle_button: ttk.Button | None = None
+        self.main_vertical = None
+        self.ops_shell = None
 
         self.bg_color = "#F5F7FA"
         self.surface_color = "#FFFFFF"
@@ -1099,6 +1280,7 @@ class SkillRegistryApp:
 
         self._build_ui()
         self.refresh_data(sync_first=True)
+        self._schedule_usage_refresh()
 
     def _configure_styles(self) -> None:
         style = ttk.Style(self.root)
@@ -1298,6 +1480,13 @@ class SkillRegistryApp:
 
         action_wrap = tk.Frame(title_row, bg=self.surface_color)
         action_wrap.pack(side=tk.RIGHT, anchor=tk.NE)
+        self.global_ops_toggle_button = ttk.Button(
+            action_wrap,
+            text=operations_panel_toggle_label(self.ops_collapsed),
+            command=self.toggle_operations_panel,
+            style="Toolbar.TButton",
+        )
+        self.global_ops_toggle_button.pack(side=tk.LEFT, padx=(0, 8))
         ttk.Button(
             action_wrap, text="刷新", command=self.refresh_data, style="Toolbar.TButton"
         ).pack(side=tk.LEFT, padx=(0, 8))
@@ -1356,8 +1545,111 @@ class SkillRegistryApp:
             side=tk.LEFT, fill=tk.X, expand=True, padx=(8, 0)
         )
 
-        body = ttk.Frame(self.root, style="App.TFrame", padding=(16, 0, 16, 12))
-        body.pack(fill=tk.BOTH, expand=True)
+        main_vertical_wrap = ttk.Frame(
+            self.root, style="App.TFrame", padding=(16, 0, 16, 12)
+        )
+        main_vertical_wrap.pack(fill=tk.BOTH, expand=True)
+        self.main_vertical = ttk.PanedWindow(main_vertical_wrap, orient=tk.VERTICAL)
+        self.main_vertical.pack(fill=tk.BOTH, expand=True)
+
+        ops_shell = tk.Frame(
+            self.main_vertical,
+            bg=self.surface_color,
+            padx=16,
+            pady=14,
+            highlightbackground=self.border_color,
+            highlightthickness=1,
+        )
+        self.ops_shell = ops_shell
+        ops_top = tk.Frame(ops_shell, bg=self.surface_color)
+        ops_top.pack(fill=tk.X)
+        ttk.Label(ops_top, text="技能运营面板", style="SectionTitle.TLabel").pack(
+            side=tk.LEFT
+        )
+        self.ops_toggle_button = ttk.Button(
+            ops_top,
+            text=operations_panel_toggle_label(self.ops_collapsed),
+            command=self.toggle_operations_panel,
+            style="Toolbar.TButton",
+        )
+        self.ops_toggle_button.pack(side=tk.LEFT, padx=(10, 0))
+        tk.Label(
+            ops_top,
+            textvariable=self.insight_var,
+            bg=self.surface_color,
+            fg=self.muted_color,
+            font=("Microsoft YaHei UI", 9),
+        ).pack(side=tk.RIGHT)
+
+        ops_summary = ttk.Frame(ops_shell, style="App.TFrame")
+        ops_summary.pack(fill=tk.X, pady=(12, 10))
+        for title, var in [
+            ("高频技能", self.high_usage_var),
+            ("近7天活跃", self.active_7d_var),
+            ("沉睡技能", self.sleeping_var),
+            ("平均评分", self.average_score_var),
+        ]:
+            self._build_metric_card(ops_summary, title, var).pack(
+                side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 8)
+            )
+
+        usage_summary_strip = ttk.Frame(ops_shell, style="App.TFrame")
+        usage_summary_strip.pack(fill=tk.X, pady=(0, 10))
+        self._build_metric_card(
+            usage_summary_strip, "总调用次数", self.total_invocations_var
+        ).pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 8))
+
+        ops_lists = tk.Frame(ops_shell, bg=self.surface_color)
+        ops_lists.pack(fill=tk.X)
+        for idx, (key, title) in enumerate(
+            [
+                ("top_used", "Top 常用"),
+                ("recent_active", "最近活跃"),
+                ("cleanup_candidates", "待清理"),
+            ]
+        ):
+            panel = tk.Frame(
+                ops_lists,
+                bg="#F8FAFC",
+                padx=12,
+                pady=10,
+                highlightbackground=self.border_color,
+                highlightthickness=1,
+            )
+            panel.pack(
+                side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0 if idx == 0 else 8, 0)
+            )
+            tk.Label(
+                panel,
+                text=title,
+                bg="#F8FAFC",
+                fg=self.text_color,
+                font=("Microsoft YaHei UI", 9, "bold"),
+            ).pack(anchor=tk.W)
+            body = tk.Frame(panel, bg="#F8FAFC")
+            body.pack(fill=tk.X, pady=(8, 0))
+            self.dashboard_lists[key] = body
+
+        recent_usage_panel = tk.Frame(
+            ops_shell,
+            bg="#F8FAFC",
+            padx=12,
+            pady=10,
+            highlightbackground=self.border_color,
+            highlightthickness=1,
+        )
+        recent_usage_panel.pack(fill=tk.X, pady=(10, 0))
+        tk.Label(
+            recent_usage_panel,
+            text="最近真实 skill 调用",
+            bg="#F8FAFC",
+            fg=self.text_color,
+            font=("Microsoft YaHei UI", 9, "bold"),
+        ).pack(anchor=tk.W)
+        self.recent_usage_list = tk.Frame(recent_usage_panel, bg="#F8FAFC")
+        self.recent_usage_list.pack(fill=tk.X, pady=(8, 0))
+
+        body = ttk.Frame(self.main_vertical, style="App.TFrame")
         layout = ttk.PanedWindow(body, orient=tk.HORIZONTAL)
         layout.pack(fill=tk.BOTH, expand=True)
 
@@ -1388,6 +1680,8 @@ class SkillRegistryApp:
         layout.add(sidebar, weight=1)
         layout.add(center, weight=3)
         layout.add(detail, weight=2)
+        self.main_vertical.add(ops_shell, weight=1)
+        self.main_vertical.add(body, weight=4)
 
         ttk.Label(sidebar, text="分类导航", style="SectionTitle.TLabel").pack(
             anchor=tk.W
@@ -1734,6 +2028,32 @@ class SkillRegistryApp:
             sort_mode=self.sort_mode_var.get(),
         )
 
+    def _schedule_usage_refresh(self) -> None:
+        if self.pending_usage_refresh_job is not None:
+            self.root.after_cancel(self.pending_usage_refresh_job)
+        self.pending_usage_refresh_job = self.root.after(
+            USAGE_REFRESH_MS, self._poll_usage_summary
+        )
+
+    def _poll_usage_summary(self) -> None:
+        self.pending_usage_refresh_job = None
+        try:
+            latest_events = load_skill_usage_events()
+            latest_usage = load_skill_usage_summary()
+            if (
+                usage_summary_changed(self.usage_summary, latest_usage)
+                or self.usage_events != latest_events
+            ):
+                self.usage_events = latest_events
+                self.usage_summary = latest_usage
+                self._refresh_operations_dashboard()
+                self._reindex_rows()
+                self._refresh_visible_rows(reset_limit=False)
+                self.status_var.set("已自动刷新 skill 使用统计")
+        finally:
+            if self.root.winfo_exists():
+                self._schedule_usage_refresh()
+
     def _on_filter_text_changed(self, *_args) -> None:
         if self.pending_search_job is not None:
             self.root.after_cancel(self.pending_search_job)
@@ -1781,7 +2101,9 @@ class SkillRegistryApp:
             self.rows = sync_registry()
         else:
             self.rows = load_registry()
+        self.usage_events = load_skill_usage_events()
         self.usage_summary = load_skill_usage_summary()
+        self._refresh_operations_dashboard()
         self._reindex_rows()
 
         self._refresh_metrics()
@@ -1801,6 +2123,104 @@ class SkillRegistryApp:
         self.metric_active_var.set(str(summary["active"]))
         self.metric_removed_var.set(str(summary["removed"]))
         self.metric_recent_var.set(summary["latest"])
+
+    def _render_dashboard_list(self, key: str, items: list[dict]) -> None:
+        container = self.dashboard_lists.get(key)
+        if container is None:
+            return
+        for child in container.winfo_children():
+            child.destroy()
+        if not items:
+            tk.Label(
+                container,
+                text="暂无数据",
+                bg="#F8FAFC",
+                fg=self.muted_color,
+                font=("Microsoft YaHei UI", 9),
+            ).pack(anchor=tk.W)
+            return
+        for item in dashboard_preview_items(items):
+            skill_name = item["Skill"]
+            btn = tk.Button(
+                container,
+                text=f"{get_skill_display_name(skill_name)}  ·  {item.get('usage_count', 0)}次 / {item.get('score', 0)}分",
+                anchor="w",
+                relief=tk.FLAT,
+                bd=0,
+                bg="#F8FAFC",
+                fg=self.text_color,
+                activebackground=self.soft_blue,
+                activeforeground=self.text_color,
+                font=("Microsoft YaHei UI", 9),
+                cursor="hand2",
+                command=lambda row_id=item["ID"]: self.select_skill(row_id),
+            )
+            btn.pack(fill=tk.X, pady=2)
+
+    def _render_recent_usage_events(self) -> None:
+        if self.recent_usage_list is None:
+            return
+        for child in self.recent_usage_list.winfo_children():
+            child.destroy()
+        recent_events = self.usage_overview.get("recent_events", [])
+        if not recent_events:
+            tk.Label(
+                self.recent_usage_list,
+                text="还没有捕获到真实 skill 调用记录",
+                bg="#F8FAFC",
+                fg=self.muted_color,
+                font=("Microsoft YaHei UI", 9),
+            ).pack(anchor=tk.W)
+            return
+        for event in recent_events:
+            tk.Label(
+                self.recent_usage_list,
+                text=f"{event['time_text']}  ·  {event['skill']}",
+                bg="#F8FAFC",
+                fg=self.text_color,
+                font=("Microsoft YaHei UI", 9),
+                anchor="w",
+                justify=tk.LEFT,
+            ).pack(anchor=tk.W, pady=2)
+
+    def toggle_operations_panel(self) -> None:
+        if self.main_vertical is None or self.ops_shell is None:
+            return
+        self.ops_collapsed = not self.ops_collapsed
+        label = operations_panel_toggle_label(self.ops_collapsed)
+        if self.ops_collapsed:
+            self.main_vertical.forget(self.ops_shell)
+            self.status_var.set("已收起技能运营面板")
+        else:
+            self.main_vertical.insert(0, self.ops_shell, weight=1)
+            self.status_var.set("已展开技能运营面板")
+        if self.ops_toggle_button is not None:
+            self.ops_toggle_button.configure(text=label)
+        if getattr(self, "global_ops_toggle_button", None) is not None:
+            self.global_ops_toggle_button.configure(text=label)
+
+    def _refresh_operations_dashboard(self) -> None:
+        self.operations_dashboard = build_operations_dashboard(
+            self.rows, self.usage_summary
+        )
+        self.usage_overview = build_usage_overview(self.usage_events)
+        summary = self.operations_dashboard["summary"]
+        self.high_usage_var.set(str(summary["high_usage_count"]))
+        self.active_7d_var.set(str(summary["active_7d_count"]))
+        self.sleeping_var.set(str(summary["sleeping_count"]))
+        self.average_score_var.set(str(summary["average_score"]))
+        self.total_invocations_var.set(
+            str(self.usage_overview.get("total_invocations", 0))
+        )
+        self.insight_var.set(self.operations_dashboard["insight_text"])
+        self._render_dashboard_list("top_used", self.operations_dashboard["top_used"])
+        self._render_dashboard_list(
+            "recent_active", self.operations_dashboard["recent_active"]
+        )
+        self._render_dashboard_list(
+            "cleanup_candidates", self.operations_dashboard["cleanup_candidates"]
+        )
+        self._render_recent_usage_events()
 
     def sync_and_refresh(self) -> None:
         self.refresh_data(sync_first=True)

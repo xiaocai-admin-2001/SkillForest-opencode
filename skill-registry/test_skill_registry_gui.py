@@ -69,11 +69,26 @@ class RegistryViewModelTests(unittest.TestCase):
         self.assertEqual(event["skill"], "create-colleague")
         self.assertEqual(event["time_created"], 1775549140000)
 
+    def test_canonical_skill_name_maps_runtime_name_to_local_skill(self):
+        self.assertEqual(
+            gui.canonical_skill_name("systematic-debugging"),
+            "sp-systematic-debugging",
+        )
+        self.assertEqual(
+            gui.canonical_skill_name("verification-before-completion"),
+            "sp-verification-before-completion",
+        )
+        self.assertEqual(gui.canonical_skill_name("kaizen:why"), "cek-five-whys")
+        self.assertEqual(
+            gui.canonical_skill_name("create-colleague"), "create-colleague"
+        )
+
     def test_summarize_skill_usage_counts_and_scores(self):
         events = [
             {"skill": "create-colleague", "time_created": 3000},
             {"skill": "create-colleague", "time_created": 2000},
             {"skill": "cek-brainstorm", "time_created": 1000},
+            {"skill": "systematic-debugging", "time_created": 500},
         ]
 
         summary = gui.summarize_skill_usage(events)
@@ -82,6 +97,76 @@ class RegistryViewModelTests(unittest.TestCase):
         self.assertEqual(summary["create-colleague"]["score"], 30)
         self.assertEqual(summary["create-colleague"]["last_used_ts"], 3000)
         self.assertEqual(summary["cek-brainstorm"]["score"], 25)
+        self.assertEqual(summary["sp-systematic-debugging"]["usage_count"], 1)
+
+    def test_usage_overview_reports_total_invocations_and_recent_events(self):
+        events = [
+            {"skill": "create-colleague", "time_created": 3000},
+            {"skill": "cek-brainstorm", "time_created": 2000},
+            {"skill": "create-colleague", "time_created": 1000},
+        ]
+
+        overview = gui.build_usage_overview(events)
+
+        self.assertEqual(overview["total_invocations"], 3)
+        self.assertEqual(overview["recent_events"][0]["skill"], "create-colleague")
+        self.assertEqual(overview["recent_events"][1]["skill"], "cek-brainstorm")
+
+    def test_build_operations_dashboard_summary(self):
+        usage_summary = {
+            "skill-registry": {
+                "usage_count": 6,
+                "score": 50,
+                "last_used_ts": 1_776_000_000_000,
+                "last_used": "2026-04-11 10:00",
+            },
+            "cek-brainstorm": {
+                "usage_count": 2,
+                "score": 30,
+                "last_used_ts": 1_776_100_000_000,
+                "last_used": "2026-04-12 10:00",
+            },
+        }
+
+        dashboard = gui.build_operations_dashboard(
+            SAMPLE_ROWS,
+            usage_summary,
+            now_ts=1_776_120_000_000,
+        )
+
+        self.assertEqual(dashboard["summary"]["high_usage_count"], 1)
+        self.assertEqual(dashboard["summary"]["active_7d_count"], 2)
+        self.assertEqual(dashboard["summary"]["sleeping_count"], 1)
+        self.assertEqual(dashboard["summary"]["average_score"], 27)
+        self.assertEqual(dashboard["top_used"][0]["Skill"], "skill-registry")
+        self.assertEqual(dashboard["recent_active"][0]["Skill"], "cek-brainstorm")
+        self.assertEqual(
+            dashboard["cleanup_candidates"][0]["Skill"], "create-colleague"
+        )
+        self.assertTrue(dashboard["insight_text"])
+
+    def test_dashboard_preview_items_limits_length(self):
+        items = [{"Skill": f"skill-{i}"} for i in range(6)]
+        preview = gui.dashboard_preview_items(items, limit=3)
+
+        self.assertEqual(
+            [item["Skill"] for item in preview], ["skill-0", "skill-1", "skill-2"]
+        )
+
+    def test_operations_panel_toggle_label(self):
+        self.assertEqual(gui.operations_panel_toggle_label(False), "收起运营面板")
+        self.assertEqual(gui.operations_panel_toggle_label(True), "展开运营面板")
+
+    def test_usage_summary_changed_detects_updates(self):
+        previous = {
+            "create-colleague": {"usage_count": 1, "score": 25, "last_used_ts": 1000}
+        }
+        current = {
+            "create-colleague": {"usage_count": 2, "score": 30, "last_used_ts": 2000}
+        }
+
+        self.assertTrue(gui.usage_summary_changed(previous, current))
+        self.assertFalse(gui.usage_summary_changed(current, current.copy()))
 
     def test_index_registry_rows_builds_cached_search_blob(self):
         usage_summary = {
