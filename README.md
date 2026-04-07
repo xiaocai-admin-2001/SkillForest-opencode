@@ -1,6 +1,6 @@
 # SkillForest
 
-一个面向 OpenCode 的本地技能库管理仓库，提供：
+SkillForest 是一个面向 OpenCode 的本地技能库管理仓库，提供：
 
 - 本地 skills 注册表
 - 可视化技能管理界面
