@@ -13,12 +13,16 @@
   - 图形界面
   - skill 注册表维护逻辑
   - 启动脚本
+- `skills/`
+  - 当前本地 OpenCode skills 的同步快照
 - `docs/SKILLS_REGISTRY_README.md`
   - 技能注册表说明
 - `docs/SKILLS_USAGE_GUIDE.md`
   - 常用 skill 的适用场景与使用方式
 - `docs/CEK_SKILLS_INDEX.md`
   - CEK 技能分类索引
+- `docs/INSTALL.md`
+  - 安装和同步说明
 
 ## 建议安装位置
 
