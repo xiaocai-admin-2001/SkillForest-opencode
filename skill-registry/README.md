@@ -23,11 +23,18 @@
 
 ## 启动方式
 
-- 双击：`launch_skill_registry_gui.bat`
-- 或运行：
+- Windows：双击 `launch_skill_registry_gui.bat`
+- macOS：双击 `launch_skill_registry_gui.command`
+- 或手动运行：
 
 ```bash
 python "%USERPROFILE%\.claude\skills\skill-registry\skill_registry_gui.py"
+```
+
+macOS 也可以运行：
+
+```bash
+python3 "$HOME/.claude/skills/skill-registry/skill_registry_gui.py"
 ```
 
 ## 首次运行会自动创建
@@ -41,6 +48,15 @@ python "%USERPROFILE%\.claude\skills\skill-registry\skill_registry_gui.py"
 - 如果要远程搜索或一键安装 skill，还需要：
   - `git`
   - `npx`
+
+## macOS 兼容说明
+
+- 已提供 `launch_skill_registry_gui.command` 作为 macOS 启动器
+- 首次运行如果提示没有执行权限，可在终端执行：
+
+```bash
+chmod +x "$HOME/.claude/skills/skill-registry/launch_skill_registry_gui.command"
+```
 
 ## 说明
 

@@ -83,10 +83,20 @@ Windows 下可以直接双击：
 
 - `skill-registry/launch_skill_registry_gui.bat`
 
+macOS 下可以直接双击：
+
+- `skill-registry/launch_skill_registry_gui.command`
+
 或者运行：
 
 ```bash
 python "%USERPROFILE%\.claude\skills\skill-registry\skill_registry_gui.py"
+```
+
+macOS 也可以运行：
+
+```bash
+python3 "$HOME/.claude/skills/skill-registry/skill_registry_gui.py"
 ```
 
 ## 当前仓库特点

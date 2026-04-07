@@ -22,12 +22,25 @@
 
 安装完成后，可以直接双击：
 
-- `%USERPROFILE%\.claude\skills\skill-registry\launch_skill_registry_gui.bat`
+- Windows：`%USERPROFILE%\.claude\skills\skill-registry\launch_skill_registry_gui.bat`
+- macOS：`$HOME/.claude/skills/skill-registry/launch_skill_registry_gui.command`
 
 或者运行：
 
 ```bash
 python "%USERPROFILE%\.claude\skills\skill-registry\skill_registry_gui.py"
+```
+
+macOS 也可以使用：
+
+```bash
+python3 "$HOME/.claude/skills/skill-registry/skill_registry_gui.py"
+```
+
+如果 macOS 首次双击 `.command` 无法运行，请先执行：
+
+```bash
+chmod +x "$HOME/.claude/skills/skill-registry/launch_skill_registry_gui.command"
 ```
 
 ## 三、首次运行会生成 / 使用这些文件
