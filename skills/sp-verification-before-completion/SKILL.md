@@ -1,139 +1,109 @@
 ---
 name: verification-before-completion
-description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always
+description: Validates completion claims with fresh command evidence in OpenCode workflows. Use when status updates, handoffs, commits, PRs, or bug-fix reports depend on tests, lint, build, or reproduction results.
 ---
 
 # Verification Before Completion
 
-## Overview
+## Core Rule
 
-Claiming work is complete without verification is dishonesty, not efficiency.
+No completion claim without fresh evidence from the exact command that proves it.
 
-**Core principle:** Evidence before claims, always.
+If the command was not run in the current workflow, report uncertainty instead of success.
 
-**Violating the letter of this rule is violating the spirit of this rule.**
+## When To Use
 
-## The Iron Law
+- before saying a task is done
+- before commit or PR creation
+- after a bug fix or refactor
+- when reporting test, lint, or build status
 
-```
-NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
-```
+## Claim Gate
 
-If you haven't run the verification command in this message, you cannot claim it passes.
+Before any success statement, run this sequence:
 
-## The Gate Function
+1. Identify the claim (tests pass, build passes, bug fixed, requirement complete).
+2. Select one command that directly proves it.
+3. Run the full command (not partial scope unless claim is partial).
+4. Read output and exit status.
+5. Report the result with evidence.
 
-```
-BEFORE claiming any status or expressing satisfaction:
+## Workflow
 
-1. IDENTIFY: What command proves this claim?
-2. RUN: Execute the FULL command (fresh, complete)
-3. READ: Full output, check exit code, count failures
-4. VERIFY: Does output confirm the claim?
-   - If NO: State actual status with evidence
-   - If YES: State claim WITH evidence
-5. ONLY THEN: Make the claim
+1. Identify the exact claim.
+2. Run the smallest command that directly proves it.
+3. Quote the key output line or result count.
+4. State pass/fail with exact scope.
 
-Skip any step = lying, not verifying
-```
+## Evidence Matrix
 
-## Common Failures
+| Claim | Required evidence |
+|---|---|
+| Tests pass | Test command output shows 0 failures |
+| Lint is clean | Linter output shows 0 errors |
+| Build succeeds | Build command exits 0 |
+| Bug is fixed | Reproduction test now passes |
+| Regression covered | Test fails before fix and passes after fix |
+| Task is complete | Requirement checklist is verified item-by-item |
 
-| Claim | Requires | Not Sufficient |
-|-------|----------|----------------|
-| Tests pass | Test command output: 0 failures | Previous run, "should pass" |
-| Linter clean | Linter output: 0 errors | Partial check, extrapolation |
-| Build succeeds | Build command: exit 0 | Linter passing, logs look good |
-| Bug fixed | Test original symptom: passes | Code changed, assumed fixed |
-| Regression test works | Red-green cycle verified | Test passes once |
-| Agent completed | VCS diff shows changes | Agent reports "success" |
-| Requirements met | Line-by-line checklist | Tests passing |
+## Response Patterns
 
-## Red Flags - STOP
+Good:
 
-- Using "should", "probably", "seems to"
-- Expressing satisfaction before verification ("Great!", "Perfect!", "Done!", etc.)
-- About to commit/push/PR without verification
-- Trusting agent success reports
-- Relying on partial verification
-- Thinking "just this once"
-- Tired and wanting work over
-- **ANY wording implying success without having run verification**
-
-## Rationalization Prevention
-
-| Excuse | Reality |
-|--------|---------|
-| "Should work now" | RUN the verification |
-| "I'm confident" | Confidence ≠ evidence |
-| "Just this once" | No exceptions |
-| "Linter passed" | Linter ≠ compiler |
-| "Agent said success" | Verify independently |
-| "I'm tired" | Exhaustion ≠ excuse |
-| "Partial check is enough" | Partial proves nothing |
-| "Different words so rule doesn't apply" | Spirit over letter |
-
-## Key Patterns
-
-**Tests:**
-```
-✅ [Run test command] [See: 34/34 pass] "All tests pass"
-❌ "Should pass now" / "Looks correct"
+```text
+Ran `npm test` -> 128 passed, 0 failed.
+All tests are passing.
 ```
 
-**Regression tests (TDD Red-Green):**
-```
-✅ Write → Run (pass) → Revert fix → Run (MUST FAIL) → Restore → Run (pass)
-❌ "I've written a regression test" (without red-green verification)
-```
-
-**Build:**
-```
-✅ [Run build] [See: exit 0] "Build passes"
-❌ "Linter passed" (linter doesn't check compilation)
+```text
+Ran `pytest tests/api/test_auth.py` -> 1 failed.
+Auth flow is not fixed yet; failure is in token refresh path.
 ```
 
-**Requirements:**
-```
-✅ Re-read plan → Create checklist → Verify each → Report gaps or completion
-❌ "Tests pass, phase complete"
-```
+Bad:
 
-**Agent delegation:**
-```
-✅ Agent reports success → Check VCS diff → Verify changes → Report actual state
-❌ Trust agent report
+```text
+Should be fixed now.
+Looks good.
+Done.
 ```
 
-## Why This Matters
+## Red Flags
 
-From 24 failure memories:
-- your human partner said "I don't believe you" - trust broken
-- Undefined functions shipped - would crash
-- Missing requirements shipped - incomplete features
-- Time wasted on false completion → redirect → rework
-- Violates: "Honesty is a core value. If you lie, you'll be replaced."
+Stop and verify if any of these appear:
 
-## When To Apply
+- "should", "probably", "seems"
+- success wording before command output
+- commit/PR preparation without fresh validation
+- trust in previous runs or subagent reports
 
-**ALWAYS before:**
-- ANY variation of success/completion claims
-- ANY expression of satisfaction
-- ANY positive statement about work state
-- Committing, PR creation, task completion
-- Moving to next task
-- Delegating to agents
+## Minimum Pre-Commit Verification
 
-**Rule applies to:**
-- Exact phrases
-- Paraphrases and synonyms
-- Implications of success
-- ANY communication suggesting completion/correctness
+Use project-appropriate commands:
 
-## The Bottom Line
+```bash
+# Example only; adapt to project
+npm test
+npm run lint
+npm run build
+```
 
-**No shortcuts for verification.**
+If one fails, report failure first, then next action.
 
-Run the command. Read the output. THEN claim the result.
+## OpenCode Notes
 
-This is non-negotiable.
+- Fresh evidence in the current workflow beats memory from earlier turns.
+- Tool output is the source of truth; subagent success messages are not.
+- If verification is intentionally partial, state the exact scope instead of implying full success.
+
+## Completion Template
+
+```text
+Verification run:
+- Command: <command>
+- Result: <pass/fail + key numbers>
+- Evidence: <important output line>
+
+Status:
+- <accurate claim>
+```

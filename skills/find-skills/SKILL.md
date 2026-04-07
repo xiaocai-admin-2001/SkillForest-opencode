@@ -1,11 +1,15 @@
 ---
 name: find-skills
-description: Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.
+description: Helps users discover and install agent skills from the open ecosystem. Use when users ask for a skill for a capability, workflow, toolchain, or repeated task they may want to add locally.
 ---
 
 # Find Skills
 
 This skill helps you discover and install skills from the open agent skills ecosystem.
+
+## Core Rule
+
+Do not recommend a skill just because it appears in search results; verify quality and fit first.
 
 ## When to Use This Skill
 
@@ -17,6 +21,15 @@ Use this skill when the user:
 - Expresses interest in extending agent capabilities
 - Wants to search for tools, templates, or workflows
 - Mentions they wish they had help with a specific domain (design, testing, deployment, etc.)
+
+## Workflow
+
+1. Identify the domain and exact need.
+2. Check whether a strong local skill already exists.
+3. Search external skills only if local coverage is missing or weak.
+4. Verify install count, source quality, and repository credibility.
+5. Present the best 1-3 options with install commands.
+6. Offer installation if the user wants it.
 
 ## What is the Skills CLI?
 
@@ -30,6 +43,12 @@ The Skills CLI (`npx skills`) is the package manager for the open agent skills e
 - `npx skills update` - Update all installed skills
 
 **Browse skills at:** https://skills.sh/
+
+## OpenCode Notes
+
+- Prefer existing local skills before adding another overlapping skill.
+- If an external skill is installed locally, follow up by syncing `skill-registry`.
+- For low-install or low-trust results, present them as experimental rather than recommended.
 
 ## How to Help Users Find Skills
 
@@ -93,6 +112,8 @@ npx skills add vercel-labs/agent-skills@react-best-practices
 Learn more: https://skills.sh/vercel-labs/agent-skills/react-best-practices
 ```
 
+When possible, also mention whether a similar local skill already exists.
+
 ### Step 6: Offer to Install
 
 If the user wants to proceed, you can install the skill for them:
@@ -130,6 +151,13 @@ If no relevant skills exist:
 1. Acknowledge that no existing skill was found
 2. Offer to help with the task directly using your general capabilities
 3. Suggest the user could create their own skill with `npx skills init`
+
+## Anti-Patterns
+
+- recommending the first result without validation
+- ignoring local skills that already solve the problem
+- treating install count as the only quality signal
+- installing niche low-trust skills without warning the user
 
 Example:
 

@@ -1,0 +1,6166 @@
+{
+  "version": 1,
+  "generated_at": "2026-04-07 18:32",
+  "skills": {
+    "ags-consult": {
+      "quality_score": 58,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 20,
+        "maintainability": 80,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "ags-debate": {
+      "quality_score": 66,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ]
+    },
+    "ags-deslop": {
+      "quality_score": 57,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 0,
+        "maintainability": 70,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "ags-discover-tasks": {
+      "quality_score": 59,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 60,
+        "local_alignment": 20,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "文件中仍有 TODO/TBD 占位"
+      ],
+      "recommendations": [
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "ags-drift-analysis": {
+      "quality_score": 50,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 15,
+        "local_alignment": 20,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "ags-enhance-agent-prompts": {
+      "quality_score": 71,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 40,
+        "local_alignment": 70,
+        "maintainability": 80,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Workflow",
+        "内容与本地 OpenCode 工具对齐"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "注册表用途说明仍偏泛化"
+      ]
+    },
+    "ags-enhance-claude-memory": {
+      "quality_score": 64,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 40,
+        "local_alignment": 35,
+        "maintainability": 80,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Workflow",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ]
+    },
+    "ags-enhance-cross-file": {
+      "quality_score": 69,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 40,
+        "local_alignment": 15,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Workflow",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ]
+    },
+    "ags-enhance-docs": {
+      "quality_score": 64,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 40,
+        "local_alignment": 35,
+        "maintainability": 80,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Workflow",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "ags-enhance-hooks": {
+      "quality_score": 56,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 40,
+        "local_alignment": 20,
+        "maintainability": 55,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Workflow",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "ags-enhance-orchestrator": {
+      "quality_score": 57,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 40,
+        "local_alignment": 0,
+        "maintainability": 80,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Workflow",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "ags-enhance-plugins": {
+      "quality_score": 68,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 40,
+        "local_alignment": 55,
+        "maintainability": 80,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Workflow",
+        "内容与本地 OpenCode 工具对齐"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ]
+    },
+    "ags-enhance-prompts": {
+      "quality_score": 62,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 50,
+        "local_alignment": 15,
+        "maintainability": 80,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Workflow",
+        "包含 Anti-Patterns"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ]
+    },
+    "ags-enhance-skills": {
+      "quality_score": 67,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 40,
+        "local_alignment": 50,
+        "maintainability": 80,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Workflow",
+        "内容与本地 OpenCode 工具对齐"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "ags-learn": {
+      "quality_score": 66,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ]
+    },
+    "ags-maintain-cross-platform": {
+      "quality_score": 51,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 20,
+        "maintainability": 55,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "ags-orchestrate-review": {
+      "quality_score": 54,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 15,
+        "local_alignment": 20,
+        "maintainability": 80,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "ags-perf-analyzer": {
+      "quality_score": 61,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 90,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "ags-perf-baseline-manager": {
+      "quality_score": 61,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 90,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "ags-perf-benchmarker": {
+      "quality_score": 58,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 20,
+        "maintainability": 90,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ]
+    },
+    "ags-perf-code-paths": {
+      "quality_score": 61,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 90,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "ags-perf-investigation-logger": {
+      "quality_score": 68,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "ags-perf-profiler": {
+      "quality_score": 57,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 15,
+        "maintainability": 90,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ]
+    },
+    "ags-perf-theory-gatherer": {
+      "quality_score": 68,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "ags-perf-theory-tester": {
+      "quality_score": 68,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "ags-repo-intel": {
+      "quality_score": 66,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 60,
+        "maintainability": 90,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "注册表用途说明仍偏泛化"
+      ]
+    },
+    "ags-sync-docs": {
+      "quality_score": 59,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 0,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "ags-validate-delivery": {
+      "quality_score": 65,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 20,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ]
+    },
+    "ags-web-auth": {
+      "quality_score": 72,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ]
+    },
+    "ags-web-browse": {
+      "quality_score": 62,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 40,
+        "local_alignment": 15,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Workflow",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ]
+    },
+    "cek-agent-evaluation": {
+      "quality_score": 68,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 50,
+        "local_alignment": 35,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Workflow",
+        "包含 Anti-Patterns"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "cek-analyze-issue": {
+      "quality_score": 65,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "主文件长度适中",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-anthropic-skill-best-practices": {
+      "quality_score": 58,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 50,
+        "local_alignment": 20,
+        "maintainability": 35,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Workflow",
+        "包含 Anti-Patterns",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-attach-review-to-pr": {
+      "quality_score": 58,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 50,
+        "local_alignment": 20,
+        "maintainability": 35,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Workflow",
+        "包含 Related References/Notes",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-brainstorm": {
+      "quality_score": 70,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "cek-build-mcp": {
+      "quality_score": 64,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-commit": {
+      "quality_score": 92,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "结构和元数据质量较好。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 80,
+        "local_alignment": 90,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Core Rule",
+        "包含 When To Use"
+      ],
+      "issues": [],
+      "recommendations": []
+    },
+    "cek-compare-worktrees": {
+      "quality_score": 63,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "注册表中存在对应条目",
+        "注册表用途说明较具体"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-context-engineering": {
+      "quality_score": 65,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 35,
+        "local_alignment": 35,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "cek-create-command": {
+      "quality_score": 65,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 70,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "内容与本地 OpenCode 工具对齐",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "cek-create-hook": {
+      "quality_score": 58,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 75,
+        "maintainability": 15,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "内容与本地 OpenCode 工具对齐",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "主文件过长，建议拆成引用文件",
+        "文件中仍有 TODO/TBD 占位"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "cek-create-pr": {
+      "quality_score": 67,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 25,
+        "local_alignment": 55,
+        "maintainability": 70,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Related References/Notes",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "引用层级较深，可能影响按需加载"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-create-rule": {
+      "quality_score": 52,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 80,
+        "structure": 25,
+        "local_alignment": 20,
+        "maintainability": 35,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Anti-Patterns",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "cek-create-skill": {
+      "quality_score": 57,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 45,
+        "local_alignment": 35,
+        "maintainability": 15,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Anti-Patterns"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-create-worktree": {
+      "quality_score": 67,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-critique": {
+      "quality_score": 63,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "注册表中存在对应条目",
+        "注册表用途说明较具体"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-do-competitively": {
+      "quality_score": 55,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 20,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "注册表中存在对应条目",
+        "注册表用途说明较具体"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-do-in-parallel": {
+      "quality_score": 62,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-do-in-steps": {
+      "quality_score": 58,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "注册表中存在对应条目",
+        "注册表用途说明较具体"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-five-whys": {
+      "quality_score": 91,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "结构和元数据质量较好。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 90,
+        "local_alignment": 75,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Core Rule",
+        "包含 When To Use"
+      ],
+      "issues": [],
+      "recommendations": []
+    },
+    "cek-fix-tests": {
+      "quality_score": 74,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 40,
+        "local_alignment": 55,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Workflow",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "cek-fpf-query": {
+      "quality_score": 69,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "主文件长度适中",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "cek-fpf-status": {
+      "quality_score": 69,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "主文件长度适中",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "cek-implement": {
+      "quality_score": 54,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 35,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "注册表中存在对应条目",
+        "注册表用途说明较具体"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-judge-with-debate": {
+      "quality_score": 63,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "注册表中存在对应条目",
+        "注册表用途说明较具体"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-kaizen": {
+      "quality_score": 71,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 75,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "主文件过长，建议拆成引用文件"
+      ]
+    },
+    "cek-launch-sub-agent": {
+      "quality_score": 63,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "注册表中存在对应条目",
+        "注册表用途说明较具体"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-load-issues": {
+      "quality_score": 65,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "主文件长度适中",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-merge-worktree": {
+      "quality_score": 67,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-multi-agent-patterns": {
+      "quality_score": 66,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "cek-notes": {
+      "quality_score": 74,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 40,
+        "local_alignment": 60,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Workflow",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "cek-plan": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 40,
+        "local_alignment": 35,
+        "maintainability": 40,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Workflow",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-prompt-engineering": {
+      "quality_score": 53,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 15,
+        "local_alignment": 40,
+        "maintainability": 35,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "注册表中存在对应条目",
+        "注册表用途说明较具体"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "cek-propose-hypotheses": {
+      "quality_score": 70,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 40,
+        "local_alignment": 35,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Workflow",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-reflect": {
+      "quality_score": 58,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "注册表中存在对应条目",
+        "注册表用途说明较具体"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-review-local-changes": {
+      "quality_score": 67,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 75,
+        "maintainability": 60,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "文件中仍有 TODO/TBD 占位"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "文件中仍有 TODO/TBD 占位"
+      ]
+    },
+    "cek-review-pr": {
+      "quality_score": 59,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 60,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "注册表中存在对应条目",
+        "注册表用途说明较具体"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "文件中仍有 TODO/TBD 占位"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-root-cause-tracing": {
+      "quality_score": 72,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 80,
+        "structure": 35,
+        "local_alignment": 55,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "cek-setup-context7-mcp": {
+      "quality_score": 73,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 75,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "cek-setup-serena-mcp": {
+      "quality_score": 69,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-test-driven-development": {
+      "quality_score": 64,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 45,
+        "local_alignment": 20,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Anti-Patterns"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "cek-test-prompt": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 20,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-test-skill": {
+      "quality_score": 72,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 55,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "cek-thought-based-reasoning": {
+      "quality_score": 56,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 20,
+        "maintainability": 35,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-tree-of-thoughts": {
+      "quality_score": 55,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 20,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "注册表中存在对应条目",
+        "注册表用途说明较具体"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-typescript-best-practices": {
+      "quality_score": 69,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "主文件长度适中",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "cek-update-docs": {
+      "quality_score": 56,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 40,
+        "local_alignment": 40,
+        "maintainability": 15,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Workflow",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-worktrees": {
+      "quality_score": 64,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 40,
+        "local_alignment": 35,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Workflow",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "cek-write-concisely": {
+      "quality_score": 59,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 40,
+        "maintainability": 55,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "注册表中存在对应条目",
+        "注册表用途说明较具体"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "cek-write-tests": {
+      "quality_score": 76,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 40,
+        "local_alignment": 75,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Workflow",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "create-colleague": {
+      "quality_score": 63,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 60,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "内容与本地 OpenCode 工具对齐",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "devops-ansible-generator": {
+      "quality_score": 63,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-ansible-validator": {
+      "quality_score": 65,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 60,
+        "local_alignment": 55,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Workflow",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "主文件过长，建议拆成引用文件",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "主文件过长，建议拆成引用文件"
+      ]
+    },
+    "devops-azure-pipelines-generator": {
+      "quality_score": 68,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 85,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-azure-pipelines-validator": {
+      "quality_score": 63,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-bash-script-generator": {
+      "quality_score": 66,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 75,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "引用层级较深，可能影响按需加载"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-bash-script-validator": {
+      "quality_score": 57,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "包含可扩展的辅助文件",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-dockerfile-generator": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 35,
+        "local_alignment": 40,
+        "maintainability": 40,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-dockerfile-validator": {
+      "quality_score": 57,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 65,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "包含可扩展的辅助文件",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "引用层级较深，可能影响按需加载",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-fluentbit-generator": {
+      "quality_score": 65,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 40,
+        "maintainability": 85,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-fluentbit-validator": {
+      "quality_score": 63,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-github-actions-generator": {
+      "quality_score": 73,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 40,
+        "local_alignment": 55,
+        "maintainability": 85,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Workflow",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-github-actions-validator": {
+      "quality_score": 65,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 60,
+        "local_alignment": 55,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Workflow",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "主文件过长，建议拆成引用文件",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "主文件过长，建议拆成引用文件"
+      ]
+    },
+    "devops-gitlab-ci-generator": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 40,
+        "maintainability": 60,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-gitlab-ci-validator": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 40,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-helm-generator": {
+      "quality_score": 62,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 35,
+        "local_alignment": 60,
+        "maintainability": 65,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "引用层级较深，可能影响按需加载",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "devops-helm-validator": {
+      "quality_score": 58,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 40,
+        "local_alignment": 40,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Workflow",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-jenkinsfile-generator": {
+      "quality_score": 72,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 35,
+        "local_alignment": 55,
+        "maintainability": 85,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-jenkinsfile-validator": {
+      "quality_score": 57,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 65,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "包含可扩展的辅助文件",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "引用层级较深，可能影响按需加载",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-k8s-debug": {
+      "quality_score": 70,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 45,
+        "local_alignment": 35,
+        "maintainability": 85,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Related References/Notes",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-k8s-yaml-generator": {
+      "quality_score": 68,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 85,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-k8s-yaml-validator": {
+      "quality_score": 57,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 35,
+        "local_alignment": 40,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-logql-generator": {
+      "quality_score": 58,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 40,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-loki-config-generator": {
+      "quality_score": 59,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 45,
+        "local_alignment": 60,
+        "maintainability": 40,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Related References/Notes",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "主文件过长，建议拆成引用文件",
+        "引用层级较深，可能影响按需加载"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "devops-makefile-generator": {
+      "quality_score": 53,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 35,
+        "local_alignment": 40,
+        "maintainability": 40,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-makefile-validator": {
+      "quality_score": 58,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 40,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-promql-generator": {
+      "quality_score": 56,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 35,
+        "local_alignment": 35,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "devops-promql-validator": {
+      "quality_score": 61,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 35,
+        "local_alignment": 35,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Workflow",
+        "包含 Anti-Patterns",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "缺少主标题",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "缺少主标题",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "devops-terraform-generator": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 75,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "主文件过长，建议拆成引用文件",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "主文件过长，建议拆成引用文件"
+      ]
+    },
+    "devops-terraform-validator": {
+      "quality_score": 61,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 60,
+        "local_alignment": 55,
+        "maintainability": 40,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Workflow",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "主文件过长，建议拆成引用文件",
+        "引用层级较深，可能影响按需加载",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "主文件过长，建议拆成引用文件"
+      ]
+    },
+    "devops-terragrunt-generator": {
+      "quality_score": 57,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 35,
+        "local_alignment": 60,
+        "maintainability": 40,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "主文件过长，建议拆成引用文件",
+        "引用层级较深，可能影响按需加载"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "devops-terragrunt-validator": {
+      "quality_score": 49,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 40,
+        "maintainability": 40,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "包含可扩展的辅助文件",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "find-skills": {
+      "quality_score": 61,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 65,
+        "structure": 35,
+        "local_alignment": 35,
+        "maintainability": 70,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "主文件长度适中",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "description 视角不够稳定，建议改成第三人称/中性表述"
+      ]
+    },
+    "humanizer": {
+      "quality_score": 57,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 40,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "包含可扩展的辅助文件",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "主文件过长，建议拆成引用文件"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "opencode-skill-best-practices": {
+      "quality_score": 92,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "结构和元数据质量较好。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 100,
+        "local_alignment": 90,
+        "maintainability": 70,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Core Rule",
+        "包含 When To Use"
+      ],
+      "issues": [
+        "文件中仍有 TODO/TBD 占位"
+      ],
+      "recommendations": [
+        "文件中仍有 TODO/TBD 占位"
+      ]
+    },
+    "opencode-skill-quality-reviewer": {
+      "quality_score": 90,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "结构和元数据质量较好。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 80,
+        "local_alignment": 75,
+        "maintainability": 95,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Core Rule",
+        "包含 When To Use"
+      ],
+      "issues": [],
+      "recommendations": []
+    },
+    "skill-creator": {
+      "quality_score": 58,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 15,
+        "local_alignment": 20,
+        "maintainability": 65,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "skill-registry": {
+      "quality_score": 81,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "结构和元数据质量较好。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 80,
+        "local_alignment": 55,
+        "maintainability": 95,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Core Rule",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "sp-brainstorming": {
+      "quality_score": 74,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 90,
+        "local_alignment": 55,
+        "maintainability": 75,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Core Rule",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "文件中仍有 TODO/TBD 占位",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "文件中仍有 TODO/TBD 占位"
+      ]
+    },
+    "sp-dispatching-parallel-agents": {
+      "quality_score": 87,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "结构和元数据质量较好。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 90,
+        "local_alignment": 90,
+        "maintainability": 90,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Core Rule",
+        "包含 When To Use"
+      ],
+      "issues": [
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "注册表用途说明仍偏泛化"
+      ]
+    },
+    "sp-executing-plans": {
+      "quality_score": 59,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 70,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明",
+        "文件中仍有 TODO/TBD 占位",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "sp-finishing-a-development-branch": {
+      "quality_score": 74,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 15,
+        "local_alignment": 75,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ],
+      "recommendations": [
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "sp-receiving-code-review": {
+      "quality_score": 63,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 90,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "sp-requesting-code-review": {
+      "quality_score": 62,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "sp-subagent-driven-development": {
+      "quality_score": 64,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 35,
+        "local_alignment": 55,
+        "maintainability": 65,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明",
+        "文件中仍有 TODO/TBD 占位",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明",
+        "文件中仍有 TODO/TBD 占位"
+      ]
+    },
+    "sp-systematic-debugging": {
+      "quality_score": 87,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "结构和元数据质量较好。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 65,
+        "local_alignment": 90,
+        "maintainability": 95,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Core Rule",
+        "包含 When To Use",
+        "包含 Related References/Notes"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用"
+      ]
+    },
+    "sp-test-driven-development": {
+      "quality_score": 80,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "结构和元数据质量较好。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 65,
+        "local_alignment": 55,
+        "maintainability": 95,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Core Rule",
+        "包含 When To Use",
+        "包含 Anti-Patterns"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "sp-using-git-worktrees": {
+      "quality_score": 72,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "sp-using-superpowers": {
+      "quality_score": 65,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 75,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "文件中仍有 TODO/TBD 占位"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "sp-verification-before-completion": {
+      "quality_score": 85,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "结构和元数据质量较好。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 80,
+        "local_alignment": 55,
+        "maintainability": 90,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 Core Rule",
+        "包含 When To Use"
+      ],
+      "issues": [
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ],
+      "recommendations": [
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "sp-writing-plans": {
+      "quality_score": 56,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 75,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "文件中仍有 TODO/TBD 占位"
+      ],
+      "recommendations": [
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "sp-writing-skills": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 45,
+        "local_alignment": 35,
+        "maintainability": 20,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Anti-Patterns"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "主文件过长，建议拆成引用文件",
+        "文件中仍有 TODO/TBD 占位"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "tob-address-sanitizer": {
+      "quality_score": 50,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 35,
+        "local_alignment": 15,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Anti-Patterns",
+        "包含 Related References/Notes",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-aflpp": {
+      "quality_score": 44,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 45,
+        "local_alignment": 0,
+        "maintainability": 35,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Related References/Notes",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-agentic-actions-auditor": {
+      "quality_score": 66,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 55,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-algorand-vulnerability-scanner": {
+      "quality_score": 62,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-ask-questions-if-underspecified": {
+      "quality_score": 76,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 70,
+        "local_alignment": 55,
+        "maintainability": 90,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ]
+    },
+    "tob-atheris": {
+      "quality_score": 48,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 45,
+        "local_alignment": 20,
+        "maintainability": 35,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Related References/Notes",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-audit-augmentation": {
+      "quality_score": 63,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 60,
+        "local_alignment": 20,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Workflow",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-audit-context-building": {
+      "quality_score": 61,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "包含可扩展的辅助文件",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "tob-audit-prep-assistant": {
+      "quality_score": 54,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 80,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-burpsuite-project-parser": {
+      "quality_score": 55,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 20,
+        "maintainability": 65,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-cairo-vulnerability-scanner": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "tob-cargo-fuzz": {
+      "quality_score": 49,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 45,
+        "local_alignment": 0,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Related References/Notes",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-claude-in-chrome-troubleshooting": {
+      "quality_score": 67,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 35,
+        "local_alignment": 40,
+        "maintainability": 60,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "引用层级较深，可能影响按需加载"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "tob-code-maturity-assessor": {
+      "quality_score": 61,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "主文件长度适中",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-codeql": {
+      "quality_score": 57,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 60,
+        "local_alignment": 20,
+        "maintainability": 65,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Workflow",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-constant-time-analysis": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 35,
+        "maintainability": 75,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "引用层级较深，可能影响按需加载"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-constant-time-testing": {
+      "quality_score": 44,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 45,
+        "local_alignment": 0,
+        "maintainability": 35,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Related References/Notes",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-cosmos-vulnerability-scanner": {
+      "quality_score": 71,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 70,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "内容与本地 OpenCode 工具对齐"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "tob-coverage-analysis": {
+      "quality_score": 42,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 35,
+        "local_alignment": 0,
+        "maintainability": 35,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Anti-Patterns",
+        "包含 Related References/Notes",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-crypto-protocol-diagram": {
+      "quality_score": 64,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 60,
+        "local_alignment": 20,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "tob-debug-buttercup": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 35,
+        "local_alignment": 40,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-designing-workflow-skills": {
+      "quality_score": 64,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 45,
+        "local_alignment": 70,
+        "maintainability": 65,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Anti-Patterns",
+        "内容与本地 OpenCode 工具对齐"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明",
+        "文件中仍有 TODO/TBD 占位"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-devcontainer-setup": {
+      "quality_score": 67,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 60,
+        "local_alignment": 35,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "tob-diagramming-code": {
+      "quality_score": 67,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 60,
+        "local_alignment": 40,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Workflow",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "tob-differential-review": {
+      "quality_score": 62,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 40,
+        "local_alignment": 35,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Workflow",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-dimensional-analysis": {
+      "quality_score": 70,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 60,
+        "local_alignment": 70,
+        "maintainability": 65,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "缺少本地 OpenCode 场景说明",
+        "文件中仍有 TODO/TBD 占位",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "缺少本地 OpenCode 场景说明",
+        "文件中仍有 TODO/TBD 占位"
+      ]
+    },
+    "tob-dwarf-expert": {
+      "quality_score": 61,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 35,
+        "local_alignment": 35,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-entry-point-analyzer": {
+      "quality_score": 67,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 60,
+        "local_alignment": 35,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "tob-firebase-apk-scanner": {
+      "quality_score": 62,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 60,
+        "local_alignment": 0,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "tob-fp-check": {
+      "quality_score": 67,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 35,
+        "local_alignment": 55,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-fuzzing-dictionary": {
+      "quality_score": 47,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 35,
+        "local_alignment": 0,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Anti-Patterns",
+        "包含 Related References/Notes",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-fuzzing-obstacles": {
+      "quality_score": 47,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 35,
+        "local_alignment": 0,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Anti-Patterns",
+        "包含 Related References/Notes",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-genotoxic": {
+      "quality_score": 74,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 60,
+        "local_alignment": 35,
+        "maintainability": 85,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "tob-gh-cli": {
+      "quality_score": 73,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 35,
+        "local_alignment": 75,
+        "maintainability": 90,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "注册表用途说明仍偏泛化"
+      ]
+    },
+    "tob-git-cleanup": {
+      "quality_score": 71,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 85,
+        "structure": 70,
+        "local_alignment": 20,
+        "maintainability": 80,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Workflow",
+        "包含 Related References/Notes"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "tob-graph-evolution": {
+      "quality_score": 61,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 60,
+        "local_alignment": 20,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Workflow",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-guidelines-advisor": {
+      "quality_score": 62,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 85,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "包含可扩展的辅助文件",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-harness-writing": {
+      "quality_score": 45,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 35,
+        "local_alignment": 15,
+        "maintainability": 35,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Anti-Patterns",
+        "包含 Related References/Notes",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-insecure-defaults": {
+      "quality_score": 70,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 60,
+        "local_alignment": 40,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "tob-interpreting-culture-index": {
+      "quality_score": 56,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 20,
+        "local_alignment": 35,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "缺少主标题",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "缺少主标题"
+      ]
+    },
+    "tob-let-fate-decide": {
+      "quality_score": 62,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 80,
+        "structure": 35,
+        "local_alignment": 35,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "description 视角不够稳定，建议改成第三人称/中性表述",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-libafl": {
+      "quality_score": 44,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 45,
+        "local_alignment": 0,
+        "maintainability": 35,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Related References/Notes",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-libfuzzer": {
+      "quality_score": 48,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 45,
+        "local_alignment": 20,
+        "maintainability": 35,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Related References/Notes",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-mermaid-to-proverif": {
+      "quality_score": 67,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 60,
+        "local_alignment": 35,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ]
+    },
+    "tob-modern-python": {
+      "quality_score": 59,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 45,
+        "local_alignment": 20,
+        "maintainability": 65,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Anti-Patterns"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明",
+        "引用层级较深，可能影响按需加载"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "tob-mutation-testing": {
+      "quality_score": 71,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 35,
+        "maintainability": 95,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-ossfuzz": {
+      "quality_score": 51,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 35,
+        "local_alignment": 20,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 Anti-Patterns",
+        "包含 Related References/Notes",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-property-based-testing": {
+      "quality_score": 67,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 95,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-ruzzy": {
+      "quality_score": 49,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 45,
+        "local_alignment": 0,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Related References/Notes",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-sarif-parsing": {
+      "quality_score": 52,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 35,
+        "local_alignment": 20,
+        "maintainability": 65,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含可扩展的辅助文件",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-seatbelt-sandboxer": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 35,
+        "local_alignment": 40,
+        "maintainability": 60,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "引用层级较深，可能影响按需加载",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "tob-second-opinion": {
+      "quality_score": 59,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 20,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-secure-workflow-guide": {
+      "quality_score": 53,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 15,
+        "local_alignment": 35,
+        "maintainability": 75,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "主文件长度适中",
+        "包含可扩展的辅助文件",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-semgrep": {
+      "quality_score": 66,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 60,
+        "local_alignment": 55,
+        "maintainability": 75,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Workflow",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "引用层级较深，可能影响按需加载",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-semgrep-rule-creator": {
+      "quality_score": 65,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 70,
+        "local_alignment": 35,
+        "maintainability": 55,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "文件中仍有 TODO/TBD 占位",
+        "引用层级较深，可能影响按需加载",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "文件中仍有 TODO/TBD 占位"
+      ]
+    },
+    "tob-semgrep-rule-variant-creator": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 35,
+        "maintainability": 75,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "引用层级较深，可能影响按需加载"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-sharp-edges": {
+      "quality_score": 62,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 35,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-skill-improver": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 35,
+        "local_alignment": 35,
+        "maintainability": 90,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "主文件长度适中",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-solana-vulnerability-scanner": {
+      "quality_score": 61,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 40,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "明确考虑了本地 OpenCode/registry 场景",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "tob-spec-to-code-compliance": {
+      "quality_score": 70,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 75,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "注册表用途说明仍偏泛化"
+      ]
+    },
+    "tob-substrate-vulnerability-scanner": {
+      "quality_score": 57,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 20,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "tob-supply-chain-risk-auditor": {
+      "quality_score": 71,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 60,
+        "local_alignment": 35,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ]
+    },
+    "tob-testing-handbook-generator": {
+      "quality_score": 59,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 70,
+        "local_alignment": 20,
+        "maintainability": 65,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Workflow",
+        "包含 Related References/Notes"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-token-integration-analyzer": {
+      "quality_score": 59,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 15,
+        "local_alignment": 55,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "引用层级较浅",
+        "包含可扩展的辅助文件",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-ton-vulnerability-scanner": {
+      "quality_score": 57,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 100,
+        "structure": 15,
+        "local_alignment": 20,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "引用层级较浅",
+        "包含可扩展的辅助文件"
+      ],
+      "issues": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "tob-trailmark": {
+      "quality_score": 64,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 35,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-trailmark-structural": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 20,
+        "maintainability": 90,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-trailmark-summary": {
+      "quality_score": 60,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 20,
+        "maintainability": 90,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-variant-analysis": {
+      "quality_score": 64,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 35,
+        "local_alignment": 35,
+        "maintainability": 95,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "主文件长度适中"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "缺少本地 OpenCode 场景说明",
+        "注册表用途说明仍偏泛化"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-vector-forge": {
+      "quality_score": 75,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 90,
+        "structure": 60,
+        "local_alignment": 40,
+        "maintainability": 85,
+        "registry_alignment": 100
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "description 说明了触发时机",
+        "包含 When To Use",
+        "包含 Workflow"
+      ],
+      "issues": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ],
+      "recommendations": [
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格"
+      ]
+    },
+    "tob-wycheproof": {
+      "quality_score": 43,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 45,
+        "local_alignment": 15,
+        "maintainability": 15,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Related References/Notes",
+        "注册表中存在对应条目"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    },
+    "tob-yara-rule-authoring": {
+      "quality_score": 52,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 60,
+        "local_alignment": 20,
+        "maintainability": 40,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "包含 Workflow",
+        "明确考虑了本地 OpenCode/registry 场景"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "frontmatter 含未知字段，建议检查是否真的适用于本地环境"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "提到了工具但未明显对齐本地 OpenCode 工具"
+      ]
+    },
+    "tob-zeroize-audit": {
+      "quality_score": 63,
+      "reviewed_at": "2026-04-07 18:32",
+      "summary": "存在可执行性或可维护性改进空间。",
+      "breakdown": {
+        "metadata": 75,
+        "structure": 35,
+        "local_alignment": 55,
+        "maintainability": 85,
+        "registry_alignment": 65
+      },
+      "strengths": [
+        "frontmatter 包含稳定的 name",
+        "frontmatter 包含 description",
+        "包含 When To Use",
+        "内容与本地 OpenCode 工具对齐",
+        "引用层级较浅"
+      ],
+      "issues": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow",
+        "出现反斜杠路径，建议统一成 / 风格",
+        "缺少本地 OpenCode 场景说明"
+      ],
+      "recommendations": [
+        "description 没有显式说明何时使用",
+        "description 长度不理想，可能过短或过长",
+        "结构不够清晰，建议补齐 Core Rule / When To Use / Workflow"
+      ]
+    }
+  }
+}

@@ -1,35 +1,47 @@
 ---
 name: kaizen:why
-description: Iterative Five Whys root cause analysis drilling from symptoms to fundamentals
+description: Performs iterative Five Whys root cause analysis from symptom to systemic cause. Use when debugging, reviewing incidents, or explaining why a repeated failure keeps happening.
 argument-hint: Optional issue or symptom description
 ---
 
 # Five Whys Analysis
 
-Apply Five Whys root cause analysis to investigate issues by iteratively asking "why" to drill from symptoms to root causes.
+Use Five Whys to move from symptom to cause without stopping at the first technical explanation.
 
-## Description
+## Core Rule
 
-Iteratively ask "why" to move from surface symptoms to fundamental causes. Identifies systemic issues rather than quick fixes.
+Do not stop at the first broken component; keep asking why until you reach a process, design, or control gap.
 
-## Usage
+## When To Use
+
+- repeated bug or incident analysis
+- postmortem follow-up
+- flaky test or workflow failure that keeps returning
+- situations where "human error" sounds like a fake root cause
+
+## Workflow
+
+1. State the symptom precisely.
+2. Ask why it happened.
+3. Ask why the previous answer was possible.
+4. Continue until you hit a systemic cause.
+5. Validate by walking from root cause back to symptom.
+6. Propose fixes at the root-cause layer.
+
+## Command Form
 
 `/why [issue_description]`
 
 ## Variables
 
-- ISSUE: Problem or symptom to analyze (default: prompt for input)
-- DEPTH: Number of "why" iterations (default: 5, adjust as needed)
+- `ISSUE`: problem or symptom to analyze
+- `DEPTH`: default 5, but stop earlier or branch if evidence says so
 
-## Steps
+## OpenCode Notes
 
-1. State the problem clearly
-2. Ask "Why did this happen?" and document the answer
-3. For that answer, ask "Why?" again
-4. Continue until reaching root cause (usually 5 iterations)
-5. Validate by working backwards: root cause → symptom
-6. Explore branches if multiple causes emerge
-7. Propose solutions addressing root causes, not symptoms
+- Use with `systematic-debugging` after evidence is collected.
+- Use with `verification-before-completion` once a root-cause fix is claimed.
+- Branch analysis is allowed when one symptom has multiple independent causes.
 
 ## Examples
 
@@ -84,6 +96,12 @@ Solutions:
 A) Remove timestamp from Dockerfile, use git SHA
 B) Fix flaky tests, re-enable parallel test execution
 ```
+
+## Anti-Patterns
+
+- stopping at the first component failure
+- accepting "human error" as final answer
+- proposing symptom fixes before validating the chain
 
 ## Notes
 

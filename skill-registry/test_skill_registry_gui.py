@@ -65,6 +65,8 @@ class RegistryViewModelTests(unittest.TestCase):
         }
 
         event = gui.extract_skill_usage_event(part_data, 1775549140000)
+        self.assertIsNotNone(event)
+        assert event is not None
 
         self.assertEqual(event["skill"], "create-colleague")
         self.assertEqual(event["time_created"], 1775549140000)
@@ -83,6 +85,16 @@ class RegistryViewModelTests(unittest.TestCase):
             gui.canonical_skill_name("create-colleague"), "create-colleague"
         )
 
+    def test_get_skill_display_name_formats_prefixed_skills_clearly(self):
+        self.assertEqual(
+            gui.get_skill_display_name("sp-systematic-debugging"),
+            "Superpowers 系统调试（sp-systematic-debugging）",
+        )
+        self.assertEqual(
+            gui.get_skill_display_name("devops-helm-generator"),
+            "DevOps · helm generator（devops-helm-generator）",
+        )
+
     def test_summarize_skill_usage_counts_and_scores(self):
         events = [
             {"skill": "create-colleague", "time_created": 3000},
@@ -94,10 +106,53 @@ class RegistryViewModelTests(unittest.TestCase):
         summary = gui.summarize_skill_usage(events)
 
         self.assertEqual(summary["create-colleague"]["usage_count"], 2)
+        self.assertEqual(summary["create-colleague"]["usage_score"], 30)
         self.assertEqual(summary["create-colleague"]["score"], 30)
         self.assertEqual(summary["create-colleague"]["last_used_ts"], 3000)
         self.assertEqual(summary["cek-brainstorm"]["score"], 25)
         self.assertEqual(summary["sp-systematic-debugging"]["usage_count"], 1)
+
+    def test_compose_skill_score_blends_quality_and_usage(self):
+        self.assertEqual(gui.compose_skill_score(30, 90), 69)
+        self.assertEqual(gui.compose_skill_score(0, 90), 72)
+        self.assertEqual(gui.compose_skill_score(30, 0), 30)
+
+    def test_merge_skill_metrics_combines_usage_and_quality_reviews(self):
+        rows = [{"Skill": "cek-commit"}, {"Skill": "skill-registry"}]
+        usage_summary = {
+            "cek-commit": {
+                "usage_count": 2,
+                "usage_score": 30,
+                "score": 30,
+                "last_used_ts": 1000,
+                "last_used": "2026-04-07 10:00",
+            }
+        }
+        quality_reviews = {
+            "cek-commit": {
+                "quality_score": 90,
+                "summary": "结构清晰",
+                "reviewed_at": "2026-04-07 11:00",
+                "recommendations": ["补一个输出模板"],
+            }
+        }
+
+        merged = gui.merge_skill_metrics(rows, usage_summary, quality_reviews)
+
+        self.assertEqual(merged["cek-commit"]["quality_score"], 90)
+        self.assertEqual(merged["cek-commit"]["usage_score"], 30)
+        self.assertEqual(merged["cek-commit"]["score"], 69)
+        self.assertEqual(merged["skill-registry"]["score"], 0)
+
+    def test_get_skill_recommendations_includes_opencode_best_practices(self):
+        self.assertIn(
+            "opencode-skill-best-practices",
+            gui.get_skill_recommendations("cek-create-skill"),
+        )
+        self.assertIn(
+            "opencode-skill-quality-reviewer",
+            gui.get_skill_recommendations("opencode-skill-best-practices"),
+        )
 
     def test_usage_overview_reports_total_invocations_and_recent_events(self):
         events = [
@@ -172,6 +227,8 @@ class RegistryViewModelTests(unittest.TestCase):
         usage_summary = {
             "create-colleague": {
                 "usage_count": 2,
+                "usage_score": 30,
+                "quality_score": 0,
                 "score": 30,
                 "last_used_ts": 1775549140000,
             }
@@ -183,6 +240,7 @@ class RegistryViewModelTests(unittest.TestCase):
         self.assertEqual(indexed[0]["status_label"], "启用")
         self.assertEqual(indexed[0]["top_category"], "未分类")
         self.assertEqual(indexed[0]["usage_count"], 2)
+        self.assertEqual(indexed[0]["usage_score"], 30)
         self.assertEqual(indexed[0]["score"], 30)
 
     def test_index_registry_rows_supports_score_sort(self):

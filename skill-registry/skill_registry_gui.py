@@ -21,6 +21,7 @@ USAGE_GUIDE_PATH = BASE_DIR / "SKILLS_USAGE_GUIDE.md"
 OPENCODE_DB_PATH = USER_HOME / ".local" / "share" / "opencode" / "opencode.db"
 TRASH_DIR = BASE_DIR / ".trash"
 AGENTS_SKILLS_DIR = USER_HOME / ".agents" / "skills"
+QUALITY_REVIEWS_PATH = BASE_DIR / "skill-registry" / "skill_quality_reviews.json"
 NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 CSV_FIELDS = [
@@ -60,6 +61,8 @@ KNOWN_PURPOSE_MAP = {
     "cek-agent-evaluation": "评估和改进 commands、skills、agents 的效果",
     "cek-analyze-issue": "分析 GitHub issue 并整理技术规格说明",
     "cek-anthropic-skill-best-practices": "按 Anthropic 最佳实践完善 skill 结构和写法",
+    "opencode-skill-best-practices": "把通用 skill 编写原则翻译成适用于本地 OpenCode 环境的落地规范",
+    "opencode-skill-quality-reviewer": "自动审查本地 skill 质量并生成评分结果",
     "cek-attach-review-to-pr": "把评审意见按行挂到 Pull Request 上",
     "cek-brainstorm": "把模糊想法逐步澄清成可执行设计",
     "cek-build-mcp": "指导构建高质量 MCP 服务",
@@ -117,6 +120,8 @@ KNOWN_DISPLAY_NAME_MAP = {
     "cek-agent-evaluation": "技能效果评估",
     "cek-analyze-issue": "Issue 技术分析",
     "cek-anthropic-skill-best-practices": "Anthropic 技能最佳实践",
+    "opencode-skill-best-practices": "OpenCode 技能最佳实践",
+    "opencode-skill-quality-reviewer": "技能质量审查器",
     "cek-attach-review-to-pr": "PR 行级评审挂载",
     "cek-brainstorm": "方案脑暴",
     "cek-build-mcp": "MCP 构建",
@@ -164,6 +169,20 @@ KNOWN_DISPLAY_NAME_MAP = {
     "cek-worktrees": "Worktree 工作流",
     "cek-write-concisely": "简洁写作",
     "cek-write-tests": "补充测试",
+    "sp-brainstorming": "Superpowers 脑暴设计",
+    "sp-dispatching-parallel-agents": "Superpowers 并行分派",
+    "sp-executing-plans": "Superpowers 按计划执行",
+    "sp-finishing-a-development-branch": "Superpowers 分支收尾",
+    "sp-receiving-code-review": "Superpowers 接收评审",
+    "sp-requesting-code-review": "Superpowers 发起评审",
+    "sp-subagent-driven-development": "Superpowers 子代理开发",
+    "sp-systematic-debugging": "Superpowers 系统调试",
+    "sp-test-driven-development": "Superpowers 测试驱动",
+    "sp-using-git-worktrees": "Superpowers Worktree",
+    "sp-using-superpowers": "Superpowers 总控入口",
+    "sp-verification-before-completion": "Superpowers 完成前验证",
+    "sp-writing-plans": "Superpowers 写实施计划",
+    "sp-writing-skills": "Superpowers 写技能",
 }
 
 RUNTIME_SKILL_NAME_MAP = {
@@ -185,6 +204,8 @@ SKILL_CATEGORY_MAP = {
     "cek-agent-evaluation": ("技能开发", "设计与优化"),
     "cek-analyze-issue": ("Git 协作", "Issue 与 PR"),
     "cek-anthropic-skill-best-practices": ("技能开发", "设计与优化"),
+    "opencode-skill-best-practices": ("技能开发", "设计与优化"),
+    "opencode-skill-quality-reviewer": ("技能开发", "设计与优化"),
     "cek-attach-review-to-pr": ("Git 协作", "Issue 与 PR"),
     "cek-brainstorm": ("规划实施", "需求与方案"),
     "cek-build-mcp": ("MCP 与技术栈", "MCP 构建"),
@@ -596,11 +617,16 @@ def get_skill_display_name(skill_name: str) -> str:
     alias = KNOWN_DISPLAY_NAME_MAP.get(skill_name)
     if alias:
         return f"{alias}（{skill_name}）"
-    if any(
-        skill_name.startswith(prefix) for prefix in ["tob-", "sp-", "ags-", "devops-"]
-    ):
-        readable = skill_name.split("-", 1)[1].replace("-", " ")
-        return f"{readable}（{skill_name}）"
+    prefix_map = {
+        "tob-": "Trail of Bits",
+        "sp-": "Superpowers",
+        "ags-": "AgentSys",
+        "devops-": "DevOps",
+    }
+    for prefix, family in prefix_map.items():
+        if skill_name.startswith(prefix):
+            readable = skill_name.split("-", 1)[1].replace("-", " ")
+            return f"{family} · {readable}（{skill_name}）"
     return skill_name
 
 
@@ -816,6 +842,120 @@ def score_from_usage_count(usage_count: int) -> int:
     return min(100, 20 + usage_count * 5)
 
 
+def compose_skill_score(usage_score: int, quality_score: int) -> int:
+    usage_score = max(0, min(100, int(usage_score or 0)))
+    quality_score = max(0, min(100, int(quality_score or 0)))
+    if quality_score and usage_score:
+        return round(quality_score * 0.65 + usage_score * 0.35)
+    if quality_score:
+        return round(quality_score * 0.8)
+    return usage_score
+
+
+def load_skill_quality_reviews(
+    path: Path = QUALITY_REVIEWS_PATH,
+) -> dict[str, dict[str, Any]]:
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    skills = payload.get("skills") if isinstance(payload, dict) else None
+    if not isinstance(skills, dict):
+        return {}
+    result: dict[str, dict[str, Any]] = {}
+    for skill_name, item in skills.items():
+        if not isinstance(skill_name, str) or not isinstance(item, dict):
+            continue
+        result[skill_name] = item
+    return result
+
+
+def merge_skill_metrics(
+    rows: list[dict],
+    usage_summary: dict[str, dict],
+    quality_reviews: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, dict[str, Any]]:
+    quality_reviews = quality_reviews or {}
+    merged: dict[str, dict[str, Any]] = {}
+    skill_names = {row.get("Skill", "") for row in rows if row.get("Skill")}
+    skill_names.update(usage_summary.keys())
+    skill_names.update(quality_reviews.keys())
+
+    for skill_name in skill_names:
+        usage = usage_summary.get(skill_name, {})
+        review = quality_reviews.get(skill_name, {})
+        usage_count = int(usage.get("usage_count", 0))
+        usage_score = int(usage.get("usage_score", usage.get("score", 0)))
+        quality_score = int(review.get("quality_score", 0))
+        merged[skill_name] = {
+            "usage_count": usage_count,
+            "usage_score": usage_score,
+            "quality_score": quality_score,
+            "score": compose_skill_score(usage_score, quality_score),
+            "last_used_ts": int(usage.get("last_used_ts", 0)),
+            "last_used": usage.get("last_used", "未使用"),
+            "quality_summary": str(review.get("summary", "")).strip(),
+            "quality_reviewed_at": str(review.get("reviewed_at", "")).strip(),
+            "quality_recommendations": list(review.get("recommendations", []))
+            if isinstance(review.get("recommendations", []), list)
+            else [],
+        }
+    return merged
+
+
+def get_skill_recommendations(skill_name: str) -> list[str]:
+    explicit_map = {
+        "opencode-skill-best-practices": [
+            "cek-create-skill",
+            "cek-prompt-engineering",
+            "cek-test-skill",
+            "opencode-skill-quality-reviewer",
+        ],
+        "opencode-skill-quality-reviewer": [
+            "opencode-skill-best-practices",
+            "cek-test-skill",
+            "skill-registry",
+        ],
+        "cek-create-skill": [
+            "opencode-skill-best-practices",
+            "cek-prompt-engineering",
+            "cek-test-skill",
+        ],
+        "cek-prompt-engineering": [
+            "opencode-skill-best-practices",
+            "cek-context-engineering",
+            "cek-test-prompt",
+        ],
+        "cek-context-engineering": [
+            "opencode-skill-best-practices",
+            "cek-prompt-engineering",
+            "cek-create-skill",
+        ],
+        "cek-test-skill": [
+            "opencode-skill-quality-reviewer",
+            "opencode-skill-best-practices",
+            "cek-create-skill",
+        ],
+    }
+    recommendations = list(explicit_map.get(skill_name, []))
+    if skill_name.startswith(("cek-", "sp-", "ags-")) and skill_name not in {
+        "opencode-skill-best-practices",
+        "opencode-skill-quality-reviewer",
+        "skill-registry",
+    }:
+        recommendations.append("opencode-skill-best-practices")
+    deduped = []
+    seen = set()
+    for item in recommendations:
+        if item == skill_name or item in seen:
+            continue
+        seen.add(item)
+        deduped.append(item)
+    return deduped[:4]
+
+
 def canonical_skill_name(skill_name: str) -> str:
     return RUNTIME_SKILL_NAME_MAP.get(skill_name.strip(), skill_name.strip())
 
@@ -851,6 +991,8 @@ def summarize_skill_usage(events: list[dict]) -> dict[str, dict]:
             skill_name,
             {
                 "usage_count": 0,
+                "usage_score": 0,
+                "quality_score": 0,
                 "score": 0,
                 "last_used_ts": 0,
                 "last_used": "未使用",
@@ -860,7 +1002,8 @@ def summarize_skill_usage(events: list[dict]) -> dict[str, dict]:
         if timestamp_ms > item["last_used_ts"]:
             item["last_used_ts"] = timestamp_ms
             item["last_used"] = format_usage_timestamp(timestamp_ms)
-        item["score"] = score_from_usage_count(item["usage_count"])
+        item["usage_score"] = score_from_usage_count(item["usage_count"])
+        item["score"] = item["usage_score"]
     return summary
 
 
@@ -944,7 +1087,14 @@ def build_operations_dashboard(
     def usage_for(row: dict) -> dict:
         return usage_summary.get(
             row.get("Skill", ""),
-            {"usage_count": 0, "score": 0, "last_used_ts": 0, "last_used": "未使用"},
+            {
+                "usage_count": 0,
+                "usage_score": 0,
+                "quality_score": 0,
+                "score": 0,
+                "last_used_ts": 0,
+                "last_used": "未使用",
+            },
         )
 
     high_usage = []
@@ -1091,6 +1241,8 @@ def index_registry_rows(
         status_label = to_chinese_status(row.get("Status", ""))
         usage = usage_summary.get(row.get("Skill", ""), {})
         usage_count = int(usage.get("usage_count", 0))
+        usage_score = int(usage.get("usage_score", score_from_usage_count(usage_count)))
+        quality_score = int(usage.get("quality_score", 0))
         score = int(usage.get("score", 0))
         last_used = usage.get("last_used", "未使用")
         search_blob = " ".join(
@@ -1103,6 +1255,8 @@ def index_registry_rows(
                 sub_category,
                 status_label,
                 str(usage_count),
+                str(usage_score),
+                str(quality_score),
                 str(score),
             ]
         ).lower()
@@ -1114,6 +1268,8 @@ def index_registry_rows(
                 "sub_category": sub_category,
                 "status_label": status_label,
                 "usage_count": usage_count,
+                "usage_score": usage_score,
+                "quality_score": quality_score,
                 "score": score,
                 "last_used": last_used,
                 "search_blob": search_blob,
@@ -1215,6 +1371,7 @@ class SkillRegistryApp:
         self.rows: list[dict] = []
         self.indexed_rows: list[dict] = []
         self.usage_summary: dict[str, dict] = {}
+        self.quality_reviews: dict[str, dict[str, Any]] = {}
         self.usage_events: list[dict] = []
         self.usage_overview: dict[str, Any] = {}
         self.operations_dashboard: dict[str, Any] = {}
@@ -1245,8 +1402,11 @@ class SkillRegistryApp:
         self.results_var = tk.StringVar(value="0 个技能")
         self.load_more_var = tk.StringVar(value="")
         self.detail_usage_var = tk.StringVar(value="0 次")
+        self.detail_usage_score_var = tk.StringVar(value="0")
+        self.detail_quality_score_var = tk.StringVar(value="0")
         self.detail_score_var = tk.StringVar(value="0")
         self.detail_last_used_var = tk.StringVar(value="未使用")
+        self.detail_recommend_var = tk.StringVar(value="-")
         self.high_usage_var = tk.StringVar(value="0")
         self.active_7d_var = tk.StringVar(value="0")
         self.sleeping_var = tk.StringVar(value="0")
@@ -1829,8 +1989,11 @@ class SkillRegistryApp:
             ("首次安装", "Installed"),
             ("最近更新", "LastUpdated"),
             ("使用次数", "__usage_count__"),
-            ("技能评分", "__score__"),
+            ("热度分", "__usage_score__"),
+            ("质量分", "__quality_score__"),
+            ("综合评分", "__score__"),
             ("最近使用", "__last_used__"),
+            ("推荐搭配", "__recommend__"),
             ("来源", "Source"),
             ("本地路径", "LocalPath"),
             ("用途", "Purpose"),
@@ -1846,10 +2009,16 @@ class SkillRegistryApp:
             ).grid(row=row_index, column=0, sticky="nw", pady=4)
             if key == "__usage_count__":
                 value_source = self.detail_usage_var
+            elif key == "__usage_score__":
+                value_source = self.detail_usage_score_var
+            elif key == "__quality_score__":
+                value_source = self.detail_quality_score_var
             elif key == "__score__":
                 value_source = self.detail_score_var
             elif key == "__last_used__":
                 value_source = self.detail_last_used_var
+            elif key == "__recommend__":
+                value_source = self.detail_recommend_var
             else:
                 value_source = self.detail_vars[key]
             tk.Label(
@@ -2039,7 +2208,11 @@ class SkillRegistryApp:
         self.pending_usage_refresh_job = None
         try:
             latest_events = load_skill_usage_events()
-            latest_usage = load_skill_usage_summary()
+            latest_usage = merge_skill_metrics(
+                self.rows,
+                load_skill_usage_summary(),
+                self.quality_reviews,
+            )
             if (
                 usage_summary_changed(self.usage_summary, latest_usage)
                 or self.usage_events != latest_events
@@ -2102,7 +2275,12 @@ class SkillRegistryApp:
         else:
             self.rows = load_registry()
         self.usage_events = load_skill_usage_events()
-        self.usage_summary = load_skill_usage_summary()
+        self.quality_reviews = load_skill_quality_reviews()
+        self.usage_summary = merge_skill_metrics(
+            self.rows,
+            load_skill_usage_summary(),
+            self.quality_reviews,
+        )
         self._refresh_operations_dashboard()
         self._reindex_rows()
 
@@ -2232,8 +2410,11 @@ class SkillRegistryApp:
         self.detail_vars["Skill"].set("未选择技能")
         self.empty_tip_var.set("从中间卡片中选择一个技能，右侧会显示详情。")
         self.detail_usage_var.set("0 次")
+        self.detail_usage_score_var.set("0")
+        self.detail_quality_score_var.set("0")
         self.detail_score_var.set("0")
         self.detail_last_used_var.set("未使用")
+        self.detail_recommend_var.set("-")
         if self.detail_text is None:
             return
         self.detail_text.configure(state=tk.NORMAL)
@@ -2267,8 +2448,17 @@ class SkillRegistryApp:
         top_category, sub_category = get_skill_category(row["Skill"])
         usage = self.usage_summary.get(row["Skill"], {})
         self.detail_usage_var.set(f"{int(usage.get('usage_count', 0))} 次")
+        self.detail_usage_score_var.set(str(int(usage.get("usage_score", 0))))
+        self.detail_quality_score_var.set(str(int(usage.get("quality_score", 0))))
         self.detail_score_var.set(str(int(usage.get("score", 0))))
         self.detail_last_used_var.set(str(usage.get("last_used", "未使用")))
+        recommendations = [
+            get_skill_display_name(item)
+            for item in get_skill_recommendations(row["Skill"])
+        ]
+        self.detail_recommend_var.set(
+            " / ".join(recommendations) if recommendations else "-"
+        )
         self.empty_tip_var.set(
             f"{top_category} / {sub_category} · 可直接打开目录或编辑说明。"
         )
@@ -2277,7 +2467,22 @@ class SkillRegistryApp:
             return
         self.detail_text.configure(state=tk.NORMAL)
         self.detail_text.delete("1.0", tk.END)
-        self.detail_text.insert("1.0", row.get("Notes", ""))
+        notes = row.get("Notes", "")
+        quality_summary = str(usage.get("quality_summary", "")).strip()
+        quality_reviewed_at = str(usage.get("quality_reviewed_at", "")).strip()
+        recommendation_notes = usage.get("quality_recommendations", []) or []
+        note_parts = []
+        if quality_summary:
+            note_parts.append(f"质量审查：{quality_summary}")
+        if recommendation_notes:
+            note_parts.append(
+                "改进建议：" + "；".join(str(item) for item in recommendation_notes[:3])
+            )
+        if quality_reviewed_at:
+            note_parts.append(f"审查时间：{quality_reviewed_at}")
+        if notes:
+            note_parts.append(f"备注：{notes}")
+        self.detail_text.insert("1.0", "\n\n".join(note_parts) if note_parts else notes)
         self.detail_text.configure(state=tk.DISABLED)
 
     def _render_cards(self, filtered_rows: list[dict] | None = None) -> None:
@@ -2430,7 +2635,8 @@ class SkillRegistryApp:
         usage_row.pack(fill=tk.X, pady=(10, 0))
         for text, bg, fg in [
             (f"已用 {item['usage_count']} 次", self.panel_color, self.muted_color),
-            (f"评分 {item['score']}", self.soft_blue, self.header_accent),
+            (f"质量 {item.get('quality_score', 0)}", self.soft_peach, "#B76E00"),
+            (f"综合 {item['score']}", self.soft_blue, self.header_accent),
             (f"最近使用 {item['last_used']}", self.soft_green, "#1F7A48"),
         ]:
             tk.Label(
