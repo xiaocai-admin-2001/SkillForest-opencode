@@ -819,6 +819,7 @@ class SkillRegistryApp:
         style.configure("App.TFrame", background=self.bg_color)
         style.configure("Surface.TFrame", background=self.surface_color)
         style.configure("Toolbar.TFrame", background=self.surface_color)
+        style.configure("TopShell.TFrame", background=self.surface_color)
         style.configure(
             "Panel.TFrame",
             background=self.surface_color,
@@ -925,7 +926,7 @@ class SkillRegistryApp:
             padding=(11, 8),
             font=("Microsoft YaHei UI", 9),
             foreground=self.text_color,
-            background=self.soft_blue,
+            background="#f4f6fd",
             borderwidth=0,
         )
         style.map("Ghost.TButton", background=[("active", "#e2e8ff")])
@@ -977,27 +978,25 @@ class SkillRegistryApp:
     def _build_ui(self) -> None:
         self._configure_styles()
 
-        header = tk.Frame(
-            self.root,
-            bg=self.bg_color,
-            padx=16,
-            pady=14,
-        )
+        header = tk.Frame(self.root, bg=self.bg_color, padx=16, pady=14)
         header.pack(fill=tk.X)
 
-        hero = tk.Frame(
+        top_shell = tk.Frame(
             header,
-            bg=self.header_color,
-            padx=24,
-            pady=22,
+            bg=self.surface_color,
+            padx=18,
+            pady=18,
             highlightbackground="#dde5f5",
             highlightthickness=1,
         )
+        top_shell.pack(fill=tk.X)
+
+        hero = tk.Frame(top_shell, bg=self.surface_color)
         hero.pack(fill=tk.X)
 
-        hero_left = tk.Frame(hero, bg=self.header_color)
+        hero_left = tk.Frame(hero, bg=self.surface_color)
         hero_left.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        hero_right = tk.Frame(hero, bg=self.header_color)
+        hero_right = tk.Frame(hero, bg=self.surface_color)
         hero_right.pack(side=tk.RIGHT, fill=tk.Y, padx=(18, 0))
 
         ttk.Label(hero_left, text="SkillForest", style="HeaderTitle.TLabel").pack(
@@ -1009,17 +1008,19 @@ class SkillRegistryApp:
             style="HeaderSub.TLabel",
         ).pack(anchor=tk.W, pady=(6, 10))
 
-        badge_row = tk.Frame(hero_left, bg=self.header_color)
+        badge_row = tk.Frame(hero_left, bg=self.surface_color)
         badge_row.pack(anchor=tk.W, pady=(0, 8))
         for text in ["技能树视图", "远程搜索", "注册表同步", "可视化管理"]:
             label = tk.Label(
                 badge_row,
                 text=text,
-                bg="#ffffff",
+                bg="#f5f7ff",
                 fg="#5f6f8d",
                 padx=10,
                 pady=4,
                 font=("Microsoft YaHei UI", 9),
+                highlightbackground="#e2e8f6",
+                highlightthickness=1,
             )
             label.pack(side=tk.LEFT, padx=(0, 8))
 
@@ -1061,7 +1062,10 @@ class SkillRegistryApp:
             style="Ghost.TButton",
         ).pack(anchor=tk.W)
 
-        dashboard = ttk.Frame(self.root, style="App.TFrame", padding=(16, 14, 16, 6))
+        divider = tk.Frame(top_shell, bg="#eef1f8", height=1)
+        divider.pack(fill=tk.X, pady=(16, 14))
+
+        dashboard = ttk.Frame(top_shell, style="TopShell.TFrame")
         dashboard.pack(fill=tk.X)
 
         metrics = ttk.Frame(dashboard, style="App.TFrame")
@@ -1079,9 +1083,9 @@ class SkillRegistryApp:
             side=tk.LEFT, fill=tk.X, expand=True, padx=(8, 0)
         )
 
-        toolbar_wrap = ttk.Frame(self.root, style="App.TFrame", padding=(16, 6, 16, 8))
-        toolbar_wrap.pack(fill=tk.X)
-        toolbar = ttk.Frame(toolbar_wrap, style="Toolbar.TFrame", padding=14)
+        toolbar_wrap = ttk.Frame(top_shell, style="TopShell.TFrame")
+        toolbar_wrap.pack(fill=tk.X, pady=(14, 0))
+        toolbar = ttk.Frame(toolbar_wrap, style="Toolbar.TFrame", padding=6)
         toolbar.pack(fill=tk.X)
 
         ttk.Button(
@@ -1332,6 +1336,7 @@ class SkillRegistryApp:
     ) -> ttk.Frame:
         frame = ttk.Frame(parent, style="Surface.TFrame", padding=(14, 12))
         frame.configure(style="Surface.TFrame")
+        frame["padding"] = (14, 12)
         ttk.Label(frame, text=title, style="MetricTitle.TLabel").pack(anchor=tk.W)
         ttk.Label(frame, textvariable=variable, style="MetricValue.TLabel").pack(
             anchor=tk.W, pady=(6, 0)
