@@ -44,6 +44,14 @@ SAMPLE_ROWS = [
 
 
 class RegistryViewModelTests(unittest.TestCase):
+    def test_index_registry_rows_builds_cached_search_blob(self):
+        indexed = gui.index_registry_rows(SAMPLE_ROWS)
+
+        self.assertEqual(indexed[0]["row"]["Skill"], "cek-brainstorm")
+        self.assertIn("方案设计", indexed[0]["search_blob"])
+        self.assertEqual(indexed[0]["status_label"], "启用")
+        self.assertEqual(indexed[0]["top_category"], "规划实施")
+
     def test_summarize_registry_rows(self):
         summary = gui.summarize_registry_rows(SAMPLE_ROWS)
 
@@ -80,6 +88,16 @@ class RegistryViewModelTests(unittest.TestCase):
             [row["Skill"] for row in filtered],
             ["cek-brainstorm", "skill-registry", "tob-semgrep"],
         )
+
+    def test_limit_visible_rows_reports_remaining_count(self):
+        indexed = gui.index_registry_rows(SAMPLE_ROWS)
+        visible, remaining = gui.limit_visible_rows(indexed, limit=2)
+
+        self.assertEqual(
+            [item["row"]["Skill"] for item in visible],
+            ["cek-brainstorm", "skill-registry"],
+        )
+        self.assertEqual(remaining, 1)
 
 
 if __name__ == "__main__":

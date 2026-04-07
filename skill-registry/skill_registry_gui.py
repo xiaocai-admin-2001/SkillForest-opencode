@@ -8,6 +8,7 @@ from datetime import datetime
 from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog, ttk
+from typing import Any
 
 
 USER_HOME = Path.home()
@@ -31,6 +32,9 @@ CSV_FIELDS = [
     "Purpose",
     "Notes",
 ]
+
+CARD_BATCH_SIZE = 48
+SEARCH_DEBOUNCE_MS = 220
 
 EXCLUDED_NAMES = {
     ".trash",
@@ -778,6 +782,74 @@ def _date_rank(value: str) -> int:
     return 0
 
 
+def _row_sort_key(row: dict) -> tuple:
+    return (
+        0 if row.get("Status") == "active" else 1,
+        -_date_rank(row.get("LastUpdated", "")),
+        get_skill_display_name(row.get("Skill", "")).lower(),
+    )
+
+
+def index_registry_rows(rows: list[dict]) -> list[dict]:
+    indexed = []
+    for row in rows:
+        display_name = get_skill_display_name(row.get("Skill", ""))
+        top_category, sub_category = get_skill_category(row["Skill"])
+        status_label = to_chinese_status(row.get("Status", ""))
+        search_blob = " ".join(
+            [
+                row.get("Skill", ""),
+                display_name,
+                row.get("Purpose", ""),
+                row.get("Notes", ""),
+                top_category,
+                sub_category,
+                status_label,
+            ]
+        ).lower()
+        indexed.append(
+            {
+                "row": row,
+                "display_name": display_name,
+                "top_category": top_category,
+                "sub_category": sub_category,
+                "status_label": status_label,
+                "search_blob": search_blob,
+                "sort_key": _row_sort_key(row),
+            }
+        )
+    return sorted(indexed, key=lambda item: item["sort_key"])
+
+
+def filter_indexed_rows(
+    indexed_rows: list[dict], selected_filter: str, query: str
+) -> list[dict]:
+    tokens = [token.lower() for token in query.strip().split() if token.strip()]
+    filtered = []
+    for item in indexed_rows:
+        row = item["row"]
+        if selected_filter == "active" and row.get("Status") != "active":
+            continue
+        if selected_filter == "removed" and row.get("Status") != "removed":
+            continue
+        if selected_filter.startswith("category:"):
+            expected = selected_filter.split(":", 1)[1]
+            if item["top_category"] != expected:
+                continue
+        if tokens and not all(token in item["search_blob"] for token in tokens):
+            continue
+        filtered.append(item)
+    return filtered
+
+
+def limit_visible_rows(
+    indexed_rows: list[dict], limit: int = CARD_BATCH_SIZE
+) -> tuple[list[dict], int]:
+    visible = indexed_rows[:limit]
+    remaining = max(0, len(indexed_rows) - len(visible))
+    return visible, remaining
+
+
 def summarize_registry_rows(rows: list[dict]) -> dict:
     latest = "-"
     dates = [row.get("LastUpdated", "") for row in rows if row.get("LastUpdated")]
@@ -824,42 +896,12 @@ def build_filter_options(rows: list[dict]) -> list[dict]:
 
 
 def filter_skill_rows(rows: list[dict], selected_filter: str, query: str) -> list[dict]:
-    tokens = [token.lower() for token in query.strip().split() if token.strip()]
-    filtered = []
-    for row in rows:
-        top_category, sub_category = get_skill_category(row["Skill"])
-        if selected_filter == "active" and row.get("Status") != "active":
-            continue
-        if selected_filter == "removed" and row.get("Status") != "removed":
-            continue
-        if selected_filter.startswith("category:"):
-            expected = selected_filter.split(":", 1)[1]
-            if top_category != expected:
-                continue
-
-        search_text = " ".join(
-            [
-                row.get("Skill", ""),
-                get_skill_display_name(row.get("Skill", "")),
-                row.get("Purpose", ""),
-                row.get("Notes", ""),
-                top_category,
-                sub_category,
-                to_chinese_status(row.get("Status", "")),
-            ]
-        ).lower()
-        if tokens and not all(token in search_text for token in tokens):
-            continue
-        filtered.append(row)
-
-    return sorted(
-        filtered,
-        key=lambda row: (
-            0 if row.get("Status") == "active" else 1,
-            -_date_rank(row.get("LastUpdated", "")),
-            get_skill_display_name(row.get("Skill", "")).lower(),
-        ),
-    )
+    return [
+        item["row"]
+        for item in filter_indexed_rows(
+            index_registry_rows(rows), selected_filter, query
+        )
+    ]
 
 
 class SkillRegistryApp:
@@ -869,13 +911,16 @@ class SkillRegistryApp:
         self.root.geometry("1500x920")
         self.root.minsize(1260, 780)
         self.rows: list[dict] = []
+        self.indexed_rows: list[dict] = []
         self.search_query_var = tk.StringVar(value="")
         self.search_results: list[dict] = []
         self.selected_filter = "all"
         self.selected_skill_id = ""
+        self.visible_limit = CARD_BATCH_SIZE
+        self.filtered_indexed_rows: list[dict] = []
+        self.pending_search_job: str | None = None
         self.filter_buttons: dict[str, tk.Button] = {}
-        self.filter_sections: dict[str, tk.Frame] = {}
-        self.card_widgets: dict[str, tk.Frame] = {}
+        self.card_widgets: dict[str, dict[str, Any]] = {}
         self.cards_window = None
         self.card_columns = 0
 
@@ -890,6 +935,7 @@ class SkillRegistryApp:
         self.metric_removed_var = tk.StringVar(value="0")
         self.metric_recent_var = tk.StringVar(value="-")
         self.results_var = tk.StringVar(value="0 个技能")
+        self.load_more_var = tk.StringVar(value="")
 
         self.bg_color = "#F5F7FA"
         self.surface_color = "#FFFFFF"
@@ -1262,6 +1308,24 @@ class SkillRegistryApp:
         self.cards_frame.bind("<Configure>", self._on_cards_frame_configured)
         self.cards_canvas.bind("<Configure>", self._on_cards_canvas_configured)
 
+        load_more_wrap = tk.Frame(center, bg=self.surface_color)
+        load_more_wrap.pack(fill=tk.X, pady=(12, 0))
+        self.load_more_label = tk.Label(
+            load_more_wrap,
+            textvariable=self.load_more_var,
+            bg=self.surface_color,
+            fg=self.muted_color,
+            font=("Microsoft YaHei UI", 9),
+        )
+        self.load_more_label.pack(side=tk.LEFT)
+        self.load_more_button = ttk.Button(
+            load_more_wrap,
+            text="加载更多",
+            command=self.load_more_cards,
+            style="Toolbar.TButton",
+        )
+        self.load_more_button.pack(side=tk.RIGHT)
+
         ttk.Label(detail, text="技能详情", style="SectionTitle.TLabel").pack(
             anchor=tk.W
         )
@@ -1465,26 +1529,39 @@ class SkillRegistryApp:
         return 1
 
     def _filtered_rows(self) -> list[dict]:
-        return filter_skill_rows(
-            self.rows, self.selected_filter, self.search_query_var.get()
-        )
+        return [item["row"] for item in self.filtered_indexed_rows]
 
     def _on_filter_text_changed(self, *_args) -> None:
-        self._refresh_visible_rows()
+        if self.pending_search_job is not None:
+            self.root.after_cancel(self.pending_search_job)
+        self.pending_search_job = self.root.after(
+            SEARCH_DEBOUNCE_MS, self._apply_debounced_search
+        )
+
+    def _apply_debounced_search(self) -> None:
+        self.pending_search_job = None
+        self._refresh_visible_rows(reset_limit=True)
 
     def set_filter(self, key: str) -> None:
         self.selected_filter = key
         for button_key, button in self.filter_buttons.items():
             self._style_filter_button(button, button_key == key)
-        self._refresh_visible_rows()
+        self._refresh_visible_rows(reset_limit=True)
 
-    def _refresh_visible_rows(self) -> None:
-        filtered = self._filtered_rows()
+    def _refresh_visible_rows(self, reset_limit: bool = False) -> None:
+        if reset_limit:
+            self.visible_limit = CARD_BATCH_SIZE
+        self.filtered_indexed_rows = filter_indexed_rows(
+            self.indexed_rows, self.selected_filter, self.search_query_var.get()
+        )
+        filtered = self.filtered_indexed_rows
         self.results_var.set(f"{len(filtered)} 个技能")
 
         if filtered:
-            if not any(row["ID"] == self.selected_skill_id for row in filtered):
-                self.selected_skill_id = filtered[0]["ID"]
+            if not any(
+                item["row"]["ID"] == self.selected_skill_id for item in filtered
+            ):
+                self.selected_skill_id = filtered[0]["row"]["ID"]
         else:
             self.selected_skill_id = ""
         self._render_cards(filtered)
@@ -1495,6 +1572,7 @@ class SkillRegistryApp:
             self.rows = sync_registry()
         else:
             self.rows = load_registry()
+        self.indexed_rows = index_registry_rows(self.rows)
 
         self._refresh_metrics()
         self._render_filters()
@@ -1504,7 +1582,7 @@ class SkillRegistryApp:
             self._style_filter_button(button, button_key == self.selected_filter)
         if not any(row["ID"] == self.selected_skill_id for row in self.rows):
             self.selected_skill_id = ""
-        self._refresh_visible_rows()
+        self._refresh_visible_rows(reset_limit=True)
         self.status_var.set(f"已加载 {len(self.rows)} 个 skill")
 
     def _refresh_metrics(self) -> None:
@@ -1567,7 +1645,7 @@ class SkillRegistryApp:
 
     def _render_cards(self, filtered_rows: list[dict] | None = None) -> None:
         if filtered_rows is None:
-            filtered_rows = self._filtered_rows()
+            filtered_rows = self.filtered_indexed_rows
 
         for child in self.cards_frame.winfo_children():
             child.destroy()
@@ -1598,7 +1676,11 @@ class SkillRegistryApp:
                 font=("Microsoft YaHei UI", 9),
             ).pack(anchor=tk.W, pady=(8, 0))
             self.cards_frame.columnconfigure(0, weight=1)
+            self.load_more_var.set("")
+            self.load_more_button.pack_forget()
             return
+
+        visible_rows, remaining = limit_visible_rows(filtered_rows, self.visible_limit)
 
         columns = self.card_columns or self._card_column_count(
             self.cards_canvas.winfo_width()
@@ -1606,8 +1688,8 @@ class SkillRegistryApp:
         for col in range(columns):
             self.cards_frame.columnconfigure(col, weight=1)
 
-        for index, row in enumerate(filtered_rows):
-            card = self._create_skill_card(self.cards_frame, row)
+        for index, item in enumerate(visible_rows):
+            card = self._create_skill_card(self.cards_frame, item)
             card.grid(
                 row=index // columns,
                 column=index % columns,
@@ -1615,27 +1697,32 @@ class SkillRegistryApp:
                 padx=6,
                 pady=6,
             )
-            self.card_widgets[row["ID"]] = card
+        if remaining > 0:
+            self.load_more_var.set(f"还有 {remaining} 个技能未显示")
+            if not self.load_more_button.winfo_manager():
+                self.load_more_button.pack(side=tk.RIGHT)
+        else:
+            self.load_more_var.set("已显示全部技能")
+            self.load_more_button.pack_forget()
 
-    def _create_skill_card(self, parent: tk.Frame, row: dict) -> tk.Frame:
+    def _create_skill_card(self, parent: tk.Frame, item: dict) -> tk.Frame:
+        row = item["row"]
         selected = row["ID"] == self.selected_skill_id
-        top_category, sub_category = get_skill_category(row["Skill"])
-        status_text = to_chinese_status(row.get("Status", ""))
         card = tk.Frame(
             parent,
             bg=self.surface_color,
             padx=14,
             pady=14,
-            highlightbackground=self.header_accent if selected else self.border_color,
-            highlightthickness=2 if selected else 1,
+            highlightbackground=self.border_color,
+            highlightthickness=1,
         )
 
         header = tk.Frame(card, bg=self.surface_color)
         header.pack(fill=tk.X)
         icon = tk.Label(
             header,
-            text=CATEGORY_ICON_MAP.get(top_category, "•"),
-            bg=self.soft_blue if selected else self.panel_color,
+            text=CATEGORY_ICON_MAP.get(item["top_category"], "•"),
+            bg=self.panel_color,
             fg=self.header_accent,
             width=3,
             pady=6,
@@ -1647,7 +1734,7 @@ class SkillRegistryApp:
         title_wrap.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(10, 8))
         tk.Label(
             title_wrap,
-            text=get_skill_display_name(row["Skill"]),
+            text=item["display_name"],
             bg=self.surface_color,
             fg=self.text_color,
             anchor="w",
@@ -1657,7 +1744,7 @@ class SkillRegistryApp:
         ).pack(anchor=tk.W)
         tk.Label(
             title_wrap,
-            text=f"{top_category} / {sub_category}",
+            text=f"{item['top_category']} / {item['sub_category']}",
             bg=self.surface_color,
             fg=self.muted_color,
             anchor="w",
@@ -1665,15 +1752,16 @@ class SkillRegistryApp:
         ).pack(anchor=tk.W, pady=(4, 0))
 
         status_bg, status_fg = self._status_colors(row.get("Status", ""))
-        tk.Label(
+        status_chip = tk.Label(
             header,
-            text=status_text,
+            text=item["status_label"],
             bg=status_bg,
             fg=status_fg,
             padx=10,
             pady=4,
             font=("Microsoft YaHei UI", 8, "bold"),
-        ).pack(side=tk.RIGHT)
+        )
+        status_chip.pack(side=tk.RIGHT)
 
         tk.Label(
             card,
@@ -1703,12 +1791,13 @@ class SkillRegistryApp:
 
         actions = tk.Frame(card, bg=self.surface_color)
         actions.pack(fill=tk.X, pady=(12, 0))
-        ttk.Button(
+        detail_button = ttk.Button(
             actions,
             text="详情",
             command=lambda row_id=row["ID"]: self.select_skill(row_id),
-            style="Accent.TButton" if selected else "Ghost.TButton",
-        ).pack(side=tk.LEFT)
+            style="Ghost.TButton",
+        )
+        detail_button.pack(side=tk.LEFT)
         ttk.Button(
             actions,
             text="打开",
@@ -1718,6 +1807,13 @@ class SkillRegistryApp:
 
         for widget in (card, header, title_wrap, icon, meta):
             self._bind_select_click(widget, row["ID"])
+        self.card_widgets[row["ID"]] = {
+            "frame": card,
+            "icon": icon,
+            "detail_button": detail_button,
+            "selected": selected,
+        }
+        self._apply_card_selection_state(row["ID"], selected)
         return card
 
     def _bind_select_click(self, widget: tk.Widget, row_id: str) -> None:
@@ -1730,10 +1826,38 @@ class SkillRegistryApp:
             return (self.danger_soft, "#B54747")
         return (self.panel_color, self.muted_color)
 
+    def _apply_card_selection_state(self, row_id: str, selected: bool) -> None:
+        controls = self.card_widgets.get(row_id)
+        if not controls:
+            return
+        frame = controls["frame"]
+        icon = controls["icon"]
+        detail_button = controls["detail_button"]
+        frame.configure(
+            highlightbackground=self.header_accent if selected else self.border_color,
+            highlightthickness=2 if selected else 1,
+        )
+        icon.configure(bg=self.soft_blue if selected else self.panel_color)
+        detail_button.configure(style="Accent.TButton" if selected else "Ghost.TButton")
+        controls["selected"] = selected
+
     def select_skill(self, row_id: str) -> None:
+        previous = self.selected_skill_id
+        if previous == row_id:
+            self._sync_detail_panel()
+            return
         self.selected_skill_id = row_id
-        self._render_cards()
+        if previous:
+            self._apply_card_selection_state(previous, False)
+        if row_id in self.card_widgets:
+            self._apply_card_selection_state(row_id, True)
+        else:
+            self._render_cards()
         self._sync_detail_panel()
+
+    def load_more_cards(self) -> None:
+        self.visible_limit += CARD_BATCH_SIZE
+        self._render_cards(self.filtered_indexed_rows)
 
     def open_skill_dir_for(self, row_id: str) -> None:
         self.selected_skill_id = row_id
