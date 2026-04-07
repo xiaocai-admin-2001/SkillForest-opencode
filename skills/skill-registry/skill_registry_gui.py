@@ -766,6 +766,9 @@ class SkillRegistryApp:
         self.status_var = tk.StringVar(value="准备就绪")
         self.detail_vars = {field: tk.StringVar(value="") for field in CSV_FIELDS}
         self.detail_text: tk.Text | None = None
+        self.empty_tip_var = tk.StringVar(
+            value="请从左侧技能树选择一个 skill，查看详情与用途。"
+        )
         self.metric_total_var = tk.StringVar(value="0")
         self.metric_active_var = tk.StringVar(value="0")
         self.metric_group_var = tk.StringVar(value="0")
@@ -824,6 +827,12 @@ class SkillRegistryApp:
             font=("Microsoft YaHei UI", 11, "bold"),
         )
         style.configure(
+            "SmallTitle.TLabel",
+            background=self.surface_color,
+            foreground=self.muted_color,
+            font=("Microsoft YaHei UI", 9, "bold"),
+        )
+        style.configure(
             "MetricTitle.TLabel",
             background=self.surface_color,
             foreground=self.muted_color,
@@ -834,6 +843,18 @@ class SkillRegistryApp:
             background=self.surface_color,
             foreground=self.text_color,
             font=("Segoe UI Semibold", 18, "bold"),
+        )
+        style.configure(
+            "HeroValue.TLabel",
+            background=self.surface_color,
+            foreground=self.header_color,
+            font=("Segoe UI Semibold", 16, "bold"),
+        )
+        style.configure(
+            "Muted.TLabel",
+            background=self.surface_color,
+            foreground=self.muted_color,
+            font=("Microsoft YaHei UI", 9),
         )
         style.configure(
             "Toolbar.TButton", padding=(10, 7), font=("Microsoft YaHei UI", 9)
@@ -1026,52 +1047,108 @@ class SkillRegistryApp:
         )
         info_frame.pack(fill=tk.BOTH, expand=True)
 
-        row_index = 0
-        for field in [
-            "ID",
-            "Skill",
-            "Status",
-            "Agent",
-            "Source",
-            "LocalPath",
-            "Installed",
-            "LastUpdated",
-            "Purpose",
-        ]:
-            field_label_map = {
-                "ID": "编号",
-                "Skill": "技能名",
-                "Status": "状态",
-                "Agent": "归属",
-                "Source": "来源",
-                "LocalPath": "本地路径",
-                "Installed": "首次安装",
-                "LastUpdated": "最近更新",
-                "Purpose": "用途",
-            }
-            ttk.Label(info_frame, text=field_label_map.get(field, field)).grid(
-                row=row_index, column=0, sticky=tk.NW, pady=4
-            )
-            ttk.Label(
-                info_frame,
-                textvariable=self.detail_vars[field],
-                wraplength=420,
-                justify=tk.LEFT,
-            ).grid(row=row_index, column=1, sticky=tk.NW, pady=4, padx=(8, 0))
-            row_index += 1
-
-        ttk.Label(info_frame, text="备注").grid(
-            row=row_index, column=0, sticky=tk.NW, pady=4
+        hero = ttk.Frame(info_frame, style="Surface.TFrame")
+        hero.pack(fill=tk.X)
+        ttk.Label(hero, text="当前选中技能", style="SmallTitle.TLabel").pack(
+            anchor=tk.W
         )
-        self.detail_text = tk.Text(info_frame, height=8, width=48, wrap=tk.WORD)
+        ttk.Label(
+            hero,
+            textvariable=self.detail_vars["Skill"],
+            style="HeroValue.TLabel",
+            wraplength=430,
+            justify=tk.LEFT,
+        ).pack(anchor=tk.W, pady=(4, 8))
+        ttk.Label(
+            hero,
+            textvariable=self.empty_tip_var,
+            style="Muted.TLabel",
+            wraplength=430,
+            justify=tk.LEFT,
+        ).pack(anchor=tk.W)
+
+        basic_card = ttk.LabelFrame(
+            info_frame, text="基础信息", style="Card.TLabelframe", padding=10
+        )
+        basic_card.pack(fill=tk.X, pady=(12, 8))
+        path_card = ttk.LabelFrame(
+            info_frame, text="路径与来源", style="Card.TLabelframe", padding=10
+        )
+        path_card.pack(fill=tk.X, pady=8)
+        desc_card = ttk.LabelFrame(
+            info_frame, text="用途与备注", style="Card.TLabelframe", padding=10
+        )
+        desc_card.pack(fill=tk.BOTH, expand=True, pady=(8, 0))
+
+        field_label_map = {
+            "ID": "编号",
+            "Skill": "技能名",
+            "Status": "状态",
+            "Agent": "归属",
+            "Source": "来源",
+            "LocalPath": "本地路径",
+            "Installed": "首次安装",
+            "LastUpdated": "最近更新",
+            "Purpose": "用途",
+        }
+
+        for row_index, field in enumerate(
+            ["ID", "Status", "Agent", "Installed", "LastUpdated"]
+        ):
+            ttk.Label(
+                basic_card, text=field_label_map[field], style="SmallTitle.TLabel"
+            ).grid(row=row_index, column=0, sticky=tk.NW, pady=4)
+            ttk.Label(
+                basic_card,
+                textvariable=self.detail_vars[field],
+                wraplength=320,
+                justify=tk.LEFT,
+            ).grid(row=row_index, column=1, sticky=tk.NW, pady=4, padx=(10, 0))
+
+        for row_index, field in enumerate(["Source", "LocalPath"]):
+            ttk.Label(
+                path_card, text=field_label_map[field], style="SmallTitle.TLabel"
+            ).grid(row=row_index, column=0, sticky=tk.NW, pady=4)
+            ttk.Label(
+                path_card,
+                textvariable=self.detail_vars[field],
+                wraplength=340,
+                justify=tk.LEFT,
+            ).grid(row=row_index, column=1, sticky=tk.NW, pady=4, padx=(10, 0))
+
+        ttk.Label(desc_card, text="用途", style="SmallTitle.TLabel").grid(
+            row=0, column=0, sticky=tk.NW, pady=4
+        )
+        ttk.Label(
+            desc_card,
+            textvariable=self.detail_vars["Purpose"],
+            wraplength=340,
+            justify=tk.LEFT,
+        ).grid(row=0, column=1, sticky=tk.NW, pady=4, padx=(10, 0))
+        ttk.Label(desc_card, text="备注", style="SmallTitle.TLabel").grid(
+            row=1, column=0, sticky=tk.NW, pady=(10, 4)
+        )
+        self.detail_text = tk.Text(
+            desc_card,
+            height=9,
+            width=44,
+            wrap=tk.WORD,
+            relief=tk.FLAT,
+            bg="#f8fbff",
+            fg=self.text_color,
+            font=("Microsoft YaHei UI", 9),
+            padx=10,
+            pady=8,
+        )
         self.detail_text.grid(
-            row=row_index, column=1, sticky=tk.NSEW, pady=4, padx=(8, 0)
+            row=1, column=1, sticky=tk.NSEW, pady=(10, 4), padx=(10, 0)
         )
         self.detail_text.configure(state=tk.DISABLED)
-        row_index += 1
 
-        info_frame.columnconfigure(1, weight=1)
-        info_frame.rowconfigure(row_index - 1, weight=1)
+        basic_card.columnconfigure(1, weight=1)
+        path_card.columnconfigure(1, weight=1)
+        desc_card.columnconfigure(1, weight=1)
+        desc_card.rowconfigure(1, weight=1)
 
         status_wrap = ttk.Frame(self.root, style="App.TFrame", padding=(16, 0, 16, 14))
         status_wrap.pack(fill=tk.X)
@@ -1174,6 +1251,7 @@ class SkillRegistryApp:
     def clear_details(self) -> None:
         for var in self.detail_vars.values():
             var.set("")
+        self.empty_tip_var.set("请从左侧技能树选择一个 skill，查看详情与用途。")
         if self.detail_text is None:
             return
         self.detail_text.configure(state=tk.NORMAL)
@@ -1209,6 +1287,7 @@ class SkillRegistryApp:
             elif field == "Agent":
                 value = to_chinese_agent(value)
             self.detail_vars[field].set(value)
+        self.empty_tip_var.set("你可以继续编辑来源、用途、备注，或直接打开技能目录。")
 
         if self.detail_text is None:
             return
