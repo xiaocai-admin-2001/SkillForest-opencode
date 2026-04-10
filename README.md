@@ -44,6 +44,8 @@ SkillForest 的目标很简单：让本地 skills 变成一套可管理、可观
 | `docs/SKILLS_REGISTRY.template.csv` | 注册表模板 |
 | `docs/RELEASE.md` | 打包和发布说明 |
 | `tools/package_skillforest_release.py` | 一键生成发布目录和 zip 包 |
+| `tools/sync_to_claude_skills.py` | 把仓库内 `skills/` 同步到本机运行目录 |
+| `tools/sync_to_claude_skills.bat` | Windows 下一键同步本机 skill 目录 |
 
 ## 建议阅读顺序
 
@@ -76,6 +78,53 @@ SkillForest 的目标很简单：让本地 skills 变成一套可管理、可观
 - 分享给别人直接复用
 - 统一整理多来源的 skills
 
+## 推荐维护方式
+
+建议只维护这一处：
+
+- 仓库内的 `skills/`
+
+不要把 `~/.claude/skills` 当成手工编辑目录。更推荐的工作流是：
+
+1. 只修改仓库里的 `skills/<skill-name>/`
+2. 提交并推送仓库
+3. 用同步脚本把仓库内容发布到本机运行目录
+
+这样可以避免“本地运行目录”和 Git 仓库各改一份导致内容分叉。
+
+## 同步到本机运行目录
+
+仓库已经提供同步脚本，路径都以仓库根目录为基准，不依赖某个人的绝对路径。
+
+在仓库根目录下：
+
+Windows：
+
+```bat
+tools\sync_to_claude_skills.bat
+```
+
+只预览、不真正写入：
+
+```bat
+tools\sync_to_claude_skills.bat --dry-run
+```
+
+Python 方式：
+
+```bash
+python tools/sync_to_claude_skills.py --prune
+```
+
+脚本行为：
+
+- 源目录：仓库内 `skills/`
+- 目标目录：当前用户主目录下的 `.claude/skills`
+- 默认保留 `skill-registry/` 等运行支撑目录
+- `--prune` 会删除本机运行目录中仓库里不存在的 skill
+
+这样不同人的机器只要仓库位置正确，脚本都会自动同步到各自用户目录下的 `.claude/skills`。
+
 ### `docs/`
 
 这里放的是使用说明、结构说明和发布说明，不是程序本体。
@@ -98,11 +147,11 @@ SkillForest 的目标很简单：让本地 skills 变成一套可管理、可观
 
 至少复制下面这个目录到目标机器：
 
-- `skill-registry/` -> `%USERPROFILE%\.claude\skills\skill-registry`
+- `skill-registry/` -> 当前用户主目录下的 `.claude/skills/skill-registry`
 
 如果你还想把当前技能库一起同步过去，再复制：
 
-- `skills/` -> `%USERPROFILE%\.claude\skills`
+- `skills/` -> 当前用户主目录下的 `.claude/skills`
 
 详细步骤见 `docs/INSTALL.md`。
 
