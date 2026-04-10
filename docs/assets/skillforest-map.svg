@@ -1,0 +1,63 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg2" x1="100" y1="80" x2="1100" y2="680" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#E2F7EC"/>
+    </linearGradient>
+    <linearGradient id="path" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#2F6FED"/>
+      <stop offset="1" stop-color="#16A34A"/>
+    </linearGradient>
+    <filter id="soft" x="0" y="0" width="1200" height="760" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#0F172A" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="760" rx="28" fill="url(#bg2)"/>
+  <path d="M170 610C300 500 385 485 492 520C604 556 660 428 760 416C864 404 933 455 1040 342" stroke="url(#path)" stroke-width="26" stroke-linecap="round"/>
+
+  <g filter="url(#soft)">
+    <rect x="92" y="530" width="192" height="118" rx="24" fill="#0F172A"/>
+    <text x="188" y="575" text-anchor="middle" fill="#F8FAFC" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">Repo</text>
+    <text x="188" y="608" text-anchor="middle" fill="#CBD5E1" font-family="Segoe UI, Arial, sans-serif" font-size="16">skills/ is the source</text>
+  </g>
+
+  <g filter="url(#soft)">
+    <rect x="365" y="456" width="214" height="132" rx="24" fill="#FFFFFF"/>
+    <text x="472" y="502" text-anchor="middle" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">Sync</text>
+    <text x="472" y="536" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="16">one command</text>
+    <text x="472" y="562" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="16">publish to runtime</text>
+  </g>
+
+  <g filter="url(#soft)">
+    <rect x="646" y="360" width="222" height="136" rx="24" fill="#FFFFFF"/>
+    <text x="757" y="407" text-anchor="middle" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">Runtime</text>
+    <text x="757" y="441" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="16">.claude/skills</text>
+    <text x="757" y="467" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="16">what OpenCode actually uses</text>
+  </g>
+
+  <g filter="url(#soft)">
+    <rect x="920" y="260" width="196" height="126" rx="24" fill="#0F172A"/>
+    <text x="1018" y="307" text-anchor="middle" fill="#F8FAFC" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">Observe</text>
+    <text x="1018" y="340" text-anchor="middle" fill="#CBD5E1" font-family="Segoe UI, Arial, sans-serif" font-size="16">registry, scores, usage</text>
+  </g>
+
+  <g>
+    <circle cx="188" cy="430" r="58" fill="#DCFCE7"/>
+    <circle cx="188" cy="392" r="28" fill="#16A34A"/>
+    <rect x="178" y="412" width="20" height="54" rx="10" fill="#166534"/>
+  </g>
+  <g>
+    <circle cx="280" cy="394" r="48" fill="#DBEAFE"/>
+    <circle cx="280" cy="362" r="23" fill="#2F6FED"/>
+    <rect x="272" y="378" width="16" height="44" rx="8" fill="#1D4ED8"/>
+  </g>
+  <g>
+    <circle cx="947" cy="550" r="64" fill="#EDE9FE"/>
+    <circle cx="947" cy="510" r="31" fill="#8B5CF6"/>
+    <rect x="936" y="532" width="22" height="58" rx="11" fill="#6D28D9"/>
+  </g>
+
+  <text x="96" y="94" fill="#0F172A" font-family="Georgia, 'Times New Roman', serif" font-size="42" font-weight="700">How SkillForest flows</text>
+  <text x="96" y="132" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="22">Maintain once. Sync once. Run everywhere. See what still matters.</text>
+</svg>

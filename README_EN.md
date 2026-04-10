@@ -9,7 +9,13 @@
 </p>
 
 <p align="center">
+  <strong>Maintain once. Publish once. See the whole forest clearly.</strong>
+</p>
+
+<p align="center">
   <a href="README.md"><strong>中文</strong></a>
+  ·
+  <a href="README_EN.md"><strong>English</strong></a>
   ·
   <a href="#quick-start"><strong>Quick Start</strong></a>
   ·
@@ -26,6 +32,10 @@
 </p>
 
 > Not just another skill dump. This is a control panel for your local skill lifecycle.
+
+<p align="center">
+  <img src="docs/assets/skillforest-map.svg" alt="SkillForest map" width="100%" />
+</p>
 
 You have probably seen this happen:
 
@@ -124,6 +134,13 @@ SkillForest optimizes for stewardship:
 - which ones are worth keeping, rewriting, migrating, or deleting
 
 That makes it both a skill repository and a skill operations layer.
+
+## One Diagram, One Mental Model
+
+- maintain `skills/` inside the repo
+- publish into `.claude/skills`
+- observe drift, quality, and usage through the registry layer
+- prune what no longer earns its place in the forest
 
 ## Repository Layout
 

@@ -9,7 +9,13 @@
 </p>
 
 <p align="center">
+  <strong>维护一处，发布一处，看清整座森林。</strong>
+</p>
+
+<p align="center">
   <a href="README_EN.md"><strong>English</strong></a>
+  ·
+  <a href="README.md"><strong>简体中文</strong></a>
   ·
   <a href="#快速开始"><strong>快速开始</strong></a>
   ·
@@ -26,6 +32,10 @@
 </p>
 
 > 不是又一个 skills 仓库，而是你本地 skill 生命周期的控制台。
+
+<p align="center">
+  <img src="docs/assets/skillforest-map.svg" alt="SkillForest map" width="100%" />
+</p>
 
 你可能已经见过这种场景：
 
@@ -77,6 +87,13 @@ SkillForest 更关心的是另一件事：
 - 哪些 skill 值得保留、重写、迁移或下线
 
 换句话说，它既是 skill 仓库，也是 skill 运营台。
+
+## 一张图看懂 SkillForest
+
+- 你维护的是 repo 里的 `skills/`
+- 你发布的是本机 `.claude/skills`
+- 你观察的是注册表、评分和使用情况
+- 你修剪的是真正有分叉、有沉积、没人再用的那部分技能森林
 
 ## 快速开始
 
