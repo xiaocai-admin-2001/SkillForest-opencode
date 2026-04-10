@@ -1,14 +1,17 @@
 ---
 name: skill-registry
 description: |
-  当安装、更新、删除、复制或盘点 OpenCode skills 时使用。这个 skill
-  会维护一份类似 awesome-opencode 资源表的技能清单文件：
+  维护本地 OpenCode skill 注册表与可视化管理界面。Use when 安装、更新、删除、复制、盘点或同步 skills，且需要更新
   `C:\Users\Administrator\.claude\skills\SKILLS_REGISTRY.csv`。
 ---
 
 # Skill Registry
 
-这个 skill 用来维护 OpenCode 的技能总表。
+这个 skill 用来维护 OpenCode 的技能总表和图形化管理界面。
+
+## Core Rule
+
+只要本地 skill 库发生变化，就要让注册表和界面数据保持同步。
 
 主表文件：
 
@@ -16,7 +19,7 @@ description: |
 
 你可以把它理解成一个小型的 skills 数据库。每个 skill 占一行，后续新增、更新、删除都在这个 CSV 里维护，方式类似 `E:\awesome-opencode-main` 里的资源总表。
 
-## 什么时候使用
+## When To Use
 
 出现以下场景时必须使用这个 skill：
 
@@ -26,14 +29,22 @@ description: |
 - 删除 skill
 - 盘点当前已安装的 skill
 - 用户要求查看或刷新 OpenCode skills 清单
+- 新增质量评分文件或技能管理器关联数据
 
-## 固定工作流
+## Workflow
 
 1. 先扫描 `C:\Users\Administrator\.claude\skills`。
 2. 读取 `C:\Users\Administrator\.claude\skills\SKILLS_REGISTRY.csv`。
 3. 根据本次变更，新增或更新对应的 CSV 行。
 4. 如果 skill 被删除，不要删历史记录，只把 `Status` 改成 `removed`。
-5. 保持 CSV 是结构化表，不要改成自然语言列表。
+5. 如有用途、显示名、质量评分等关联数据，也一并同步。
+6. 保持 CSV 是结构化表，不要改成自然语言列表。
+
+## OpenCode Tool Alignment
+
+- 用 `Read` / `Glob` / `Grep` 查看本地 skill 状态
+- 用 `apply_patch` 或 GUI 修改注册表相关文件
+- 用 GUI 做可视化查看、排序、筛选和同步
 
 ## CSV 字段
 
@@ -61,6 +72,12 @@ description: |
 - 新增 skill 时，分配下一个可用的 `skill-XXX`
 - `Purpose` 优先从该 skill 的 `SKILL.md` 描述中提炼，并统一改成中文
 - 如果来源不清楚，`Source` 写 `manual`，并在 `Notes` 里补充说明
+
+## 质量评分联动
+
+- 质量评分文件默认位于 `C:\Users\Administrator\.claude\skills\skill-registry\skill_quality_reviews.json`
+- 新增或重构 skill 后，可运行质量审查器刷新评分
+- 注册表本身不直接存分数，但管理器会读取评分文件展示质量分与综合分
 
 ## 输出要求
 
