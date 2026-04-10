@@ -8,9 +8,11 @@ from datetime import datetime
 from pathlib import Path
 
 
-BASE_DIR = Path.home() / ".claude" / "skills"
-REGISTRY_PATH = BASE_DIR / "SKILLS_REGISTRY.csv"
-OUTPUT_PATH = BASE_DIR / "skill-registry" / "skill_quality_reviews.json"
+CLAUDE_SKILLS_DIR = Path.home() / ".claude" / "skills"
+AGENTS_SKILLS_DIR = Path.home() / ".agents" / "skills"
+SKILL_BASE_DIRS = (CLAUDE_SKILLS_DIR, AGENTS_SKILLS_DIR)
+REGISTRY_PATH = CLAUDE_SKILLS_DIR / "SKILLS_REGISTRY.csv"
+OUTPUT_PATH = CLAUDE_SKILLS_DIR / "skill-registry" / "skill_quality_reviews.json"
 GENERIC_PURPOSE_FRAGMENTS = (
     "相关任务",
     "仓库导入",
@@ -30,11 +32,14 @@ def parse_args() -> argparse.Namespace:
 
 
 def iter_skill_dirs() -> list[Path]:
-    results = []
-    for item in BASE_DIR.iterdir():
-        if item.is_dir() and (item / "SKILL.md").exists():
-            results.append(item)
-    return sorted(results, key=lambda p: p.name.lower())
+    results_by_name: dict[str, Path] = {}
+    for base_dir in SKILL_BASE_DIRS:
+        if not base_dir.exists():
+            continue
+        for item in base_dir.iterdir():
+            if item.is_dir() and (item / "SKILL.md").exists():
+                results_by_name[item.name] = item
+    return sorted(results_by_name.values(), key=lambda p: p.name.lower())
 
 
 def load_registry() -> dict[str, dict[str, str]]:

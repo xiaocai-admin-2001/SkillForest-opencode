@@ -201,3 +201,4 @@ skill-123,tob-vector-forge,active,OpenCode,https://github.com/trailofbits/skills
 skill-113,tob-wycheproof,active,OpenCode,https://github.com/trailofbits/skills,C:\Users\Administrator\.claude\skills\tob-wycheproof,2026-04-07,2026-04-07,用于 tob wycheproof 相关任务,从 Trail of Bits Security Skills 仓库导入
 skill-126,tob-yara-rule-authoring,active,OpenCode,https://github.com/trailofbits/skills,C:\Users\Administrator\.claude\skills\tob-yara-rule-authoring,2026-04-07,2026-04-07,用于 tob yara rule authoring 相关任务,从 Trail of Bits Security Skills 仓库导入
 skill-127,tob-zeroize-audit,active,OpenCode,https://github.com/trailofbits/skills,C:\Users\Administrator\.claude\skills\tob-zeroize-audit,2026-04-07,2026-04-07,用于安全审计、漏洞分析和风险检测,从 Trail of Bits Security Skills 仓库导入
+skill-172,context-compression,active,OpenCode,community,C:\Users\Administrator\.agents\skills\context-compression,2026-04-10,2026-04-10,用于会话压缩、上下文摘要和任务交接,从本地 agents 技能目录同步导入
