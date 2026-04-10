@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import os
+import stat
 import shutil
 from pathlib import Path
 
@@ -35,7 +37,7 @@ def copy_tree(source: Path, target: Path, dry_run: bool) -> None:
         print(f"COPY {source} -> {target}")
         return
     if target.exists():
-        shutil.rmtree(target)
+        shutil.rmtree(target, onexc=handle_remove_readonly)
     shutil.copytree(source, target)
 
 
@@ -52,9 +54,14 @@ def remove_path(path: Path, dry_run: bool) -> None:
         print(f"REMOVE {path}")
         return
     if path.is_dir():
-        shutil.rmtree(path)
+        shutil.rmtree(path, onexc=handle_remove_readonly)
     elif path.exists():
         path.unlink()
+
+
+def handle_remove_readonly(func, path, excinfo) -> None:
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
 
 
 def main() -> int:
