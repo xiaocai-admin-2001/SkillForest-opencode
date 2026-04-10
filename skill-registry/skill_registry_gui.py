@@ -22,6 +22,7 @@ OPENCODE_DB_PATH = USER_HOME / ".local" / "share" / "opencode" / "opencode.db"
 TRASH_DIR = BASE_DIR / ".trash"
 AGENTS_SKILLS_DIR = USER_HOME / ".agents" / "skills"
 QUALITY_REVIEWS_PATH = BASE_DIR / "skill-registry" / "skill_quality_reviews.json"
+UI_STATE_PATH = BASE_DIR / "skill-registry" / "skill_manager_state.json"
 NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 CSV_FIELDS = [
@@ -477,6 +478,74 @@ def save_registry(rows: list[dict]) -> None:
         writer = csv.DictWriter(f, fieldnames=CSV_FIELDS)
         writer.writeheader()
         writer.writerows(rows)
+
+
+def load_ui_state() -> dict[str, Any]:
+    if not UI_STATE_PATH.exists():
+        return {}
+    try:
+        payload = json.loads(UI_STATE_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def save_ui_state(state: dict[str, Any]) -> None:
+    UI_STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    UI_STATE_PATH.write_text(
+        json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+
+def ensure_registry_unique_ids(rows: list[dict]) -> tuple[list[dict], list[str]]:
+    seen: set[str] = set()
+    fixes: list[str] = []
+    max_number = 0
+    for row in rows:
+        value = row.get("ID", "")
+        if value.startswith("skill-"):
+            try:
+                max_number = max(max_number, int(value.split("-", 1)[1]))
+            except ValueError:
+                pass
+    for row in rows:
+        skill = row.get("Skill", "未知技能")
+        current = row.get("ID", "")
+        if current and current not in seen:
+            seen.add(current)
+            continue
+        max_number += 1
+        new_id = f"skill-{max_number:03d}"
+        row["ID"] = new_id
+        seen.add(new_id)
+        fixes.append(f"修复重复或缺失 ID：{skill} -> {new_id}")
+    return rows, fixes
+
+
+def run_startup_self_check() -> dict[str, Any]:
+    issues: list[str] = []
+    fixes: list[str] = []
+    rows = load_registry()
+    rows, id_fixes = ensure_registry_unique_ids(rows)
+    if id_fixes:
+        save_registry(rows)
+        fixes.extend(id_fixes)
+
+    for path in (REGISTRY_PATH, README_PATH, USAGE_GUIDE_PATH):
+        if not path.exists():
+            issues.append(f"缺少核心文件：{path}")
+
+    broken_skills = []
+    for row in rows:
+        local_path = Path(row.get("LocalPath", ""))
+        if row.get("Status") == "active" and (
+            not local_path.exists() or not (local_path / "SKILL.md").exists()
+        ):
+            broken_skills.append(row.get("Skill", "未知技能"))
+    if broken_skills:
+        issues.append(f"有 {len(broken_skills)} 个启用技能缺少本地目录或 SKILL.md")
+
+    return {"issues": issues, "fixes": fixes}
 
 
 def infer_skill_name(source: str) -> str:
@@ -1105,6 +1174,8 @@ def build_operations_dashboard(
     recent_active = []
     sleeping = []
     top_used = []
+    high_use_low_quality = []
+    high_quality_low_use = []
     average_scores = []
     seven_days_ms = 7 * 24 * 60 * 60 * 1000
     thirty_days_ms = 30 * 24 * 60 * 60 * 1000
@@ -1119,6 +1190,10 @@ def build_operations_dashboard(
         top_used.append(decorated)
         if usage_count >= 5:
             high_usage.append(decorated)
+        if usage_count >= 3 and int(decorated.get("quality_score", 0)) < 80:
+            high_use_low_quality.append(decorated)
+        if int(decorated.get("quality_score", 0)) >= 88 and usage_count <= 1:
+            high_quality_low_use.append(decorated)
         if last_used_ts and now_ts - last_used_ts <= seven_days_ms:
             recent_active.append(decorated)
         if usage_count == 0 or (
@@ -1155,6 +1230,20 @@ def build_operations_dashboard(
             -_date_rank(item.get("Installed", "")),
         )
     )
+    high_use_low_quality.sort(
+        key=lambda item: (
+            -int(item.get("usage_count", 0)),
+            int(item.get("quality_score", 0)),
+            int(item.get("score", 0)),
+        )
+    )
+    high_quality_low_use.sort(
+        key=lambda item: (
+            -int(item.get("quality_score", 0)),
+            int(item.get("usage_count", 0)),
+            -int(item.get("score", 0)),
+        )
+    )
 
     average_score = (
         round(sum(average_scores) / len(average_scores)) if average_scores else 0
@@ -1176,6 +1265,8 @@ def build_operations_dashboard(
         "top_used": top_used[:5],
         "recent_active": recent_active[:5],
         "cleanup_candidates": sleeping[:5],
+        "high_use_low_quality": high_use_low_quality[:5],
+        "high_quality_low_use": high_quality_low_use[:5],
         "insight_text": insight_text,
     }
 
@@ -1480,6 +1571,10 @@ class SkillRegistryApp:
         self.page_buttons: dict[str, tk.Button] = {}
         self.active_page = "overview"
         self.page_scroll_canvases: dict[str, tk.Canvas] = {}
+        self.main_split = None
+        self.library_split = None
+        self.ui_state = load_ui_state()
+        self.startup_check = run_startup_self_check()
 
         self.bg_color = "#F3EEE6"
         self.surface_color = "#FFFDFC"
@@ -1498,10 +1593,16 @@ class SkillRegistryApp:
         self.button_text_on_accent = "#FFF9F4"
 
         self.search_query_var.trace_add("write", self._on_filter_text_changed)
+        self.sort_mode_var.set(str(self.ui_state.get("sort_mode", "installed")))
+        self.active_page = str(self.ui_state.get("active_page", "overview"))
+        self.ops_collapsed = bool(self.ui_state.get("ops_collapsed", False))
 
         self._build_ui()
         self.refresh_data(sync_first=True)
+        self._apply_saved_ui_state()
         self._schedule_usage_refresh()
+        self.root.after(1200, self._persist_sash_positions)
+        self.root.protocol("WM_DELETE_WINDOW", self._on_close)
 
     def _configure_styles(self) -> None:
         style = ttk.Style(self.root)
@@ -1763,18 +1864,31 @@ class SkillRegistryApp:
         main_shell = tk.Frame(self.root, bg=self.bg_color, padx=16, pady=12)
         main_shell.pack(fill=tk.BOTH, expand=True)
 
-        nav_shell = tk.Frame(
+        main_split = tk.PanedWindow(
             main_shell,
+            orient=tk.HORIZONTAL,
+            bg=self.bg_color,
+            sashwidth=8,
+            sashrelief=tk.RAISED,
+            showhandle=True,
+            opaqueresize=True,
+        )
+        main_split.pack(fill=tk.BOTH, expand=True)
+        self.main_split = main_split
+
+        nav_shell = tk.Frame(
+            main_split,
             bg="#F4ECE2",
             padx=14,
             pady=16,
             highlightbackground=self.border_color,
             highlightthickness=1,
         )
-        nav_shell.pack(side=tk.LEFT, fill=tk.Y)
 
-        content_shell = tk.Frame(main_shell, bg=self.bg_color)
-        content_shell.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(14, 0))
+        content_shell = tk.Frame(main_split, bg=self.bg_color, padx=14)
+
+        main_split.add(nav_shell, minsize=190)
+        main_split.add(content_shell, minsize=900, stretch="always")
 
         tk.Label(
             nav_shell,
@@ -1889,8 +2003,17 @@ class SkillRegistryApp:
 
         library_shell = tk.Frame(content_shell, bg=self.bg_color)
         self.page_frames["library"] = library_shell
-        layout = ttk.PanedWindow(library_shell, orient=tk.HORIZONTAL)
+        layout = tk.PanedWindow(
+            library_shell,
+            orient=tk.HORIZONTAL,
+            bg=self.bg_color,
+            sashwidth=8,
+            sashrelief=tk.RAISED,
+            showhandle=True,
+            opaqueresize=True,
+        )
         layout.pack(fill=tk.BOTH, expand=True)
+        self.library_split = layout
 
         sidebar = tk.Frame(
             layout,
@@ -1916,9 +2039,9 @@ class SkillRegistryApp:
             highlightbackground=self.border_color,
             highlightthickness=1,
         )
-        layout.add(sidebar, weight=1)
-        layout.add(center, weight=4)
-        layout.add(detail, weight=3)
+        layout.add(sidebar, minsize=220)
+        layout.add(center, minsize=520, stretch="always")
+        layout.add(detail, minsize=320)
 
         ttk.Label(sidebar, text="分类导航", style="SectionTitle.TLabel").pack(
             anchor=tk.W
@@ -1956,7 +2079,11 @@ class SkillRegistryApp:
             width=14,
             values=[SORT_MODE_OPTIONS[key] for key in ("installed", "score", "usage")],
         )
-        self.sort_menu.current(0)
+        self.sort_menu.set(
+            SORT_MODE_OPTIONS.get(
+                self.sort_mode_var.get(), SORT_MODE_OPTIONS["installed"]
+            )
+        )
         self.sort_menu.bind("<<ComboboxSelected>>", self._on_sort_mode_changed)
         self.sort_menu.pack(side=tk.LEFT, padx=(0, 10))
         tk.Label(
@@ -2048,6 +2175,12 @@ class SkillRegistryApp:
             detail_actions,
             text="编辑说明",
             command=self.edit_selected_skill,
+            style="Toolbar.TButton",
+        ).pack(side=tk.LEFT, padx=(8, 0))
+        ttk.Button(
+            detail_actions,
+            text="更新评分",
+            command=self.review_selected_skill_quality,
             style="Toolbar.TButton",
         ).pack(side=tk.LEFT, padx=(8, 0))
         ttk.Button(
@@ -2188,6 +2321,8 @@ class SkillRegistryApp:
                 ("top_used", "Top 常用"),
                 ("recent_active", "最近活跃"),
                 ("cleanup_candidates", "待清理"),
+                ("high_use_low_quality", "高使用低质量"),
+                ("high_quality_low_use", "高质量低使用"),
             ]
         ):
             panel = tk.Frame(
@@ -2198,9 +2333,7 @@ class SkillRegistryApp:
                 highlightbackground=self.border_color,
                 highlightthickness=1,
             )
-            panel.pack(
-                side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0 if idx == 0 else 10, 0)
-            )
+            panel.grid(row=idx // 3, column=idx % 3, sticky="nsew", padx=6, pady=6)
             tk.Label(
                 panel,
                 text=title,
@@ -2211,6 +2344,8 @@ class SkillRegistryApp:
             body = tk.Frame(panel, bg="#F8FAFC")
             body.pack(fill=tk.X, pady=(8, 0))
             self.dashboard_lists[key] = body
+        for col in range(3):
+            ops_lists.columnconfigure(col, weight=1)
 
         recent_usage_panel = tk.Frame(
             self.ops_content,
@@ -2230,6 +2365,25 @@ class SkillRegistryApp:
         ).pack(anchor=tk.W)
         self.recent_usage_list = tk.Frame(recent_usage_panel, bg="#F8FAFC")
         self.recent_usage_list.pack(fill=tk.X, pady=(8, 0))
+
+        if self.startup_check.get("issues"):
+            check_card, check_body = self._build_section_card(
+                operations_page,
+                "启动自检提醒",
+                "下面列出启动时发现但未自动修复的问题。",
+                bg="#FBE8E4",
+            )
+            check_card.pack(fill=tk.X, pady=(12, 0))
+            for issue in self.startup_check["issues"][:5]:
+                tk.Label(
+                    check_body,
+                    text=f"- {issue}",
+                    bg="#FBE8E4",
+                    fg="#8A3E2F",
+                    justify=tk.LEFT,
+                    anchor="w",
+                    font=("Microsoft YaHei UI", 9),
+                ).pack(anchor=tk.W, pady=2)
 
         quality_shell, quality_page = self._create_scrollable_page(
             content_shell, "quality"
@@ -2382,6 +2536,64 @@ class SkillRegistryApp:
         )
         status_bar.pack(fill=tk.X)
 
+    def _capture_ui_state(self) -> dict[str, Any]:
+        state = {
+            "active_page": self.active_page,
+            "sort_mode": self.sort_mode_var.get(),
+            "ops_collapsed": self.ops_collapsed,
+        }
+        try:
+            if self.main_split is not None:
+                state["main_split_sash"] = list(self.main_split.sash_coord(0))
+        except Exception:
+            pass
+        try:
+            if self.library_split is not None:
+                state["library_split_sash_0"] = list(self.library_split.sash_coord(0))
+                state["library_split_sash_1"] = list(self.library_split.sash_coord(1))
+        except Exception:
+            pass
+        return state
+
+    def _save_ui_state(self) -> None:
+        save_ui_state(self._capture_ui_state())
+
+    def _apply_saved_ui_state(self) -> None:
+        def _apply() -> None:
+            try:
+                if self.main_split is not None and self.ui_state.get("main_split_sash"):
+                    x, y = self.ui_state["main_split_sash"]
+                    self.main_split.sash_place(0, int(x), int(y))
+            except Exception:
+                pass
+            try:
+                if self.library_split is not None and self.ui_state.get(
+                    "library_split_sash_0"
+                ):
+                    x, y = self.ui_state["library_split_sash_0"]
+                    self.library_split.sash_place(0, int(x), int(y))
+                if self.library_split is not None and self.ui_state.get(
+                    "library_split_sash_1"
+                ):
+                    x, y = self.ui_state["library_split_sash_1"]
+                    self.library_split.sash_place(1, int(x), int(y))
+            except Exception:
+                pass
+            if self.active_page in self.page_frames:
+                for key, frame in self.page_frames.items():
+                    if key == self.active_page:
+                        frame.pack(fill=tk.BOTH, expand=True)
+                    else:
+                        frame.pack_forget()
+                for key, button in self.page_buttons.items():
+                    self._style_page_button(button, key == self.active_page)
+
+        self.root.after(220, _apply)
+
+    def _on_close(self) -> None:
+        self._save_ui_state()
+        self.root.destroy()
+
     def _create_scrollable_page(
         self, parent: tk.Misc, page_key: str
     ) -> tuple[tk.Frame, tk.Frame]:
@@ -2450,6 +2662,7 @@ class SkillRegistryApp:
         for key, button in self.page_buttons.items():
             self._style_page_button(button, key == page_key)
         self.active_page = page_key
+        self._save_ui_state()
         self.status_var.set(f"已切换到{self.page_buttons[page_key].cget('text')}")
 
     def _bind_scroll_target(self, widget: tk.Misc, target_canvas: tk.Canvas) -> None:
@@ -2737,6 +2950,7 @@ class SkillRegistryApp:
     def _on_sort_mode_changed(self, _event=None) -> None:
         labels = {value: key for key, value in SORT_MODE_OPTIONS.items()}
         self.sort_mode_var.set(labels.get(self.sort_menu.get(), "installed"))
+        self._save_ui_state()
         self._reindex_rows()
         self._refresh_visible_rows(reset_limit=True)
 
@@ -2789,7 +3003,19 @@ class SkillRegistryApp:
         if not any(row["ID"] == self.selected_skill_id for row in self.rows):
             self.selected_skill_id = ""
         self._refresh_visible_rows(reset_limit=True)
-        self.status_var.set(f"已加载 {len(self.rows)} 个 skill")
+        startup_parts = []
+        if self.startup_check.get("fixes"):
+            startup_parts.append(
+                f"启动自检已修复 {len(self.startup_check['fixes'])} 个问题"
+            )
+        if self.startup_check.get("issues"):
+            startup_parts.append("启动自检发现待处理项")
+        startup_parts.append(f"已加载 {len(self.rows)} 个 skill")
+        self.status_var.set("；".join(startup_parts))
+
+    def _persist_sash_positions(self) -> None:
+        self._save_ui_state()
+        self.root.after(1200, self._persist_sash_positions)
 
     def _refresh_metrics(self) -> None:
         summary = summarize_registry_rows(self.rows)
@@ -2964,6 +3190,7 @@ class SkillRegistryApp:
             self.status_var.set("已展开技能运营面板")
         if self.ops_toggle_button is not None:
             self.ops_toggle_button.configure(text=label)
+        self._save_ui_state()
 
     def _refresh_operations_dashboard(self) -> None:
         self.operations_dashboard = build_operations_dashboard(
@@ -2989,6 +3216,12 @@ class SkillRegistryApp:
         )
         self._render_dashboard_list(
             "cleanup_candidates", self.operations_dashboard["cleanup_candidates"]
+        )
+        self._render_dashboard_list(
+            "high_use_low_quality", self.operations_dashboard["high_use_low_quality"]
+        )
+        self._render_dashboard_list(
+            "high_quality_low_use", self.operations_dashboard["high_quality_low_use"]
         )
         self._render_recent_usage_events()
         self._render_quality_list("top_quality", quality_dashboard["top_quality"])
