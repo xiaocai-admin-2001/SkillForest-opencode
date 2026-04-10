@@ -1,6 +1,31 @@
-# SkillForest
+<p align="center">
+  <img src="docs/assets/skillforest-hero.svg" alt="SkillForest hero" width="100%" />
+</p>
 
-> 当你的本地 skills 越长越野，SkillForest 负责把它们养成一座能维护、能迁移、能复用的森林。
+<h1 align="center">SkillForest</h1>
+
+<p align="center">
+  当你的本地 skills 越长越野，SkillForest 负责把它们养成一座能维护、能迁移、能复用的森林。
+</p>
+
+<p align="center">
+  <a href="README_EN.md"><strong>English</strong></a>
+  ·
+  <a href="#快速开始"><strong>快速开始</strong></a>
+  ·
+  <a href="#同步到本机运行目录"><strong>同步</strong></a>
+  ·
+  <a href="#faq"><strong>FAQ</strong></a>
+</p>
+
+<p align="center">
+  <img alt="maintained in repo" src="https://img.shields.io/badge/source%20of%20truth-skill--repo-0f172a?style=flat-square">
+  <img alt="runtime" src="https://img.shields.io/badge/runtime-.claude%2Fskills-166534?style=flat-square">
+  <img alt="sync" src="https://img.shields.io/badge/sync-one%20command-2f6fed?style=flat-square">
+  <img alt="gui" src="https://img.shields.io/badge/gui-skill%20registry-c026d3?style=flat-square">
+</p>
+
+> 不是又一个 skills 仓库，而是你本地 skill 生命周期的控制台。
 
 你可能已经见过这种场景：
 
@@ -9,7 +34,7 @@
 - skill 名称越来越多，来源越来越杂，最后谁还在用、谁该删、谁值得保留，全靠记忆
 - 想分享一套可复用的本地 skill 环境，却发现没有统一入口和同步路径
 
-**SkillForest** 不是又一个 skills 仓库。它更像是你本地 skill 生命周期的控制台：
+**SkillForest** 做的事很直接：
 
 - 用仓库维护 skills
 - 用脚本同步到运行目录
@@ -40,6 +65,18 @@ SkillForest 的目标很简单：让本地 skills 变成一套可管理、可观
 - 技能使用频率、评分和运营面板
 - 当前本地技能库的同步快照
 - 从仓库一键同步到本机运行目录的脚本
+
+## 为什么它有点不一样
+
+很多 skill 仓库解决的是“怎么多装几个 skill”。
+
+SkillForest 更关心的是另一件事：
+
+- 哪些 skill 真的在用
+- 哪些 skill 已经分叉
+- 哪些 skill 值得保留、重写、迁移或下线
+
+换句话说，它既是 skill 仓库，也是 skill 运营台。
 
 ## 快速开始
 

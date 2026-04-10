@@ -1,0 +1,60 @@
+<svg width="1200" height="640" viewBox="0 0 1200 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="80" x2="1080" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="0.5" stop-color="#123C34"/>
+      <stop offset="1" stop-color="#2F6FED"/>
+    </linearGradient>
+    <linearGradient id="card" x1="280" y1="150" x2="920" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#E2E8F0" stop-opacity="0.88"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#22C55E"/>
+      <stop offset="1" stop-color="#06B6D4"/>
+    </linearGradient>
+    <filter id="shadow" x="220" y="100" width="760" height="420" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#020617" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="640" rx="32" fill="url(#bg)"/>
+  <circle cx="170" cy="120" r="88" fill="#38BDF8" fill-opacity="0.12"/>
+  <circle cx="1040" cy="520" r="120" fill="#A78BFA" fill-opacity="0.12"/>
+  <circle cx="1080" cy="120" r="62" fill="#22C55E" fill-opacity="0.18"/>
+
+  <g filter="url(#shadow)">
+    <rect x="260" y="130" width="680" height="360" rx="28" fill="url(#card)"/>
+  </g>
+
+  <rect x="308" y="176" width="220" height="44" rx="22" fill="#0F172A" fill-opacity="0.92"/>
+  <text x="418" y="204" text-anchor="middle" fill="#F8FAFC" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">SkillForest</text>
+
+  <text x="340" y="266" fill="#0F172A" font-family="Georgia, 'Times New Roman', serif" font-size="54" font-weight="700">Grow your local skills</text>
+  <text x="340" y="324" fill="#0F172A" font-family="Georgia, 'Times New Roman', serif" font-size="54" font-weight="700">into a living forest.</text>
+
+  <text x="340" y="380" fill="#334155" font-family="Segoe UI, Arial, sans-serif" font-size="22">Maintain in one repo. Sync to one runtime directory.</text>
+  <text x="340" y="414" fill="#334155" font-family="Segoe UI, Arial, sans-serif" font-size="22">Observe usage, quality, and drift before the sprawl wins.</text>
+
+  <g>
+    <rect x="340" y="444" width="170" height="20" rx="10" fill="#CBD5E1"/>
+    <rect x="340" y="444" width="132" height="20" rx="10" fill="url(#accent)"/>
+    <text x="525" y="459" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">single-source workflow</text>
+  </g>
+
+  <g opacity="0.95">
+    <path d="M836 430C836 386 868 350 908 350C948 350 980 386 980 430V440H836V430Z" fill="#0F172A"/>
+    <rect x="826" y="434" width="164" height="20" rx="10" fill="#16A34A"/>
+    <rect x="854" y="286" width="112" height="108" rx="18" fill="#0F172A"/>
+    <path d="M910 212L950 286H870L910 212Z" fill="#16A34A"/>
+    <circle cx="910" cy="210" r="18" fill="#22C55E"/>
+    <path d="M906 208C892 194 874 192 862 200C876 200 886 208 894 220C896 214 900 210 906 208Z" fill="#DCFCE7"/>
+    <path d="M914 208C928 194 946 192 958 200C944 200 934 208 926 220C924 214 920 210 914 208Z" fill="#DCFCE7"/>
+    <rect x="872" y="306" width="76" height="12" rx="6" fill="#38BDF8"/>
+    <rect x="872" y="328" width="56" height="10" rx="5" fill="#94A3B8"/>
+    <rect x="872" y="346" width="66" height="10" rx="5" fill="#94A3B8"/>
+    <rect x="872" y="364" width="48" height="10" rx="5" fill="#94A3B8"/>
+  </g>
+
+  <text x="80" y="590" fill="#E2E8F0" font-family="Segoe UI, Arial, sans-serif" font-size="20">Repo as the source of truth · .claude/skills as the runtime forest</text>
+</svg>
