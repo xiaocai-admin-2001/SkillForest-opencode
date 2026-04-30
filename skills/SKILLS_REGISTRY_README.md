@@ -50,6 +50,7 @@
 
 - 脚本：`C:\Users\Administrator\.claude\skills\skill-registry\skill_registry_gui.py`
 - 启动器：`C:\Users\Administrator\.claude\skills\skill-registry\launch_skill_registry_gui.bat`
+- macOS 启动器：`$HOME/.claude/skills/skill-registry/launch_skill_registry_gui.command`
 - 启动器现在会使用 `pythonw` 启动图形界面，正常情况下不会再弹出黑色控制台窗口
 
 界面支持：

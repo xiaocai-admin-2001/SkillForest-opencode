@@ -1,0 +1,4 @@
+skills/**/__pycache__/
+skills/**/*.pyc
+skills/skill-registry/skill_manager_state.json
+skills/skill-registry/skill_quality_reviews.json

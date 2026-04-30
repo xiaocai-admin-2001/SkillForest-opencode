@@ -117,6 +117,9 @@ skill-204,frontend-design,active,OpenCode,https://github.com/Ilm-Alan/frontend-d
 skill-001,humanizer,active,OpenCode,https://github.com/blader/humanizer,C:\Users\Administrator\.claude\skills\humanizer,2026-04-03,2026-04-03,把文字改写得更自然更像人写的,从 GitHub 导入并按 OpenCode 触发方式做过调整
 skill-205,opencode-skill-best-practices,active,OpenCode,manual,C:\Users\Administrator\.claude\skills\opencode-skill-best-practices,2026-04-10,2026-04-10,把通用 skill 编写原则翻译成适用于本地 OpenCode 环境的落地规范,由技能管理界面自动补录
 skill-207,opencode-skill-quality-reviewer,active,OpenCode,manual,C:\Users\Administrator\.claude\skills\opencode-skill-quality-reviewer,2026-04-10,2026-04-10,自动审查本地 skill 质量并生成评分结果,由技能管理界面自动补录
+skill-208,openjung-api,removed,OpenCode,https://github.com/openmbti/core,C:\Users\Administrator\.claude\skills\openjung-api,2026-04-10,2026-04-10,用于测试设计、测试增强和测试验证,已通过可视化界面移到 C:\Users\Administrator\.claude\skills\.trash
+skill-209,session-history-snapshot,active,OpenCode,manual,C:\Users\Administrator\.claude\skills\session-history-snapshot,2026-04-21,2026-04-21,用于代码评审、差异检查和问题发现,为 RTSPVideoWall 等本地项目新增的会话留痕技能
+skill-210,weekly-report-writer,active,OpenCode,manual,C:\Users\Administrator\.claude\skills\weekly-report-writer,2026-04-30,2026-04-30,用于生成中文周报和下周计划,本地新增的固定格式周报写作技能
 skill-003,skill-creator,active,OpenCode,https://github.com/anthropics/skills,C:\Users\Administrator\.claude\skills\skill-creator,2026-04-03,2026-04-03,创建改进和评估自定义 skill,通过 npx skills add 安装
 skill-004,skill-registry,active,OpenCode,manual,C:\Users\Administrator\.claude\skills\skill-registry,2026-04-03,2026-04-03,维护技能注册表并提供可视化管理界面,本地自定义 skill
 skill-128,sp-brainstorming,active,OpenCode,https://github.com/obra/superpowers,C:\Users\Administrator\.claude\skills\sp-brainstorming,2026-04-07,2026-04-07,用于代码评审、差异检查和问题发现,从 Superpowers 仓库导入
